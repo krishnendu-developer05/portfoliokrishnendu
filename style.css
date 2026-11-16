@@ -431,13 +431,25 @@ a {
   letter-spacing: 0.06em;
 }
 
+.close-cross {
+  font-size: 1.05rem;
+  line-height: 1;
+  font-weight: 500;
+  display: inline-block;
+  color: var(--accent-primary);
+}
+
 .drawer-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 0.76rem;
-  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.38rem 0.75rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -446,7 +458,8 @@ a {
 .drawer-close-btn:hover {
   color: #FFFFFF;
   border-color: var(--accent-primary);
-  background: rgba(0, 255, 136, 0.08);
+  background: rgba(0, 255, 136, 0.12);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
 }
 
 .drawer-nav {
@@ -1368,19 +1381,6 @@ a {
   flex-direction: column;
 }
 
-/* Viewfinder Corner Crop Markers */
-.crop-corner {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--accent-primary);
-  pointer-events: none;
-  z-index: 8;
-}
-.crop-corner.tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
-.crop-corner.tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
-.crop-corner.bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
-.crop-corner.br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
 
 /* Circular Animated LinkedIn Connect Button */
 .linkedin-circle-btn {
@@ -1932,20 +1932,26 @@ a {
 
 .cockpit-close-btn,
 .modal-close-btn {
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
-  color: var(--text-muted);
+  color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0.25rem 0.55rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .cockpit-close-btn:hover,
 .modal-close-btn:hover {
   color: #FFFFFF;
   border-color: var(--accent-primary);
+  background: rgba(0, 255, 136, 0.12);
 }
 
 .cockpit-nav-tabs {
