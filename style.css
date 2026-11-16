@@ -2748,6 +2748,10 @@ a {
     height: 250px;
     border-radius: 22px;
     padding: 1.1rem 1rem;
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease,
+                border-color 0.2s ease,
+                opacity 0.25s ease !important;
   }
 
   .bounce-card-title {
@@ -3131,6 +3135,10 @@ a {
     height: 245px;
     border-radius: 20px;
     padding: 1rem 0.95rem;
+    transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease,
+                border-color 0.2s ease,
+                opacity 0.25s ease !important;
   }
 
   .bounce-card-kicker {

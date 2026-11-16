@@ -619,9 +619,9 @@ Full-Stack Engineering & Shipping (2025–2026)
     var SPREAD = 85;
     var PUSH_DISTANCE = 160;
     var HOVER_SCALE = 1.06;
-    var ANIMATION_DELAY = 0.5;
-    var ANIMATION_STAGGER = 0.06;
-    var CYCLE_INTERVAL_MS = 2800;
+    var ANIMATION_DELAY = 0.25;
+    var ANIMATION_STAGGER = 0.04;
+    var CYCLE_INTERVAL_MS = 1600;
 
     var isMobile = window.innerWidth <= 768 || ("ontouchstart" in window);
     var center = (numCards - 1) / 2;
@@ -787,7 +787,7 @@ Full-Stack Engineering & Shipping (2025–2026)
         e.stopPropagation();
         hoverCard(idx);
         if (isMobile) {
-          pauseAndResumeAutoCycle(6000);
+          pauseAndResumeAutoCycle(3500);
         }
       });
     });
@@ -812,7 +812,7 @@ Full-Stack Engineering & Shipping (2025–2026)
       if (!isMobile || !e.changedTouches || !e.changedTouches[0]) return;
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
-      pauseAndResumeAutoCycle(6000);
+      pauseAndResumeAutoCycle(3500);
     }, { passive: true });
 
     stage.addEventListener("touchend", function (e) {
@@ -826,7 +826,7 @@ Full-Stack Engineering & Shipping (2025–2026)
           currentCycleIndex = (currentCycleIndex - 1 + numCards) % numCards;
         }
         hoverCardMobile(currentCycleIndex);
-        pauseAndResumeAutoCycle(6000);
+        pauseAndResumeAutoCycle(3500);
       }
     }, { passive: true });
 
@@ -854,7 +854,7 @@ Full-Stack Engineering & Shipping (2025–2026)
                   if (i === numCards - 1) {
                     setTimeout(function () {
                       startAutoCycle();
-                    }, 500);
+                    }, 200);
                   }
                 } else {
                   var base = getDesktopBaseTransform(i);
