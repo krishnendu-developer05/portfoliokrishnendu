@@ -621,21 +621,25 @@ Full-Stack Engineering & Shipping (2025–2026)
     var HOVER_SCALE = 1.06;
     var ANIMATION_DELAY = 0.5;
     var ANIMATION_STAGGER = 0.06;
+    var CYCLE_INTERVAL_MS = 2800;
 
-    var isMobile = window.innerWidth <= 640;
+    var isMobile = window.innerWidth <= 768 || ("ontouchstart" in window);
     var spread = isMobile ? 42 : SPREAD;
     var pushDist = isMobile ? 65 : PUSH_DISTANCE;
     var rot = isMobile ? 7 : ROTATION;
 
-    window.addEventListener("resize", function () {
-      isMobile = window.innerWidth <= 640;
-      spread = isMobile ? 42 : SPREAD;
-      pushDist = isMobile ? 65 : PUSH_DISTANCE;
-      rot = isMobile ? 7 : ROTATION;
-      resetCards();
-    });
-
     var center = (numCards - 1) / 2;
+
+    var autoCycleTimer = null;
+    var currentCycleIndex = 0;
+    var isInteracting = false;
+    var resumeTimer = null;
+    var isDeckVisible = false;
+
+    var hintEl = document.getElementById("bounceCardsHint");
+    if (hintEl && isMobile) {
+      hintEl.textContent = "Auto-cycling cards \u00B7 Tap any card to inspect";
+    }
 
     function getBaseTransform(i) {
       var norm = i - center;
@@ -652,32 +656,82 @@ Full-Stack Engineering & Shipping (2025–2026)
     function resetCards() {
       cards.forEach(function (card, i) {
         card.classList.remove("is-active");
+        card.style.opacity = "1";
         var base = getBaseTransform(i);
         applyCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
       });
     }
 
     function hoverCard(hoveredIndex) {
+      currentCycleIndex = hoveredIndex;
       cards.forEach(function (card, i) {
         var base = getBaseTransform(i);
         if (i === hoveredIndex) {
           card.classList.add("is-active");
-          applyCardTransform(card, base.tx * 0.35, -14, 0, HOVER_SCALE, 50);
+          card.style.opacity = "1";
+          applyCardTransform(card, base.tx * (isMobile ? 0.15 : 0.35), isMobile ? -20 : -14, 0, HOVER_SCALE, 50);
         } else if (i < hoveredIndex) {
           card.classList.remove("is-active");
+          card.style.opacity = isMobile ? "0.72" : "0.92";
           var push = pushDist * (1 - (hoveredIndex - i - 1) * 0.18);
           applyCardTransform(card, base.tx - push, 0, base.r - 2.5, 0.95, base.zIndex);
         } else {
           card.classList.remove("is-active");
+          card.style.opacity = isMobile ? "0.72" : "0.92";
           var push = pushDist * (1 - (i - hoveredIndex - 1) * 0.18);
           applyCardTransform(card, base.tx + push, 0, base.r + 2.5, 0.95, base.zIndex);
         }
       });
     }
 
+    function startAutoCycle() {
+      stopAutoCycle();
+      if (!isDeckVisible) return;
+      if (!isMobile) return;
+
+      autoCycleTimer = setInterval(function () {
+        if (isInteracting) return;
+        currentCycleIndex = (currentCycleIndex + 1) % numCards;
+        hoverCard(currentCycleIndex);
+      }, CYCLE_INTERVAL_MS);
+    }
+
+    function stopAutoCycle() {
+      if (autoCycleTimer) {
+        clearInterval(autoCycleTimer);
+        autoCycleTimer = null;
+      }
+    }
+
+    function pauseAndResumeAutoCycle(delayMs) {
+      isInteracting = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(function () {
+        isInteracting = false;
+      }, delayMs || 5000);
+    }
+
+    window.addEventListener("resize", function () {
+      isMobile = window.innerWidth <= 768 || ("ontouchstart" in window);
+      spread = isMobile ? 42 : SPREAD;
+      pushDist = isMobile ? 65 : PUSH_DISTANCE;
+      rot = isMobile ? 7 : ROTATION;
+      if (hintEl) {
+        hintEl.textContent = isMobile ? "Auto-cycling cards \u00B7 Tap any card to inspect" : "Hover or tap cards to spread & inspect";
+      }
+      resetCards();
+      if (isMobile && isDeckVisible) {
+        startAutoCycle();
+      } else {
+        stopAutoCycle();
+      }
+    });
+
     cards.forEach(function (card, idx) {
       card.addEventListener("mouseenter", function () {
-        hoverCard(idx);
+        if (!isMobile) {
+          hoverCard(idx);
+        }
       });
 
       card.addEventListener("focus", function () {
@@ -686,20 +740,25 @@ Full-Stack Engineering & Shipping (2025–2026)
 
       card.addEventListener("click", function (e) {
         e.stopPropagation();
-        if (card.classList.contains("is-active")) {
-          resetCards();
-        } else {
-          hoverCard(idx);
+        hoverCard(idx);
+        if (isMobile) {
+          pauseAndResumeAutoCycle(6000);
         }
       });
+
+      card.addEventListener("touchstart", function () {
+        pauseAndResumeAutoCycle(6000);
+      }, { passive: true });
     });
 
     stage.addEventListener("mouseleave", function () {
-      resetCards();
+      if (!isMobile) {
+        resetCards();
+      }
     });
 
     document.addEventListener("click", function (e) {
-      if (!stage.contains(e.target)) {
+      if (!stage.contains(e.target) && !isMobile) {
         resetCards();
       }
     });
@@ -708,18 +767,37 @@ Full-Stack Engineering & Shipping (2025–2026)
     var hasAnimated = false;
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting && !hasAnimated) {
-          hasAnimated = true;
-          cards.forEach(function (card, i) {
-            var base = getBaseTransform(i);
-            card.style.opacity = "0";
-            card.style.transform = "translate(" + base.tx.toFixed(1) + "px, 50px) rotate(" + (base.r * 1.4).toFixed(1) + "deg) scale(0.2)";
-            
-            setTimeout(function () {
-              card.style.opacity = "1";
-              applyCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
-            }, (ANIMATION_DELAY * 1000) + (i * ANIMATION_STAGGER * 1000));
-          });
+        if (entry.isIntersecting) {
+          isDeckVisible = true;
+          if (!hasAnimated) {
+            hasAnimated = true;
+            cards.forEach(function (card, i) {
+              var base = getBaseTransform(i);
+              card.style.opacity = "0";
+              card.style.transform = "translate(" + base.tx.toFixed(1) + "px, 50px) rotate(" + (base.r * 1.4).toFixed(1) + "deg) scale(0.2)";
+              
+              setTimeout(function () {
+                card.style.opacity = "1";
+                applyCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
+
+                if (i === numCards - 1) {
+                  setTimeout(function () {
+                    if (isMobile) {
+                      hoverCard(0);
+                      startAutoCycle();
+                    }
+                  }, 500);
+                }
+              }, (ANIMATION_DELAY * 1000) + (i * ANIMATION_STAGGER * 1000));
+            });
+          } else {
+            if (isMobile) {
+              startAutoCycle();
+            }
+          }
+        } else {
+          isDeckVisible = false;
+          stopAutoCycle();
         }
       });
     }, { threshold: 0.12 });
