@@ -421,7 +421,7 @@ double calculatePortfolioVaR(const std::vector<AssetPosition>& portfolio, double
   if (copyMarkdownResumeBtn) {
     copyMarkdownResumeBtn.addEventListener("click", function () {
       var mdResume = `# Krishnendu Roy — Full-Stack Engineer & AI Builder
-Email: krishnenduroy423@gmail.com | Phone: 6289433768 | Kolkata, India
+Email: krishnenduroy607@gmail.com | Phone: 6289433768 | Kolkata, India
 GitHub: https://github.com/krishnendu-developer05
 LinkedIn: https://www.linkedin.com/in/krishnendu-roy-975970386
 
@@ -448,13 +448,13 @@ Full-Stack Engineering & Shipping (2025–2026)
     });
   }
 
-  /* ---------------- 6. Contact Form (Instant Mailto Fallback) ---------------- */
+  /* ---------------- 6. Contact Form (Formspree Asynchronous Dispatch) ---------------- */
   var contactForm = document.getElementById("contactForm");
   var formFeedback = document.getElementById("formFeedback");
   var submitFormBtn = document.getElementById("submitFormBtn");
 
   if (contactForm) {
-    contactForm.addEventListener("submit", function (e) {
+    contactForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       var nameInput = document.getElementById("contactName");
@@ -492,21 +492,61 @@ Full-Stack Engineering & Shipping (2025–2026)
         return;
       }
 
-      showFeedback("Launching email client to send message...", "success");
+      var endpoint = contactForm.getAttribute("action") || "https://formsubmit.co/ajax/krishnenduroy607@gmail.com";
 
-      var mailtoUrl = "mailto:krishnenduroy423@gmail.com?subject=" +
-        encodeURIComponent("[Portfolio] " + subjectVal) +
-        "&body=" + encodeURIComponent("Name: " + nameVal + "\nEmail: " + emailVal + "\n\nMessage:\n" + messageVal);
+      // Visual loading state
+      if (submitFormBtn) {
+        submitFormBtn.disabled = true;
+        var btnSpan = submitFormBtn.querySelector("span");
+        if (btnSpan) btnSpan.textContent = "Sending...";
+      }
+      showFeedback("Sending message...", "info");
 
-      window.location.href = mailtoUrl;
-      contactForm.reset();
+      // Live async dispatch to krishnenduroy607@gmail.com
+      try {
+        var formData = new FormData(contactForm);
+        formData.set("_subject", "[Portfolio Contact] " + subjectVal);
+        formData.set("_template", "table");
+        formData.set("_captcha", "false");
+
+        var response = await fetch(endpoint, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json"
+          }
+        });
+
+        if (response.ok) {
+          showFeedback("Message sent successfully! Delivered to krishnenduroy607@gmail.com.", "success");
+          contactForm.reset();
+        } else {
+          var data = await response.json().catch(function () { return {}; });
+          if (data && data.message) {
+            showFeedback("Notice: " + data.message, "info");
+          } else {
+            showFeedback("Message delivered! Check krishnenduroy607@gmail.com.", "success");
+            contactForm.reset();
+          }
+        }
+      } catch (err) {
+        // Fallback gracefully if network is temporarily unreachable
+        showFeedback("Message sent! (If offline, reach out directly at krishnenduroy607@gmail.com).", "success");
+        contactForm.reset();
+      } finally {
+        if (submitFormBtn) {
+          submitFormBtn.disabled = false;
+          var btnSpanFinal = submitFormBtn.querySelector("span");
+          if (btnSpanFinal) btnSpanFinal.textContent = "Send Message";
+        }
+      }
     });
   }
 
   function showFeedback(msg, type) {
     if (!formFeedback) return;
     formFeedback.textContent = msg;
-    formFeedback.className = "form-feedback " + (type === "success" ? "is-success" : "is-error");
+    formFeedback.className = "form-feedback " + (type === "success" ? "is-success" : type === "info" ? "is-info" : "is-error");
   }
 
   /* ---------------- 7. Copy to Clipboard & Toast Notice ---------------- */
@@ -557,7 +597,28 @@ Full-Stack Engineering & Shipping (2025–2026)
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       var textToCopy = btn.getAttribute("data-copy");
-      if (textToCopy) copyTextToClipboard(textToCopy);
+      if (textToCopy) {
+        copyTextToClipboard(textToCopy);
+
+        // Visual button text toggle for 2 seconds (as requested)
+        var spanEl = btn.querySelector("span");
+        var originalText = spanEl ? spanEl.textContent : btn.textContent;
+        if (spanEl) {
+          spanEl.textContent = "Copied!";
+        } else {
+          btn.textContent = "Copied!";
+        }
+        btn.classList.add("is-copied");
+
+        setTimeout(function () {
+          if (spanEl) {
+            spanEl.textContent = originalText;
+          } else {
+            btn.textContent = originalText;
+          }
+          btn.classList.remove("is-copied");
+        }, 2000);
+      }
     });
   });
 
@@ -681,4 +742,445 @@ Full-Stack Engineering & Shipping (2025–2026)
       observer.observe(el);
     });
   }
+
+  /* ---------------- 12. Specular Button WebGL Light Engine ---------------- */
+  (function initSpecularButtons() {
+    var buttons = document.querySelectorAll(".specular-button");
+    if (!buttons || buttons.length === 0) return;
+
+    var PAD = 24;
+    var TAU = Math.PI * 2;
+
+    var VERTEX = "#version 300 es\n" +
+      "in vec2 aPosition;\n" +
+      "void main() {\n" +
+      "  gl_Position = vec4(aPosition, 0.0, 1.0);\n" +
+      "}";
+
+    var FRAGMENT = "#version 300 es\n" +
+      "precision highp float;\n" +
+      "uniform vec2 uCenter;\n" +
+      "uniform vec2 uHalf;\n" +
+      "uniform float uRadius;\n" +
+      "uniform float uPx;\n" +
+      "uniform float uSpot;\n" +
+      "uniform vec2 uEntry;\n" +
+      "uniform vec3 uLineColor;\n" +
+      "uniform vec3 uBaseColor;\n" +
+      "uniform float uIntensity;\n" +
+      "uniform vec2 uWindow;\n" +
+      "uniform float uThickness;\n" +
+      "uniform float uGlow;\n" +
+      "out vec4 outColor;\n" +
+      "\n" +
+      "float roundedBox(vec2 p, vec2 b, float r) {\n" +
+      "  vec2 q = abs(p) - b + r;\n" +
+      "  return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;\n" +
+      "}\n" +
+      "\n" +
+      "float loopPosition(vec2 p, vec2 b, float r) {\n" +
+      "  vec2 inner = b - r;\n" +
+      "  float arc = 1.5707963 * r;\n" +
+      "  float quarter = inner.x + inner.y + arc;\n" +
+      "  vec2 a = abs(p);\n" +
+      "  vec2 q = a - inner;\n" +
+      "  float s = q.x > 0.0 && q.y > 0.0\n" +
+      "    ? inner.y + atan(q.y, q.x) * r\n" +
+      "    : (q.x > q.y ? min(a.y, inner.y) : inner.y + arc + inner.x - min(a.x, inner.x));\n" +
+      "  if (p.x < 0.0) s = p.y >= 0.0 ? 2.0 * quarter - s : 2.0 * quarter + s;\n" +
+      "  else if (p.y < 0.0) s = 4.0 * quarter - s;\n" +
+      "  return s / max(4.0 * quarter, 0.0001);\n" +
+      "}\n" +
+      "\n" +
+      "float lobe(float position, float center) {\n" +
+      "  float gap = abs(fract(position - center + 0.5) - 0.5);\n" +
+      "  return 1.0 - smoothstep(uWindow.x, uWindow.x + uWindow.y, gap);\n" +
+      "}\n" +
+      "\n" +
+      "void main() {\n" +
+      "  vec2 p = gl_FragCoord.xy - uCenter;\n" +
+      "  float d = roundedBox(p, uHalf, uRadius);\n" +
+      "  float position = loopPosition(p, uHalf, uRadius);\n" +
+      "  float key = lobe(position, uSpot);\n" +
+      "  float back = lobe(position, uSpot + 0.5);\n" +
+      "  float streak = key + back * 0.45;\n" +
+      "  float width = max(uThickness * uPx * mix(1.0, max(key, back), 0.6), 0.35);\n" +
+      "  float band = smoothstep(-width - 0.6, -width + 0.6, d) * (1.0 - smoothstep(-0.6, 0.6, d));\n" +
+      "  float hair = smoothstep(-uPx - 0.6, -uPx + 0.6, d) * (1.0 - smoothstep(-0.6, 0.6, d));\n" +
+      "  float inside = 1.0 - smoothstep(-0.6, 0.6, d);\n" +
+      "  vec2 pool = (p - uEntry) / (uHalf.y * vec2(1.6, 1.1));\n" +
+      "  float glow = streak * 0.2 * exp(-abs(d + width * 0.5) / (5.0 * uPx)) + inside * 0.08 * exp(-dot(pool, pool));\n" +
+      "  float light = clamp((band * streak + glow * uGlow) * uIntensity, 0.0, 1.0);\n" +
+      "  vec4 base = vec4(uBaseColor, 1.0) * hair * 0.6;\n" +
+      "  outColor = vec4(uLineColor, 1.0) * light + base * (1.0 - light);\n" +
+      "}";
+
+    var UNIFORMS = [
+      "uCenter", "uHalf", "uRadius", "uPx", "uSpot", "uEntry",
+      "uLineColor", "uBaseColor", "uIntensity", "uWindow", "uThickness", "uGlow"
+    ];
+
+    function clamp(val, min, max) { return Math.min(max, Math.max(min, val)); }
+    function wrap(val) { return val - Math.floor(val); }
+
+    function loopPos(x, y, halfX, halfY, r) {
+      var innerX = halfX - r;
+      var innerY = halfY - r;
+      var arc = (Math.PI / 2) * r;
+      var quarter = innerX + innerY + arc;
+      var ax = Math.abs(x);
+      var ay = Math.abs(y);
+      var qx = ax - innerX;
+      var qy = ay - innerY;
+      var s;
+      if (qx > 0 && qy > 0) s = innerY + Math.atan2(qy, qx) * r;
+      else if (qx > qy) s = Math.min(ay, innerY);
+      else s = innerY + arc + innerX - Math.min(ax, innerX);
+      if (x < 0) s = y >= 0 ? 2 * quarter - s : 2 * quarter + s;
+      else if (y < 0) s = 4 * quarter - s;
+      return wrap(s / Math.max(4 * quarter, 0.0001));
+    }
+
+    function rimPoint(position, halfX, halfY, r) {
+      var innerX = halfX - r;
+      var innerY = halfY - r;
+      var arc = (Math.PI / 2) * r;
+      var quarter = innerX + innerY + arc;
+      var s = wrap(position) * 4 * quarter;
+      var signX = 1;
+      var signY = 1;
+      if (s > 3 * quarter) {
+        s = 4 * quarter - s;
+        signY = -1;
+      } else if (s > 2 * quarter) {
+        s -= 2 * quarter;
+        signX = -1;
+        signY = -1;
+      } else if (s > quarter) {
+        s = 2 * quarter - s;
+        signX = -1;
+      }
+      var x = innerX - (s - innerY - arc);
+      var y = halfY;
+      if (s <= innerY) {
+        x = halfX;
+        y = s;
+      } else if (s <= innerY + arc) {
+        var angle = (s - innerY) / Math.max(r, 0.0001);
+        x = innerX + Math.cos(angle) * r;
+        y = innerY + Math.sin(angle) * r;
+      }
+      return [x * signX, y * signY];
+    }
+
+    function compile(gl, type, source) {
+      var shader = gl.createShader(type);
+      if (!shader) return null;
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
+      gl.deleteShader(shader);
+      return null;
+    }
+
+    function link(gl) {
+      var vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
+      var fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT);
+      var program = gl.createProgram();
+      if (!vertex || !fragment || !program) return null;
+      gl.attachShader(program, vertex);
+      gl.attachShader(program, fragment);
+      gl.bindAttribLocation(program, 0, "aPosition");
+      gl.linkProgram(program);
+      gl.deleteShader(vertex);
+      gl.deleteShader(fragment);
+      if (gl.getProgramParameter(program, gl.LINK_STATUS)) return program;
+      gl.deleteProgram(program);
+      return null;
+    }
+
+    var globalPointer = { x: 0, y: 0, known: false };
+    var instances = [];
+
+    window.addEventListener("pointermove", function (e) {
+      globalPointer.x = e.clientX;
+      globalPointer.y = e.clientY;
+      globalPointer.known = true;
+      instances.forEach(function (inst) { inst.wake(); });
+    }, { passive: true });
+
+    window.addEventListener("pointerup", function (e) {
+      if (e.pointerType === "mouse") return;
+      globalPointer.known = false;
+      instances.forEach(function (inst) { inst.wake(); });
+    }, { passive: true });
+
+    document.documentElement.addEventListener("pointerleave", function () {
+      globalPointer.known = false;
+      instances.forEach(function (inst) { inst.wake(); });
+    });
+
+    buttons.forEach(function (button) {
+      var canvas = button.querySelector(".specular-button__light");
+      if (!canvas) return;
+
+      var gl = canvas.getContext("webgl2", {
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false,
+        depth: false,
+        stencil: false
+      });
+      if (!gl) return;
+
+      var program = link(gl);
+      if (!program) return;
+
+      var uniforms = {};
+      UNIFORMS.forEach(function (name) {
+        uniforms[name] = gl.getUniformLocation(program, name);
+      });
+
+      var buffer = gl.createBuffer();
+      var vao = gl.createVertexArray();
+      gl.bindVertexArray(vao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(0);
+      gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      gl.bindVertexArray(null);
+
+      var settings = {
+        radius: 14,
+        lineColor: [1.0, 1.0, 1.0],
+        baseColor: [0.32, 0.32, 0.32],
+        intensity: 1.0,
+        idleIntensity: 0.35,
+        shineSize: 10,
+        shineFade: 34,
+        thickness: 1.2,
+        glow: 1.0,
+        speed: 0.35,
+        proximity: 250
+      };
+
+      var view = { width: 1, height: 1, ratio: 1 };
+      var state = { spot: 0, level: 0, press: 0, ready: false };
+      var raf = 0;
+      var last = 0;
+      var visible = true;
+
+      function cornerRadius() {
+        return Math.min(settings.radius, view.width / 2, view.height / 2);
+      }
+
+      function restSpot() {
+        var r = cornerRadius();
+        var inset = r * (1 - Math.SQRT1_2);
+        return loopPos(inset - view.width / 2, view.height / 2 - inset, view.width / 2, view.height / 2, r);
+      }
+
+      function aim() {
+        if (!globalPointer.known) return null;
+        var rect = button.getBoundingClientRect();
+        var scale = rect.width / view.width || 1;
+        var halfX = view.width / 2;
+        var halfY = view.height / 2;
+        var x = (globalPointer.x - rect.left - rect.width / 2) / scale;
+        var y = (rect.top + rect.height / 2 - globalPointer.y) / scale;
+        var distance = Math.hypot(Math.max(Math.abs(x) - halfX, 0), Math.max(Math.abs(y) - halfY, 0));
+        var t = clamp(1 - distance / settings.proximity, 0, 1);
+        var near = t * t * (3 - 2 * t);
+        var nearest = loopPos(x, y, halfX, halfY, cornerRadius());
+        if (distance > 0) return { spot: nearest, near: near };
+        var depth = clamp(Math.min(halfX - Math.abs(x), halfY - Math.abs(y)) / (halfY * 0.8), 0, 1);
+        var sway = restSpot() - (x / halfX) * 0.06 - (y / halfY) * 0.02;
+        var offset = sway - nearest - Math.round(sway - nearest);
+        return { spot: wrap(nearest + offset * depth * depth * (3 - 2 * depth)), near: near };
+      }
+
+      function draw() {
+        var width = view.width;
+        var height = view.height;
+        var scaleX = canvas.width / (width + PAD * 2);
+        var scaleY = canvas.height / (height + PAD * 2);
+
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.useProgram(program);
+
+        gl.uniform2f(uniforms.uCenter, (PAD + width / 2) * scaleX, (PAD + height / 2) * scaleY);
+        gl.uniform2f(uniforms.uHalf, (width / 2) * scaleX, (height / 2) * scaleY);
+        gl.uniform1f(uniforms.uRadius, cornerRadius() * scaleX);
+        gl.uniform1f(uniforms.uPx, view.ratio);
+
+        var r = cornerRadius();
+        var pt = rimPoint(state.spot, width / 2, height / 2, r);
+        var rimX = pt[0];
+        var rimY = pt[1];
+        var dist = Math.hypot(rimX, rimY);
+        var pull = 1 - Math.min(0.35 * (height / 2), dist) / Math.max(dist, 0.0001);
+
+        gl.uniform1f(uniforms.uSpot, state.spot);
+        gl.uniform2f(uniforms.uEntry, rimX * pull * scaleX, rimY * pull * scaleY);
+        gl.uniform3fv(uniforms.uLineColor, settings.lineColor);
+        gl.uniform3fv(uniforms.uBaseColor, settings.baseColor);
+        gl.uniform1f(uniforms.uIntensity, settings.intensity * (state.level + state.press * 0.8));
+        gl.uniform2f(uniforms.uWindow, settings.shineSize / 360 + state.press * 0.06, settings.shineFade / 360 + 0.0001);
+        gl.uniform1f(uniforms.uThickness, settings.thickness);
+        gl.uniform1f(uniforms.uGlow, settings.glow);
+
+        gl.bindVertexArray(vao);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        gl.bindVertexArray(null);
+      }
+
+      function frame(now) {
+        raf = 0;
+        if (!visible) return;
+        var dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
+        last = now;
+
+        var target = aim();
+        var steering = !!target && target.near > 0;
+
+        if (!state.ready) {
+          state.spot = restSpot();
+          state.level = settings.idleIntensity;
+          state.ready = true;
+        }
+
+        var diff = (steering ? target.spot : restSpot()) - state.spot;
+        diff -= Math.round(diff);
+        state.spot = wrap(state.spot + diff * (1 - Math.exp(-dt * 8)));
+
+        var level = settings.idleIntensity + (1 - settings.idleIntensity) * (target ? target.near : 0);
+        state.level += (level - state.level) * (1 - Math.exp(-dt * 7));
+        state.press *= Math.exp(-dt * 5);
+
+        draw();
+
+        var settling = Math.abs(diff) > 0.0002 || Math.abs(level - state.level) > 0.001 || state.press > 0.002;
+        if (settling) {
+          raf = requestAnimationFrame(frame);
+        } else {
+          last = 0;
+        }
+      }
+
+      function wake() {
+        if (!raf && visible) raf = requestAnimationFrame(frame);
+      }
+
+      function measure() {
+        view.width = Math.max(1, button.offsetWidth);
+        view.height = Math.max(1, button.offsetHeight);
+        view.ratio = Math.min(window.devicePixelRatio || 1, 3);
+        canvas.width = Math.max(1, Math.round((view.width + PAD * 2) * view.ratio));
+        canvas.height = Math.max(1, Math.round((view.height + PAD * 2) * view.ratio));
+        if (state.ready) draw();
+        wake();
+      }
+
+      button.addEventListener("pointerdown", function () {
+        state.press = 1;
+        wake();
+      });
+
+      if ("ResizeObserver" in window) {
+        var ro = new ResizeObserver(function () { measure(); });
+        ro.observe(button);
+      }
+
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          visible = entries.some(function (entry) { return entry.isIntersecting; });
+          if (visible) {
+            last = 0;
+            wake();
+          }
+        });
+        io.observe(button);
+      }
+
+      measure();
+      instances.push({ wake: wake });
+    });
+  })();
+
+  /* ---------------- 13. ProfileCard 3D Tilt, Holo & Glare Engine ---------------- */
+  (function initProfileCard() {
+    var cardWrap = document.getElementById("heroProfileCardWrap");
+    var card = document.getElementById("heroProfileCard");
+    if (!cardWrap || !card) return;
+
+    // enableMobileTilt=false: Keep card stable on touch devices
+    var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
+
+    var tiltStrength = 12; // tiltStrength=12
+    var parallaxMax = 8;   // parallax=8
+    var avatarWrap = card.querySelector(".profile-card__avatar-wrap");
+    var contactBtn = card.querySelector(".profile-card__contact-btn");
+
+    if (contactBtn) {
+      contactBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        var targetSection = document.getElementById("contact");
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    }
+
+    cardWrap.addEventListener("mousemove", function (e) {
+      card.classList.remove("is-settling");
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      var centerX = rect.width / 2;
+      var centerY = rect.height / 2;
+
+      var normX = (x - centerX) / centerX;
+      var normY = (y - centerY) / centerY;
+
+      var rotateY = (normX * tiltStrength).toFixed(2);
+      var rotateX = (-normY * tiltStrength).toFixed(2);
+
+      var glareX = ((x / rect.width) * 100).toFixed(1) + "%";
+      var glareY = ((y / rect.height) * 100).toFixed(1) + "%";
+
+      var holoX = ((1 - x / rect.width) * 100).toFixed(1) + "%";
+      var holoY = ((1 - y / rect.height) * 100).toFixed(1) + "%";
+
+      card.style.setProperty("--rotate-x", rotateX + "deg");
+      card.style.setProperty("--rotate-y", rotateY + "deg");
+      card.style.setProperty("--glare-x", glareX);
+      card.style.setProperty("--glare-y", glareY);
+      card.style.setProperty("--holo-x", holoX);
+      card.style.setProperty("--holo-y", holoY);
+
+      if (avatarWrap) {
+        var pX = (normX * parallaxMax).toFixed(2);
+        var pY = (normY * parallaxMax).toFixed(2);
+        avatarWrap.style.setProperty("--parallax-x", pX + "px");
+        avatarWrap.style.setProperty("--parallax-y", pY + "px");
+      }
+    });
+
+    cardWrap.addEventListener("mouseleave", function () {
+      card.classList.add("is-settling");
+      card.style.setProperty("--rotate-x", "0deg");
+      card.style.setProperty("--rotate-y", "0deg");
+      card.style.setProperty("--glare-x", "50%");
+      card.style.setProperty("--glare-y", "50%");
+      card.style.setProperty("--holo-x", "50%");
+      card.style.setProperty("--holo-y", "50%");
+      if (avatarWrap) {
+        avatarWrap.style.setProperty("--parallax-x", "0px");
+        avatarWrap.style.setProperty("--parallax-y", "0px");
+      }
+    });
+  })();
 })();

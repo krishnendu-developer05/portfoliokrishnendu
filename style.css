@@ -541,34 +541,129 @@ a {
   color: var(--accent-primary);
 }
 
-/* Hero Profile Card */
+/* ---------------- 3D Holographic ProfileCard (React-Bits / 21st.dev Theme) ---------------- */
 .hero-visual {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.hero-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+.profile-card-wrap {
+  width: 100%;
+  max-width: 380px;
+  perspective: 1000px;
+}
+
+.profile-card {
+  --pc-radius: 16px;
+  --glare-x: 50%;
+  --glare-y: 50%;
+  --holo-x: 50%;
+  --holo-y: 50%;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  background: #0A1020;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--pc-radius);
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  gap: 0.95rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateZ(0);
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
-.builder-badge-header {
+.profile-card.is-settling {
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Holographic Foil Layer (holo=0.8) */
+.profile-card__holo {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 128, 0.2) 0%,
+    rgba(0, 217, 139, 0.28) 25%,
+    rgba(0, 180, 255, 0.25) 50%,
+    rgba(255, 215, 0, 0.22) 75%,
+    rgba(255, 0, 128, 0.2) 100%
+  );
+  background-size: 250% 250%;
+  background-position: var(--holo-x) var(--holo-y);
+  opacity: 0;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 0.35s ease;
+}
+
+.profile-card-wrap:hover .profile-card__holo {
+  opacity: 0.8;
+}
+
+/* Specular Glare Reflection Layer (glare=0.5) */
+.profile-card__glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle 280px at var(--glare-x) var(--glare-y),
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.12) 35%,
+    transparent 70%
+  );
+  opacity: 0;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 4;
+  transition: opacity 0.3s ease;
+}
+
+.profile-card-wrap:hover .profile-card__glare {
+  opacity: 0.5;
+}
+
+/* Card Header */
+.profile-card__header {
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 0.65rem;
 }
 
-.builder-id {
+.profile-card__handle {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.profile-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: rgba(0, 217, 139, 0.08);
+  border: 1px solid rgba(0, 217, 139, 0.3);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-pill);
 }
 
 .status-tag {
@@ -594,57 +689,98 @@ a {
   border: 1px solid rgba(0, 191, 165, 0.35);
 }
 
-.hero-photo-wrap {
+/* Avatar Wrap with Parallax Depth (parallax=8) */
+.profile-card__avatar-wrap {
+  position: relative;
+  z-index: 2;
   width: 100%;
-  aspect-ratio: 4 / 4.6;
+  aspect-ratio: 4 / 4.4;
   max-height: 340px;
-  background: var(--bg-secondary);
+  background: #060912;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   overflow: hidden;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 15px);
+  transition: transform 0.15s ease-out;
 }
 
-.hero-photo-wrap img {
+.profile-card__avatar-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(rgba(0, 217, 139, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.profile-card__avatar-img {
+  position: relative;
+  z-index: 2;
   width: auto;
   max-width: 90%;
   height: 96%;
   object-fit: contain;
   object-position: bottom center;
   display: block;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
 }
 
-.hero-card-meta {
+/* Card Footer (Clean User Info + Contact CTA, NO shipped/live stats) */
+.profile-card__footer {
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
 }
 
-.hero-card-title {
-  font-size: 1.05rem;
+.profile-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.profile-card__name {
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
-.hero-card-subtitle {
+.profile-card__title {
   font-size: 0.78rem;
   color: var(--text-muted);
 }
 
-.hero-card-metrics-pill {
-  display: flex;
+.profile-card__contact-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--accent-primary);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  padding: 0.25rem 0.55rem;
-  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #05070D;
+  background: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.profile-card__contact-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 217, 139, 0.4);
+  background: #10f49f;
 }
 
 /* ---------------- Project Accordion Cards (Dropdown Concept) ---------------- */
@@ -791,30 +927,72 @@ a {
   letter-spacing: 0.02em;
 }
 
-.btn-acc-live {
+/* ---------------- Specular Button System (WebGL Shader Light Effect) ---------------- */
+.specular-button {
+  --sb-radius: 14px;
+  --sb-tint: #ffffff;
+  --sb-tint-opacity: 0.04;
+  --sb-blur: 0px;
+  --sb-text-color: #f5f5f5;
+
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0;
+  border: 0;
+  border-radius: var(--sb-radius);
   font-family: var(--font-mono);
   font-size: 0.74rem;
   font-weight: 600;
-  color: var(--accent-primary);
-  background: rgba(0, 217, 139, 0.08);
-  border: 1px solid rgba(0, 217, 139, 0.35);
-  border-radius: var(--radius-sm);
-  padding: 0.32rem 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--sb-text-color);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(var(--sb-blur));
+  backdrop-filter: blur(var(--sb-blur));
+  cursor: pointer;
+  outline: none;
   text-decoration: none;
   white-space: nowrap;
-  transition: all var(--transition-fast);
-  margin-left: auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.btn-acc-live:hover {
-  background: var(--accent-primary);
-  color: #05070D;
-  border-color: var(--accent-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 217, 139, 0.28);
+.specular-button:active {
+  transform: scale(0.97);
+}
+
+.specular-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 3px;
+}
+
+.specular-button__light {
+  position: absolute;
+  inset: -24px;
+  z-index: 1;
+  display: block;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  pointer-events: none;
+}
+
+.specular-button__label {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* Custom Live Prototype Specular Button */
+.btn-acc-live {
+  margin-left: auto;
+  padding: 0.4rem 0.85rem;
 }
 
 .btn-acc-live .live-dot {
@@ -823,17 +1001,23 @@ a {
   border-radius: 50%;
   background: var(--accent-primary);
   box-shadow: 0 0 6px var(--accent-primary);
-  transition: background var(--transition-fast);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
 .btn-acc-live:hover .live-dot {
-  background: #05070D;
-  box-shadow: none;
+  transform: scale(1.2);
 }
 
 .btn-acc-live .live-arrow {
-  font-size: 0.85rem;
+  color: var(--accent-primary);
+  font-size: 0.82rem;
   line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.btn-acc-live:hover .live-arrow {
+  transform: translate(1px, -1px);
 }
 
 /* Dropdown Body */
@@ -921,59 +1105,6 @@ a {
 
 .acc-actions .btn-minimal {
   width: 100%;
-}
-
-/* More Builds Box */
-.more-builds-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1.5rem;
-}
-
-.more-builds-title {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 1.25rem;
-}
-
-.more-builds-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-}
-
-.compact-repo-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.compact-repo-name {
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--accent-primary);
-}
-
-.compact-repo-desc {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-.compact-repo-links {
-  display: flex;
-  gap: 0.75rem;
 }
 
 /* ---------------- PR Experiences & Journey Section (Inspired by Reference) ---------------- */
@@ -1528,11 +1659,25 @@ a {
   border: 1px solid var(--border-emerald);
 }
 
+.form-feedback.is-info {
+  display: block;
+  background: rgba(0, 217, 139, 0.05);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
 .form-feedback.is-error {
   display: block;
   background: rgba(239, 68, 68, 0.1);
   color: #EF4444;
   border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-minimal.is-copied,
+.channel-action-btn.is-copied {
+  background: var(--accent-primary) !important;
+  color: #05070D !important;
+  border-color: var(--accent-primary) !important;
 }
 
 /* ---------------- Footer (Matching Reference Design) ---------------- */
@@ -2071,15 +2216,16 @@ a {
     padding: 0.15rem 0.45rem;
   }
 
-  .hero-card {
+  .profile-card {
     padding: 1rem;
+    max-width: 100%;
   }
 
-  .hero-photo-wrap {
+  .profile-card__avatar-wrap {
     aspect-ratio: 4 / 3.6;
     max-height: 260px;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
   }
 
   /* Compact Project Cards */

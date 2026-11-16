@@ -207,29 +207,44 @@
 
           </div>
 
-          <!-- Hero Profile Card -->
+          <!-- Hero 3D Holographic ProfileCard (React-Bits Theme) -->
           <div class="hero-visual">
-            <div class="hero-card">
-              <div class="builder-badge-header">
-                <span class="builder-id">[ BUILDER // KOLKATA ]</span>
-                <span class="status-tag status-live">ACTIVE</span>
-              </div>
+            <div class="profile-card-wrap" id="heroProfileCardWrap">
+              <div class="profile-card" id="heroProfileCard">
+                <!-- Holographic Foil Sheen Layer (holo=0.8) -->
+                <div class="profile-card__holo" aria-hidden="true"></div>
+                
+                <!-- Interactive Glare Reflection Layer (glare=0.5) -->
+                <div class="profile-card__glare" aria-hidden="true"></div>
 
-              <div class="hero-photo-wrap">
-                <picture>
-                  <source srcset="assets/krishnendu-builder-cutout.webp" type="image/webp" />
-                  <img src="assets/krishnendu-builder-cutout.png" alt="Krishnendu Roy — Full-Stack Engineer and AI Builder in Kolkata" width="407" height="612" fetchpriority="high" />
-                </picture>
-              </div>
-
-              <div class="hero-card-meta">
-                <div>
-                  <div class="hero-card-title">Krishnendu Roy</div>
-                  <div class="hero-card-subtitle">Full-Stack &amp; AI Builder · Kolkata, IN</div>
+                <!-- Card Header: Handle & Status -->
+                <div class="profile-card__header">
+                  <span class="profile-card__handle">@krishnendu-developer05</span>
+                  <div class="profile-card__status">
+                    <span class="status-pulse-dot" aria-hidden="true"></span>
+                    <span>Online</span>
+                  </div>
                 </div>
-                <div class="hero-card-metrics-pill">
-                  <span>7 SHIPPED</span>
-                  <span>3 LIVE</span>
+
+                <!-- Avatar Visual with Parallax Depth (parallax=8) -->
+                <div class="profile-card__avatar-wrap">
+                  <div class="profile-card__avatar-bg" aria-hidden="true"></div>
+                  <picture>
+                    <source srcset="assets/krishnendu-builder-cutout.webp" type="image/webp" />
+                    <img src="assets/krishnendu-builder-cutout.png" alt="Krishnendu Roy — Full-Stack Engineer and AI Builder in Kolkata" width="407" height="612" fetchpriority="high" class="profile-card__avatar-img" />
+                  </picture>
+                </div>
+
+                <!-- User Info & Contact Action (Clean, No Fake/Shipped Statistics) -->
+                <div class="profile-card__footer">
+                  <div class="profile-card__info">
+                    <div class="profile-card__name">Krishnendu Roy</div>
+                    <div class="profile-card__title">Full-Stack &amp; AI Builder</div>
+                  </div>
+                  <a class="profile-card__contact-btn" href="#contact">
+                    <span>Contact</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -283,10 +298,13 @@
                   <span class="acc-mini-chip">C++ Dispatch</span>
                 </div>
                 <div class="project-acc-header-actions">
-                  <a class="btn-acc-live" href="https://rapidcare-4gzf.onrender.com/choose_User/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    <span class="live-dot" aria-hidden="true"></span>
-                    <span>Live Prototype</span>
-                    <span class="live-arrow" aria-hidden="true">↗</span>
+                  <a class="btn-acc-live specular-button" href="https://rapidcare-4gzf.onrender.com/choose_User/" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    <canvas class="specular-button__light" aria-hidden="true"></canvas>
+                    <span class="specular-button__label">
+                      <span class="live-dot" aria-hidden="true"></span>
+                      <span>Live Prototype</span>
+                      <span class="live-arrow" aria-hidden="true">↗</span>
+                    </span>
                   </a>
                 </div>
               </div>
@@ -354,10 +372,13 @@
                   <span class="acc-mini-chip">C++ Kernels</span>
                 </div>
                 <div class="project-acc-header-actions">
-                  <a class="btn-acc-live" href="https://muleshield-sooty.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    <span class="live-dot" aria-hidden="true"></span>
-                    <span>Live Prototype</span>
-                    <span class="live-arrow" aria-hidden="true">↗</span>
+                  <a class="btn-acc-live specular-button" href="https://muleshield-sooty.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    <canvas class="specular-button__light" aria-hidden="true"></canvas>
+                    <span class="specular-button__label">
+                      <span class="live-dot" aria-hidden="true"></span>
+                      <span>Live Prototype</span>
+                      <span class="live-arrow" aria-hidden="true">↗</span>
+                    </span>
                   </a>
                 </div>
               </div>
@@ -425,10 +446,13 @@
                   <span class="acc-mini-chip">C++ Search Trie</span>
                 </div>
                 <div class="project-acc-header-actions">
-                  <a class="btn-acc-live" href="https://pujopurohit.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    <span class="live-dot" aria-hidden="true"></span>
-                    <span>Live Prototype</span>
-                    <span class="live-arrow" aria-hidden="true">↗</span>
+                  <a class="btn-acc-live specular-button" href="https://pujopurohit.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    <canvas class="specular-button__light" aria-hidden="true"></canvas>
+                    <span class="specular-button__label">
+                      <span class="live-dot" aria-hidden="true"></span>
+                      <span>Live Prototype</span>
+                      <span class="live-arrow" aria-hidden="true">↗</span>
+                    </span>
                   </a>
                 </div>
               </div>
@@ -496,10 +520,13 @@
                   <span class="acc-mini-chip">Market APIs</span>
                 </div>
                 <div class="project-acc-header-actions">
-                  <a class="btn-acc-live" href="https://github.com/krishnendu-developer05/stockriskagent" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    <span class="live-dot" aria-hidden="true"></span>
-                    <span>Live Prototype</span>
-                    <span class="live-arrow" aria-hidden="true">↗</span>
+                  <a class="btn-acc-live specular-button" href="https://github.com/krishnendu-developer05/stockriskagent" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    <canvas class="specular-button__light" aria-hidden="true"></canvas>
+                    <span class="specular-button__label">
+                      <span class="live-dot" aria-hidden="true"></span>
+                      <span>Live Prototype</span>
+                      <span class="live-arrow" aria-hidden="true">↗</span>
+                    </span>
                   </a>
                 </div>
               </div>
@@ -542,38 +569,6 @@
             </div>
           </article>
 
-        </div>
-
-        <!-- Additional Verified Repositories -->
-        <div class="more-builds-box">
-          <div class="more-builds-title">Additional Verified Engineering Repositories</div>
-          <div class="more-builds-grid">
-            <div class="compact-repo-card">
-              <div class="compact-repo-name">BuildWithAI</div>
-              <p class="compact-repo-desc">Collaborative developer showcase and learning ecosystem built with Next.js and React.</p>
-              <div class="compact-repo-links">
-                <a class="footer-link" href="https://buildwithai-seven-sage.vercel.app" target="_blank" rel="noopener">Live App ↗</a>
-                <a class="footer-link" href="https://github.com/krishnendu-developer05/buildwithai" target="_blank" rel="noopener">Code ↗</a>
-              </div>
-            </div>
-
-            <div class="compact-repo-card">
-              <div class="compact-repo-name">kolkata-travel-website</div>
-              <p class="compact-repo-desc">Interactive cultural guide highlighting Kolkata heritage architecture, culinary landmarks, and river ghats.</p>
-              <div class="compact-repo-links">
-                <a class="footer-link" href="https://github.com/krishnendu-developer05/kolkata-travel-website" target="_blank" rel="noopener">GitHub ↗</a>
-              </div>
-            </div>
-
-            <div class="compact-repo-card">
-              <div class="compact-repo-name">sos-webdev-12 &amp; pok-pok</div>
-              <p class="compact-repo-desc">Frontend experimentation sandboxes exploring responsive layouts, micro-interactions, and modular CSS.</p>
-              <div class="compact-repo-links">
-                <a class="footer-link" href="https://github.com/krishnendu-developer05/sos-webdev-12" target="_blank" rel="noopener">sos-webdev ↗</a>
-                <a class="footer-link" href="https://github.com/krishnendu-developer05/pok-pok-website" target="_blank" rel="noopener">pok-pok ↗</a>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -809,9 +804,9 @@
             <div class="channel-card">
               <div class="channel-info">
                 <span class="channel-label">EMAIL DIRECT</span>
-                <a class="channel-val" href="mailto:krishnenduroy423@gmail.com">krishnenduroy423@gmail.com</a>
+                <a class="channel-val" href="mailto:krishnenduroy607@gmail.com">krishnenduroy607@gmail.com</a>
               </div>
-              <button class="channel-action-btn" data-copy="krishnenduroy423@gmail.com">Copy</button>
+              <button class="channel-action-btn" data-copy="krishnenduroy607@gmail.com">Copy</button>
             </div>
 
             <div class="channel-card">
@@ -832,8 +827,12 @@
 
           </div>
 
-          <!-- Functional Contact Form -->
-          <form class="contact-form" id="contactForm" novalidate>
+          <!-- Functional Contact Form (Connected Directly to krishnenduroy607@gmail.com) -->
+          <form class="contact-form" id="contactForm" action="https://formsubmit.co/ajax/krishnenduroy607@gmail.com" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="New Portfolio Message for Krishnendu Roy" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="contactName">Your Name *</label>
@@ -861,7 +860,7 @@
               <button type="submit" class="btn-minimal btn-minimal-primary" id="submitFormBtn">
                 <span>Send Message</span>
               </button>
-              <button type="button" class="btn-minimal btn-minimal-secondary" data-copy="krishnenduroy423@gmail.com">
+              <button type="button" class="btn-minimal btn-minimal-secondary" id="copyEmailBtn" data-copy="krishnenduroy607@gmail.com">
                 <span>Copy Email</span>
               </button>
             </div>
@@ -891,7 +890,7 @@
             Phone: <a class="footer-link" href="tel:+916289433768">6289433768</a>
           </div>
           <div class="footer-col-text">
-            Email: <a class="footer-link" href="mailto:krishnenduroy423@gmail.com">krishnenduroy423@gmail.com</a>
+            Email: <a class="footer-link" href="mailto:krishnenduroy607@gmail.com">krishnenduroy607@gmail.com</a>
           </div>
           <div class="footer-col-text">Location: Kolkata, WB, India</div>
         </div>
@@ -1000,7 +999,7 @@
             <div class="resume-location">Kolkata, West Bengal, India</div>
           </div>
           <div class="resume-contact-links">
-            <div>Email: <a href="mailto:krishnenduroy423@gmail.com" class="text-emerald">krishnenduroy423@gmail.com</a></div>
+            <div>Email: <a href="mailto:krishnenduroy607@gmail.com" class="text-emerald">krishnenduroy607@gmail.com</a></div>
             <div>Phone: <a href="tel:+916289433768" class="text-emerald">+91 6289433768</a></div>
             <div>GitHub: <a href="https://github.com/krishnendu-developer05" target="_blank" rel="noopener" class="text-emerald">github.com/krishnendu-developer05</a></div>
             <div>LinkedIn: <a href="https://www.linkedin.com/in/krishnendu-roy-975970386" target="_blank" rel="noopener" class="text-emerald">linkedin.com/in/krishnendu-roy</a></div>
