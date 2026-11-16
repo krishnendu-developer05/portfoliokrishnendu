@@ -167,12 +167,79 @@
         <span>Contact</span>
         <span class="drawer-nav-num">05</span>
       </a>
+      <a href="#id-card" class="mobile-nav-link" id="mobileIdCardLink">
+        <span>ID Card</span>
+        <span class="drawer-nav-num">06</span>
+      </a>
     </nav>
     <div class="drawer-footer">
       <a class="btn-minimal btn-minimal-primary" href="#contact" style="width: 100%;">Let's Talk</a>
       <div class="drawer-socials">
         <a class="btn-minimal btn-minimal-ghost" href="https://github.com/krishnendu-developer05" target="_blank" rel="noopener">GitHub</a>
         <a class="btn-minimal btn-minimal-ghost" href="https://www.linkedin.com/in/krishnendu-roy-975970386" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ 3D PHYSICS LANYARD ID CARD MODAL ============ -->
+  <div class="lanyard-backdrop" id="lanyardBackdrop" aria-hidden="true"></div>
+  <aside class="lanyard-modal" id="lanyardModal" role="dialog" aria-modal="true" aria-label="Krishnendu Roy 3D ID Card" aria-hidden="true">
+    <div class="lanyard-modal-header">
+      <div class="lanyard-brand-badge">
+        <span class="status-pulse-dot" aria-hidden="true"></span>
+        <span class="lanyard-brand-text">KRISHNENDU ROY // PASS</span>
+      </div>
+      <div class="lanyard-modal-controls">
+        <button class="btn-minimal btn-minimal-ghost" id="lanyardFlipBtn" aria-label="Flip 3D badge">Flip Card</button>
+        <button class="btn-minimal btn-minimal-ghost" id="lanyardCloseBtn" aria-label="Close ID card modal">[ESC] Close</button>
+      </div>
+    </div>
+
+    <!-- Full Screen Stage Container -->
+    <div class="lanyard-stage-container" id="lanyardStageContainer">
+      <!-- Physics rope strap canvas -->
+      <canvas id="lanyardCanvas" class="lanyard-canvas"></canvas>
+
+      <!-- 3D Physics Suspended Badge Card Wrap -->
+      <div class="lanyard-card-wrap" id="lanyardCardWrap">
+        <!-- Metal Swivel Clasp -->
+        <div class="lanyard-clip" aria-hidden="true">
+          <div class="lanyard-clip-bracket"></div>
+          <div class="lanyard-clip-ring"></div>
+          <div class="lanyard-clip-clasp"></div>
+        </div>
+
+        <!-- 3D Flippable Card -->
+        <div class="lanyard-card" id="lanyardCard">
+          
+          <!-- Card Front Face: Image Fills Whole Card with Only Name and Email -->
+          <div class="lanyard-face lanyard-face-front lanyard-face-fullbleed">
+            <div class="lanyard-holo-sheen" aria-hidden="true"></div>
+
+            <div class="lanyard-full-photo">
+              <picture class="lanyard-card-picture">
+                <source srcset="assets/krishnendu-id-front.webp" type="image/webp" />
+                <img src="assets/krishnendu-id-front.png" alt="Krishnendu Roy" class="lanyard-bg-img" width="560" height="850" />
+              </picture>
+            </div>
+
+            <div class="lanyard-front-overlay">
+              <h2 class="lanyard-name-pure">Krishnendu Roy</h2>
+              <a href="mailto:krishnenduroy607@gmail.com" class="lanyard-email-pure">krishnenduroy607@gmail.com</a>
+            </div>
+          </div>
+
+          <!-- Card Back Face: Only the transparent QR code -->
+          <div class="lanyard-face lanyard-face-back lanyard-face-back-qr">
+            <div class="lanyard-qr-wrapper">
+              <picture>
+                <source srcset="assets/krishnendu-qr.webp" type="image/webp" />
+                <img src="assets/krishnendu-qr.png" alt="Krishnendu Roy QR Code" class="lanyard-qr-img" width="230" height="230" />
+              </picture>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </aside>
@@ -187,11 +254,6 @@
           <!-- Text Column -->
           <div class="hero-content">
             
-            <div class="hero-status-pill">
-              <span class="status-dot-static" aria-hidden="true"></span>
-              <span>Available for Software Engineering Roles</span>
-            </div>
-
             <h1 class="hero-headline">
               Engineering Intelligent Systems.<br />
               Building <span class="italic-serif text-emerald">Products</span> That Matter.
@@ -201,31 +263,6 @@
               Computer Science &amp; Engineering student (2025–2029) at <strong>Academy of Technology</strong>, Kolkata.
               Building responsive full-stack applications and agentic systems with spec-driven engineering.
             </p>
-
-            <div class="hero-cta-group">
-              <a class="btn-minimal btn-minimal-primary" href="#projects">
-                <span>Explore Projects</span>
-              </a>
-              <button class="btn-minimal btn-minimal-secondary" id="openResumeBtn">
-                <span>View Resume</span>
-              </button>
-              <a class="btn-minimal btn-minimal-ghost" href="https://github.com/krishnendu-developer05" target="_blank" rel="noopener">
-                <span>GitHub</span>
-              </a>
-              <a class="btn-minimal btn-minimal-ghost" href="#contact">
-                <span>Contact Me</span>
-              </a>
-            </div>
-
-            <div class="hero-stack-chips">
-              <span class="chip-label">STACK:</span>
-              <span class="tech-chip">TypeScript</span>
-              <span class="tech-chip">React / Next.js</span>
-              <span class="tech-chip">Node.js</span>
-              <span class="tech-chip">Python</span>
-              <span class="tech-chip">PostgreSQL</span>
-              <span class="tech-chip">C++</span>
-            </div>
 
           </div>
 
@@ -805,7 +842,6 @@
       <div class="container">
         
         <div class="section-head">
-          <div class="section-kicker">Get In Touch</div>
           <h2 class="section-title">Let's <span class="italic-serif text-emerald">Connect</span>.</h2>
           <p class="section-subtitle">
             Open for software engineering opportunities, internships, and high-impact project collaborations.

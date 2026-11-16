@@ -1202,7 +1202,8 @@ Full-Stack Engineering & Shipping (2025–2026)
         { label: "Projects", href: "#projects" },
         { label: "PR & Journey", href: "#pr" },
         { label: "Skills", href: "#skills" },
-        { label: "Contact", href: "#contact" }
+        { label: "Contact", href: "#contact" },
+        { label: "ID Card", href: "#id-card" }
       ],
       initialActiveIndex: 0,
       theme: "dark",
@@ -1389,7 +1390,15 @@ Full-Stack Engineering & Shipping (2025–2026)
     });
 
     linkEls.forEach(function (link, idx) {
-      link.addEventListener("click", function () {
+      link.addEventListener("click", function (e) {
+        if (link.getAttribute("href") === "#id-card") {
+          e.preventDefault();
+          setActive(idx, true);
+          if (window.openLanyardModal) {
+            window.openLanyardModal();
+          }
+          return;
+        }
         setActive(idx, true);
       });
     });
@@ -1409,5 +1418,355 @@ Full-Stack Engineering & Shipping (2025–2026)
         }
       }
     };
+  })();
+
+  /* ---------------- 15. 3D Physics Lanyard ID Card Engine (React-Bits Specification) ---------------- */
+  (function initLanyardEngine() {
+    var modalBackdrop = document.getElementById("lanyardBackdrop");
+    var modalDialog = document.getElementById("lanyardModal");
+    var closeBtn = document.getElementById("lanyardCloseBtn");
+    var flipBtn = document.getElementById("lanyardFlipBtn");
+    var mobileIdLink = document.getElementById("mobileIdCardLink");
+    var stageContainer = document.getElementById("lanyardStageContainer");
+    var canvas = document.getElementById("lanyardCanvas");
+    var cardWrap = document.getElementById("lanyardCardWrap");
+    var cardEl = document.getElementById("lanyardCard");
+
+    if (!modalDialog || !canvas || !cardWrap || !cardEl) return;
+
+    var ctx = canvas.getContext("2d");
+    var animFrameId = null;
+    var isOpen = false;
+
+    // Verlet Physics Rope Configuration
+    var numSegments = 6;
+    var ropeLength = 85;
+    var segLength = ropeLength / numSegments;
+    var gravity = 0.5;
+    var friction = 0.985;
+    var points = [];
+
+    var stageWidth = 600;
+    var stageHeight = 600;
+    var cardWidth = 270;
+    var cardHeight = 405;
+
+    var isDragging = false;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var pointerDownX = 0;
+    var pointerDownY = 0;
+    var currentPointerX = 0;
+    var currentPointerY = 0;
+
+    function resetPhysicsPoints() {
+      var rect = stageContainer.getBoundingClientRect();
+      stageWidth = rect.width || window.innerWidth || 600;
+      stageHeight = rect.height || window.innerHeight || 600;
+
+      // Adjust card dimensions for full-screen stage
+      if (window.innerWidth <= 480) {
+        cardWidth = 240;
+        cardHeight = 360;
+        ropeLength = 70;
+        segLength = ropeLength / numSegments;
+      } else {
+        cardWidth = 270;
+        cardHeight = 405;
+        ropeLength = 85;
+        segLength = ropeLength / numSegments;
+      }
+
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(stageWidth * dpr);
+      canvas.height = Math.round(stageHeight * dpr);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+
+      var anchorX = stageWidth / 2;
+      var anchorY = 0;
+
+      points = [];
+      for (var i = 0; i <= numSegments; i++) {
+        var y = anchorY + i * segLength;
+        points.push({
+          x: anchorX,
+          y: y,
+          oldX: anchorX,
+          oldY: y
+        });
+      }
+    }
+
+    function updatePhysics() {
+      var anchorX = stageWidth / 2;
+      var anchorY = 0;
+
+      // Verlet Integration
+      for (var i = 1; i <= numSegments; i++) {
+        var p = points[i];
+        if (i === numSegments && isDragging) {
+          p.x = currentPointerX;
+          p.y = currentPointerY;
+          p.oldX = currentPointerX;
+          p.oldY = currentPointerY;
+          continue;
+        }
+
+        var vx = (p.x - p.oldX) * friction;
+        var vy = (p.y - p.oldY) * friction + gravity;
+
+        p.oldX = p.x;
+        p.oldY = p.y;
+        p.x += vx;
+        p.y += vy;
+      }
+
+      // Relaxation constraints (preserve segment lengths)
+      var iterations = 6;
+      for (var iter = 0; iter < iterations; iter++) {
+        points[0].x = anchorX;
+        points[0].y = anchorY;
+
+        for (var j = 0; j < numSegments; j++) {
+          var p1 = points[j];
+          var p2 = points[j + 1];
+
+          var dx = p2.x - p1.x;
+          var dy = p2.y - p1.y;
+          var dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+          var diff = (segLength - dist) / dist;
+
+          var offsetX = dx * diff * 0.5;
+          var offsetY = dy * diff * 0.5;
+
+          if (j > 0) {
+            p1.x -= offsetX;
+            p1.y -= offsetY;
+          }
+          if (!(j + 1 === numSegments && isDragging)) {
+            p2.x += offsetX;
+            p2.y += offsetY;
+          }
+        }
+      }
+    }
+
+    function renderLanyardStrap() {
+      ctx.clearRect(0, 0, stageWidth, stageHeight);
+      if (points.length < 2) return;
+
+      var strapWidth = 26;
+      var halfWidth = strapWidth / 2;
+
+      // Draw Main Dark Carbon Woven Ribbon
+      ctx.beginPath();
+      for (var i = 0; i < points.length; i++) {
+        var pt = points[i];
+        var nextPt = points[Math.min(i + 1, points.length - 1)];
+        var dx = nextPt.x - pt.x;
+        var dy = nextPt.y - pt.y;
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var nx = -dy / len;
+        var ny = dx / len;
+
+        var xLeft = pt.x + nx * halfWidth;
+        var yLeft = pt.y + ny * halfWidth;
+
+        if (i === 0) {
+          ctx.moveTo(xLeft, yLeft);
+        } else {
+          ctx.lineTo(xLeft, yLeft);
+        }
+      }
+
+      for (var j = points.length - 1; j >= 0; j--) {
+        var pRev = points[j];
+        var pNextRev = points[Math.min(j + 1, points.length - 1)];
+        var rdx = pNextRev.x - pRev.x;
+        var rdy = pNextRev.y - pRev.y;
+        var rlen = Math.sqrt(rdx * rdx + rdy * rdy) || 1;
+        var rnx = -rdy / rlen;
+        var rny = rdx / rlen;
+
+        var xRight = pRev.x - rnx * halfWidth;
+        var yRight = pRev.y - rny * halfWidth;
+        ctx.lineTo(xRight, yRight);
+      }
+
+      ctx.closePath();
+      var grad = ctx.createLinearGradient(stageWidth / 2 - 20, 0, stageWidth / 2 + 20, 0);
+      grad.addColorStop(0, "#0e131d");
+      grad.addColorStop(0.5, "#17202f");
+      grad.addColorStop(1, "#0a0e16");
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Outer Neon Emerald Seams
+      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = "rgba(0, 255, 136, 0.55)";
+      ctx.stroke();
+
+      // Draw Exactly 2 Geometric "KR" Monograms on the Ribbon
+      var krPositions = [1, 3];
+      for (var k = 0; k < points.length - 1; k++) {
+        if (krPositions.indexOf(k) === -1) continue;
+
+        var curr = points[k];
+        var nxt = points[k + 1];
+        var midX = (curr.x + nxt.x) / 2;
+        var midY = (curr.y + nxt.y) / 2;
+        var angle = Math.atan2(nxt.y - curr.y, nxt.x - curr.x) - Math.PI / 2;
+
+        ctx.save();
+        ctx.translate(midX, midY);
+        ctx.rotate(angle);
+
+        // Stylized KR Geometric Badge Mark - EXACTLY 2 KR TEXTS
+        ctx.font = "bold 11px var(--font-mono), monospace";
+        ctx.fillStyle = "#00ff88";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(0, 255, 136, 0.75)";
+        ctx.shadowBlur = 5;
+        ctx.fillText("KR", 0, 0);
+
+        ctx.restore();
+      }
+    }
+
+    function updateCardTransform() {
+      var tip = points[numSegments];
+      var prev = points[numSegments - 1];
+
+      var dx = tip.x - prev.x;
+      var dy = tip.y - prev.y;
+      var angle = Math.atan2(dx, dy);
+
+      // Clamp tilt for natural badge physics
+      var maxAngle = 0.65;
+      angle = Math.max(-maxAngle, Math.min(maxAngle, angle));
+
+      var cardLeft = tip.x - cardWidth / 2;
+      var cardTop = tip.y + 4; // Position just below the clip
+
+      var rotZ = (-angle * 57.2958 * 0.75).toFixed(2);
+      var rotY = isDragging ? ((currentPointerX - tip.x) * 0.4).toFixed(2) : "0";
+
+      cardWrap.style.transform = "translate3d(" + cardLeft + "px, " + cardTop + "px, 0) rotateZ(" + rotZ + "deg) rotateY(" + rotY + "deg)";
+    }
+
+    function loop() {
+      if (!isOpen) return;
+      updatePhysics();
+      renderLanyardStrap();
+      updateCardTransform();
+      animFrameId = requestAnimationFrame(loop);
+    }
+
+    function openModal() {
+      isOpen = true;
+      modalBackdrop.classList.add("is-open");
+      modalDialog.classList.add("is-open");
+      resetPhysicsPoints();
+
+      // Give a gentle initial swing impulse
+      points[numSegments].x += (Math.random() - 0.5) * 40;
+      points[numSegments].oldX = points[numSegments].x - 12;
+
+      cancelAnimationFrame(animFrameId);
+      animFrameId = requestAnimationFrame(loop);
+    }
+
+    function closeModal() {
+      isOpen = false;
+      modalBackdrop.classList.remove("is-open");
+      modalDialog.classList.remove("is-open");
+      cardWrap.classList.remove("is-dragging");
+      cancelAnimationFrame(animFrameId);
+
+      // Re-sync GooeyNav pill to current active section
+      var activeLink = document.querySelector(".gooey-nav__link.active");
+      if (activeLink && window.gooeyNavInstance) {
+        var idx = parseInt(activeLink.getAttribute("data-index") || "0", 10);
+        window.gooeyNavInstance.setActive(idx, false);
+      }
+    }
+
+    // Pointer Dragging on Card
+    cardWrap.addEventListener("pointerdown", function (e) {
+      if (e.target.tagName.toLowerCase() === "a") return; // Allow clicking links
+      isDragging = true;
+      cardWrap.classList.add("is-dragging");
+      cardWrap.setPointerCapture(e.pointerId);
+
+      var rect = stageContainer.getBoundingClientRect();
+      pointerDownX = e.clientX;
+      pointerDownY = e.clientY;
+      currentPointerX = e.clientX - rect.left;
+      currentPointerY = e.clientY - rect.top - cardHeight * 0.15;
+    });
+
+    window.addEventListener("pointermove", function (e) {
+      if (!isDragging) return;
+      var rect = stageContainer.getBoundingClientRect();
+      currentPointerX = Math.max(cardWidth * 0.2, Math.min(stageWidth - cardWidth * 0.2, e.clientX - rect.left));
+      currentPointerY = Math.max(120, Math.min(stageHeight - cardHeight * 0.5, e.clientY - rect.top - cardHeight * 0.15));
+    });
+
+    function endDrag(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      cardWrap.classList.remove("is-dragging");
+
+      // Tap / Click Detection: If dragged < 8px, flip card
+      var distMoved = Math.hypot(e.clientX - pointerDownX, e.clientY - pointerDownY);
+      if (distMoved < 8) {
+        cardEl.classList.toggle("is-flipped");
+      }
+    }
+
+    cardWrap.addEventListener("pointerup", endDrag);
+    cardWrap.addEventListener("pointercancel", endDrag);
+
+    // Flip Button
+    if (flipBtn) {
+      flipBtn.addEventListener("click", function () {
+        cardEl.classList.toggle("is-flipped");
+      });
+    }
+
+    // Close Button & Backdrop
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    if (modalBackdrop) modalBackdrop.addEventListener("click", closeModal);
+
+    // Mobile Navigation Drawer Link
+    if (mobileIdLink) {
+      mobileIdLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        var mobileDrawer = document.getElementById("mobileDrawer");
+        var drawerBackdrop = document.getElementById("drawerBackdrop");
+        if (mobileDrawer) mobileDrawer.classList.remove("is-open");
+        if (drawerBackdrop) drawerBackdrop.classList.remove("is-open");
+        openModal();
+      });
+    }
+
+    // Escape Key Listener
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && isOpen) {
+        closeModal();
+      }
+    });
+
+    // Window Resize Handler
+    window.addEventListener("resize", function () {
+      if (isOpen) {
+        resetPhysicsPoints();
+      }
+    });
+
+    window.openLanyardModal = openModal;
+    window.closeLanyardModal = closeModal;
   })();
 })();

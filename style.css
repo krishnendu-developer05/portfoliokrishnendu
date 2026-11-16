@@ -2507,3 +2507,324 @@ a {
     font-size: 0.72rem;
   }
 }
+
+/* ==========================================================================
+   15. 3D PHYSICS LANYARD ID CARD COMPONENT (REACT-BITS SPECIFICATION)
+   ========================================================================== */
+.lanyard-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  background: rgba(3, 5, 9, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lanyard-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lanyard-modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1050;
+  background: rgba(4, 7, 12, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+  overflow: hidden;
+}
+
+.lanyard-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lanyard-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 14, 22, 0.75);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.lanyard-brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.lanyard-brand-text {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.lanyard-modal-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lanyard-stage-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  background: radial-gradient(circle at 50% 35%, rgba(0, 255, 136, 0.04) 0%, transparent 70%);
+}
+
+.lanyard-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 3D Physics Suspended Card Wrap */
+.lanyard-card-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 405px;
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  cursor: grab;
+  z-index: 10;
+  will-change: transform;
+  touch-action: none;
+}
+
+.lanyard-card-wrap.is-dragging {
+  cursor: grabbing;
+}
+
+/* Metallic Swivel Clasp */
+.lanyard-clip {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 26px;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.lanyard-clip-bracket {
+  width: 20px;
+  height: 6px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #d4d4d8 0%, #71717a 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.lanyard-clip-ring {
+  width: 10px;
+  height: 10px;
+  margin: 0 auto;
+  border: 2px solid #a1a1aa;
+  border-radius: 50%;
+  background: #3f3f46;
+}
+
+.lanyard-clip-clasp {
+  width: 14px;
+  height: 12px;
+  margin: -2px auto 0;
+  border-radius: 2px 2px 4px 4px;
+  background: linear-gradient(180deg, #e4e4e7 0%, #52525b 100%);
+  border: 1px solid #71717a;
+}
+
+/* 3D Flippable Card */
+.lanyard-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 18px;
+}
+
+.lanyard-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.lanyard-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #0e1422 0%, #060910 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.lanyard-face-front {
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+}
+
+.lanyard-holo-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(125deg, transparent 20%, rgba(0, 255, 136, 0.08) 40%, rgba(56, 189, 248, 0.1) 60%, transparent 80%);
+  mix-blend-mode: color-dodge;
+  opacity: 0.7;
+  z-index: 3;
+}
+
+/* Front Face: Full-Bleed Image Filling Card */
+.lanyard-face-fullbleed {
+  padding: 0;
+  background: #080c14;
+}
+
+.lanyard-full-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 18px;
+  z-index: 1;
+}
+
+.lanyard-card-picture,
+.lanyard-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Front Overlay: Pure Name and Email (No Box, No Role) */
+.lanyard-front-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2.5rem 1.25rem 1.25rem;
+  background: linear-gradient(to top, rgba(3, 6, 12, 0.96) 0%, rgba(3, 6, 12, 0.6) 50%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  z-index: 4;
+  text-align: left;
+  pointer-events: auto;
+}
+
+.lanyard-name-pure {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+}
+
+.lanyard-email-pure {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--accent-primary);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+  transition: color 200ms ease;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.lanyard-email-pure:hover {
+  color: #ffffff;
+}
+
+/* Card Back Face: Only the transparent QR code */
+.lanyard-face-back-qr {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  background: linear-gradient(145deg, #0d121c 0%, #060910 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.lanyard-qr-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 210px;
+  height: 210px;
+}
+
+.lanyard-qr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.75));
+}
+
+@media (max-width: 480px) {
+  .lanyard-modal-header {
+    padding: 0.85rem 1rem;
+  }
+  .lanyard-card-wrap {
+    width: 240px;
+    height: 360px;
+  }
+  .lanyard-name-pure {
+    font-size: 1.15rem;
+  }
+  .lanyard-email-pure {
+    font-size: 0.7rem;
+  }
+  .lanyard-qr-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+}
