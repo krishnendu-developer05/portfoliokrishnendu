@@ -2257,16 +2257,166 @@ a {
     line-height: 1.24;
   }
 
-  .form-row {
-    grid-template-columns: 1fr;
+  /* Compact Project Cards on Mobile: Name + Live Prototype on single sleek row */
+  .project-accordion-card {
+    margin-bottom: 0.65rem;
+    border-radius: var(--radius-sm);
   }
 
   .project-acc-header {
-    padding: 1rem 1.15rem;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.8rem 1rem !important;
+    gap: 0.75rem !important;
+    min-height: 52px;
+  }
+
+  .project-acc-heading-row {
+    margin: 0 !important;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .project-acc-title {
+    font-size: 1.05rem !important;
+    font-weight: 700;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Only show details after clicking: hide brief, tags preview, and toggle on mobile header */
+  .project-acc-brief,
+  .project-acc-tags-preview,
+  .project-acc-toggle {
+    display: none !important;
+  }
+
+  .project-acc-footer-row {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    flex-shrink: 0;
+  }
+
+  .project-acc-header-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-acc-live {
+    font-size: 0.72rem !important;
+    padding: 0.32rem 0.65rem !important;
+  }
+
+  /* When card is expanded on mobile, show details smoothly */
+  .project-accordion-card.is-expanded .project-acc-body {
+    border-top: 1px solid var(--border);
   }
 
   .project-acc-content {
-    padding: 1.15rem;
+    padding: 1rem !important;
+  }
+
+  .project-acc-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Ultra-Compact Single-Page "Get In Touch" on Mobile */
+  #contact {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  #contact .section-head {
+    margin-bottom: 0.65rem !important;
+  }
+
+  #contact .section-title {
+    font-size: 1.5rem !important;
+    line-height: 1.2;
+  }
+
+  #contact .section-subtitle {
+    display: none !important;
+  }
+
+  .contact-card {
+    padding: 0.75rem 0.85rem !important;
+    gap: 0.65rem !important;
+    border-radius: var(--radius-sm);
+  }
+
+  .contact-channels {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.45rem !important;
+  }
+
+  .channel-card {
+    padding: 0.45rem 0.65rem !important;
+    border-radius: var(--radius-sm);
+  }
+
+  .channel-label {
+    font-size: 0.58rem !important;
+    margin-bottom: 0.1rem;
+  }
+
+  .channel-val {
+    font-size: 0.74rem !important;
+  }
+
+  .channel-action-btn {
+    display: none !important;
+  }
+
+  .contact-form {
+    padding: 0.75rem !important;
+    gap: 0.45rem !important;
+    border-radius: var(--radius-sm);
+  }
+
+  .contact-form .form-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.45rem !important;
+  }
+
+  .contact-form .form-group {
+    gap: 0.18rem !important;
+  }
+
+  .contact-form .form-label {
+    font-size: 0.62rem !important;
+  }
+
+  .contact-form .form-input {
+    padding: 0.38rem 0.6rem !important;
+    font-size: 0.8rem !important;
+    height: auto !important;
+  }
+
+  .contact-form .form-textarea {
+    padding: 0.38rem 0.6rem !important;
+    font-size: 0.8rem !important;
+    height: 52px !important;
+    min-height: 52px !important;
+  }
+
+  #submitFormBtn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.45rem 0.85rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  #copyEmailBtn {
+    display: none !important;
   }
 
   .pr-panel-card {
@@ -2378,56 +2528,26 @@ a {
     margin-bottom: 0.25rem;
   }
 
-  /* Compact Project Cards */
+  /* Compact Project Cards on Mobile */
   .project-accordion-card {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.55rem;
   }
 
   .project-acc-header {
-    padding: 0.9rem 1rem;
-    gap: 0.45rem;
-  }
-
-  .project-acc-meta {
-    gap: 0.45rem;
-  }
-
-  .project-acc-sub {
-    font-size: 0.68rem;
+    padding: 0.7rem 0.85rem !important;
   }
 
   .project-acc-title {
-    font-size: 1.15rem;
-  }
-
-  .project-acc-toggle {
-    font-size: 0.72rem;
-    padding: 0.2rem 0.5rem;
-  }
-
-  .project-acc-brief {
-    font-size: 0.82rem;
-    line-height: 1.42;
-  }
-
-  .project-acc-footer-row {
-    margin-top: 0.55rem;
-    padding-top: 0.55rem;
-    gap: 0.5rem;
-  }
-
-  .acc-mini-chip {
-    font-size: 0.64rem;
-    padding: 0.1rem 0.4rem;
+    font-size: 0.98rem !important;
   }
 
   .btn-acc-live {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem !important;
+    padding: 0.28rem 0.55rem !important;
   }
 
   .project-acc-content {
-    padding: 0.95rem 1rem;
+    padding: 0.85rem !important;
   }
 
   /* Compact PR Experience Card */
@@ -2525,19 +2645,43 @@ a {
     padding: 0.22rem 0.5rem;
   }
 
-  /* Compact Contact */
-  .contact-panel-card {
-    padding: 1.15rem;
-    gap: 1rem;
+  /* Ultra-Compact Single-Page Contact on Small Phones */
+  .contact-card {
+    padding: 0.65rem !important;
+    gap: 0.5rem !important;
   }
 
-  .form-group {
-    gap: 0.35rem;
+  .contact-channels {
+    gap: 0.35rem !important;
   }
 
-  .form-input {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.84rem;
+  .channel-card {
+    padding: 0.35rem 0.5rem !important;
+  }
+
+  .channel-val {
+    font-size: 0.68rem !important;
+  }
+
+  .contact-form {
+    padding: 0.65rem !important;
+    gap: 0.35rem !important;
+  }
+
+  .contact-form .form-row {
+    gap: 0.35rem !important;
+  }
+
+  .contact-form .form-input {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.76rem !important;
+  }
+
+  .contact-form .form-textarea {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.76rem !important;
+    height: 46px !important;
+    min-height: 46px !important;
   }
 
   /* Compact 2-Column Footer saves ~180px */
