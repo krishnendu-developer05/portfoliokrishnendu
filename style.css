@@ -1018,41 +1018,43 @@ a {
 .pr-visual-col {
   display: flex;
   width: 100%;
+  height: 100%;
 }
 
 .pr-frame-card {
   position: relative;
   width: 100%;
+  height: 100%;
+  min-height: 580px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 0;
   overflow: hidden;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
 }
 
 /* Viewfinder Corner Crop Markers */
 .crop-corner {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border: 2px solid var(--accent-primary);
   pointer-events: none;
-  z-index: 5;
+  z-index: 8;
 }
-.crop-corner.tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
-.crop-corner.tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
-.crop-corner.bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
-.crop-corner.br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+.crop-corner.tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+.crop-corner.tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
+.crop-corner.bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
+.crop-corner.br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
 
 /* Circular Animated LinkedIn Connect Button */
 .linkedin-circle-btn {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 1.4rem;
+  right: 1.4rem;
   width: 76px;
   height: 76px;
   border-radius: 50%;
@@ -1064,7 +1066,7 @@ a {
   justify-content: center;
   gap: 2px;
   text-decoration: none;
-  z-index: 10;
+  z-index: 9;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
   transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
 }
@@ -1111,16 +1113,17 @@ a {
 }
 
 .pr-slideshow-wrap {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  aspect-ratio: 4 / 4.8;
-  min-height: 420px;
+  height: 100%;
   background: var(--bg-secondary);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
   overflow: hidden;
-  margin-top: 0.5rem;
-  margin-bottom: 0.85rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: inherit;
+  z-index: 1;
 }
 
 .pr-slide {
@@ -1131,10 +1134,9 @@ a {
   opacity: 0;
   z-index: 1;
   filter: grayscale(100%);
-  transform: scale(1.03);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 1.2s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.04);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
@@ -1151,40 +1153,57 @@ a {
   opacity: 1;
   z-index: 3;
   filter: grayscale(0%);
-  transform: scale(1);
   pointer-events: auto;
+  animation: prKenBurns 7s ease-out forwards;
 }
 
 .pr-slide.is-prev {
-  opacity: 0.9;
+  opacity: 0.85;
   z-index: 2;
-  filter: grayscale(100%) contrast(1.1);
-  transform: scale(1);
+  filter: grayscale(100%) contrast(1.15);
+  transform: scale(1.08);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes prKenBurns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.08);
+  }
 }
 
 .pr-slide-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(5, 7, 13, 0.75) 0%, rgba(5, 7, 13, 0.1) 45%, transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 7, 13, 0.35) 0%,
+    transparent 25%,
+    transparent 60%,
+    rgba(5, 7, 13, 0.92) 100%
+  );
   z-index: 4;
   pointer-events: none;
 }
 
 .pr-slide-dots {
   position: absolute;
-  bottom: 0.85rem;
-  right: 1rem;
+  bottom: 5.25rem;
+  right: 1.5rem;
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  z-index: 5;
+  z-index: 7;
 }
 
 .pr-dot {
   width: 8px;
   height: 8px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -1192,31 +1211,42 @@ a {
 }
 
 .pr-dot:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .pr-dot.is-active {
   background: var(--accent-primary);
-  width: 22px;
+  width: 24px;
+  box-shadow: 0 0 10px rgba(0, 217, 139, 0.5);
 }
 
 .pr-frame-meta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid var(--border);
-  padding-top: 0.85rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(5, 7, 13, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .pr-meta-name {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .pr-meta-sub {
   font-size: 0.78rem;
   color: var(--text-muted);
+  margin-top: 2px;
 }
 
 /* ---------------- Technical Skills Section ---------------- */
@@ -1778,6 +1808,11 @@ a {
     gap: 2rem;
   }
 
+  .pr-frame-card {
+    min-height: 540px;
+    height: 580px;
+  }
+
   .project-acc-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
@@ -1855,6 +1890,20 @@ a {
 
   .pr-panel-card {
     padding: 1.25rem;
+  }
+
+  .pr-frame-card {
+    min-height: 480px;
+    height: 520px;
+  }
+
+  .pr-slide-dots {
+    bottom: 4.8rem;
+    right: 1.25rem;
+  }
+
+  .pr-frame-meta {
+    padding: 1rem 1.2rem;
   }
 
   .linkedin-circle-btn {

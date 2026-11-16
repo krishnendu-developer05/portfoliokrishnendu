@@ -592,7 +592,7 @@ Full-Stack Engineering & Shipping (2025–2026)
 
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  /* ---------------- 10. PR Visual Slideshow ---------------- */
+  /* ---------------- 10. PR Visual Slideshow (Automatic Seamless Animation) ---------------- */
   var prSlides = document.querySelectorAll(".pr-slide");
   var prDots = document.querySelectorAll(".pr-dot");
   var prTimer = null;
@@ -608,6 +608,8 @@ Full-Stack Engineering & Shipping (2025–2026)
       slide.classList.remove("is-active");
       slide.classList.remove("is-prev");
       if (idx === currentPrIndex) {
+        // Force reflow to re-trigger Ken Burns animation cleanly
+        void slide.offsetWidth;
         slide.classList.add("is-active");
       } else if (idx === prevIdx) {
         slide.classList.add("is-prev");
@@ -628,11 +630,13 @@ Full-Stack Engineering & Shipping (2025–2026)
     if (prTimer) clearInterval(prTimer);
     prTimer = setInterval(function () {
       showPrSlide(currentPrIndex + 1);
-    }, 4000);
+    }, 3500);
   }
 
+  // Dot manual click: immediate jump & restart automatic cycle
   prDots.forEach(function (dot) {
-    dot.addEventListener("click", function () {
+    dot.addEventListener("click", function (e) {
+      e.stopPropagation();
       var idx = parseInt(dot.getAttribute("data-slide"), 10);
       if (!isNaN(idx)) {
         showPrSlide(idx);
@@ -641,15 +645,6 @@ Full-Stack Engineering & Shipping (2025–2026)
     });
   });
 
-  var prWrap = document.getElementById("prSlideshow");
-  if (prWrap) {
-    prWrap.addEventListener("mouseenter", function () {
-      if (prTimer) clearInterval(prTimer);
-    });
-    prWrap.addEventListener("mouseleave", function () {
-      startPrTimer();
-    });
-  }
-
+  // Always keep automatic animation active across mobile touch & desktop
   startPrTimer();
 })();
