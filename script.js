@@ -63,9 +63,13 @@
     }
 
     if (header) {
-      header.addEventListener("click", toggleAccordion);
+      header.addEventListener("click", function (e) {
+        if (e.target.closest("a, button:not(.project-acc-toggle)")) return;
+        toggleAccordion();
+      });
       header.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " ") {
+          if (e.target.closest("a, button:not(.project-acc-toggle)")) return;
           e.preventDefault();
           toggleAccordion();
         }
@@ -647,4 +651,34 @@ Full-Stack Engineering & Shipping (2025–2026)
 
   // Always keep automatic animation active across mobile touch & desktop
   startPrTimer();
+
+  /* ---------------- 11. Subtle Scroll Reveal Animations ---------------- */
+  if ("IntersectionObserver" in window) {
+    var targets = document.querySelectorAll(
+      ".section-head, .project-accordion-card, .pr-panel-card, .pr-frame-card, .skill-group-box, .contact-panel-card, .footer-col"
+    );
+
+    targets.forEach(function (el) {
+      el.classList.add("scroll-reveal");
+    });
+
+    var observer = new IntersectionObserver(
+      function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-revealed");
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "0px 0px -25px 0px"
+      }
+    );
+
+    targets.forEach(function (el) {
+      observer.observe(el);
+    });
+  }
 })();
