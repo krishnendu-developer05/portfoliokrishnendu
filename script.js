@@ -497,8 +497,9 @@ Full-Stack Engineering & Shipping (2025–2026)
       // Visual loading state
       if (submitFormBtn) {
         submitFormBtn.disabled = true;
-        var btnSpan = submitFormBtn.querySelector("span");
-        if (btnSpan) btnSpan.textContent = "Sending...";
+        submitFormBtn.classList.add("is-sending");
+        var btnTextEl = submitFormBtn.querySelector(".specular-text");
+        if (btnTextEl) btnTextEl.textContent = "Sending...";
       }
       showFeedback("Sending message...", "info");
 
@@ -536,8 +537,9 @@ Full-Stack Engineering & Shipping (2025–2026)
       } finally {
         if (submitFormBtn) {
           submitFormBtn.disabled = false;
-          var btnSpanFinal = submitFormBtn.querySelector("span");
-          if (btnSpanFinal) btnSpanFinal.textContent = "Send Message";
+          submitFormBtn.classList.remove("is-sending");
+          var btnTextElFinal = submitFormBtn.querySelector(".specular-text");
+          if (btnTextElFinal) btnTextElFinal.textContent = "Send Message";
         }
       }
     });
@@ -548,6 +550,61 @@ Full-Stack Engineering & Shipping (2025–2026)
     formFeedback.textContent = msg;
     formFeedback.className = "form-feedback " + (type === "success" ? "is-success" : type === "info" ? "is-info" : "is-error");
   }
+
+  /* ---------------- SpecularButton Interactive Engine (React Bits / Chungus UI) ---------------- */
+  function initSpecularButtons() {
+    var buttons = document.querySelectorAll(".specular-button");
+    if (!buttons.length) return;
+
+    var PROXIMITY = 250;
+    var IDLE_INTENSITY = 0.35;
+    var MAX_INTENSITY = 1.0;
+
+    buttons.forEach(function (btn) {
+      btn.style.setProperty("--specular-intensity", IDLE_INTENSITY.toString());
+      btn.style.setProperty("--specular-angle", "135deg");
+      btn.style.setProperty("--mouse-x", "50%");
+      btn.style.setProperty("--mouse-y", "50%");
+      btn.style.setProperty("--mouse-x-pct", "50%");
+      btn.style.setProperty("--mouse-y-pct", "50%");
+    });
+
+    window.addEventListener("pointermove", function (e) {
+      buttons.forEach(function (btn) {
+        var rect = btn.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        var dx = e.clientX - cx;
+        var dy = e.clientY - cy;
+        var dist = Math.hypot(dx, dy);
+
+        if (dist < PROXIMITY) {
+          var t = 1 - (dist / PROXIMITY);
+          var curve = Math.sin((t * Math.PI) / 2);
+          var intensity = IDLE_INTENSITY + (MAX_INTENSITY - IDLE_INTENSITY) * curve;
+          var angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+
+          var localX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+          var localY = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+          var pctX = ((localX / rect.width) * 100).toFixed(1) + "%";
+          var pctY = ((localY / rect.height) * 100).toFixed(1) + "%";
+
+          btn.style.setProperty("--specular-intensity", intensity.toFixed(3));
+          btn.style.setProperty("--specular-angle", angle.toFixed(1) + "deg");
+          btn.style.setProperty("--mouse-x", localX.toFixed(1) + "px");
+          btn.style.setProperty("--mouse-y", localY.toFixed(1) + "px");
+          btn.style.setProperty("--mouse-x-pct", pctX);
+          btn.style.setProperty("--mouse-y-pct", pctY);
+        } else {
+          btn.style.setProperty("--specular-intensity", IDLE_INTENSITY.toString());
+        }
+      });
+    }, { passive: true });
+  }
+
+  initSpecularButtons();
 
   /* ---------------- 7. Copy to Clipboard & Toast Notice ---------------- */
   var toastNotice = document.getElementById("toastNotice");

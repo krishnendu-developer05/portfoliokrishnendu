@@ -298,7 +298,7 @@
                   <div class="profile-card__avatar-bg" aria-hidden="true"></div>
                   <picture>
                     <source srcset="assets/krishnendu-builder-cutout.webp" type="image/webp" />
-                    <img src="assets/krishnendu-builder-cutout.png" alt="Krishnendu Roy — Full-Stack Engineer and AI Builder in Kolkata" width="407" height="612" fetchpriority="high" class="profile-card__avatar-img" />
+                    <img src="assets/krishnendu-builder-cutout.png" alt="Krishnendu Roy — Full-Stack Engineer and AI Builder in Kolkata" width="302" height="455" fetchpriority="high" class="profile-card__avatar-img" />
                   </picture>
                 </div>
 
@@ -886,12 +886,16 @@
 
             <div class="form-feedback" id="formFeedback"></div>
 
-            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-              <button type="submit" class="btn-minimal btn-minimal-primary" id="submitFormBtn">
-                <span>Send Message</span>
+            <div class="contact-submit-wrap">
+              <button type="submit" class="specular-button specular-button-lg" id="submitFormBtn" aria-label="Send Message to Krishnendu Roy">
+                <span class="specular-glow" aria-hidden="true"></span>
+                <span class="specular-content">
+                  <span class="specular-text">Send Message</span>
+                  <span class="specular-icon" aria-hidden="true">↗</span>
+                </span>
               </button>
-              <button type="button" class="btn-minimal btn-minimal-secondary" id="copyEmailBtn" data-copy="krishnenduroy607@gmail.com">
-                <span>Copy Email</span>
+              <button type="button" class="contact-copy-link" id="copyEmailBtn" data-copy="krishnenduroy607@gmail.com" aria-label="Copy direct email address" title="Click to copy email">
+                <span>krishnenduroy607@gmail.com</span>
               </button>
             </div>
           </form>
