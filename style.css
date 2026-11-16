@@ -2,9 +2,10 @@
    KRISHNENDU ROY — MASTER PORTFOLIO DESIGN SYSTEM
    - Visual Identity: Solid Dark Canvas #05070D · Emerald Accent #00D98B
    - Clean Editorial Typography: Plus Jakarta Sans + Instrument Serif + JetBrains Mono
-   - Compact Project Accordion Cards with Dropdowns (Minimal Space, High Readability)
+   - Compact Project Accordion Cards with Dropdowns
+   - PR Experiences & Journey Section (Inspired by Reference Design)
+   - Viewfinder Corner Markers + Minimal Animated Circular LinkedIn Connect Button
    - Multi-Column Footer Matching Reference Design
-   - Fully Responsive Across Mobile (360px) to Desktop (1920px)
    ============================================================ */
 
 :root {
@@ -901,52 +902,321 @@ a {
   gap: 0.75rem;
 }
 
-/* ---------------- Timeline Section (Education & Experience) ---------------- */
-.timeline-compact-grid {
+/* ---------------- PR Experiences & Journey Section (Inspired by Reference) ---------------- */
+.pr-showcase-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2.25rem;
+  align-items: stretch;
+}
+
+.pr-cards-col {
+  display: flex;
+  flex-direction: column;
   gap: 1.25rem;
 }
 
-.timeline-box {
+.pr-panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.pr-panel-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pr-panel-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.pr-panel-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.62;
+}
+
+.pr-roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.pr-role-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.pr-role-item:hover {
+  border-color: var(--border-hover);
+}
+
+.pr-role-num {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  background: var(--accent-dim);
+  border: 1px solid var(--border-emerald);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pr-role-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.pr-role-org {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pr-role-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  letter-spacing: 0.05em;
+}
+
+.pr-role-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Framed Portrait with Viewfinder Corners (Reference Design) */
+.pr-visual-col {
+  display: flex;
+  width: 100%;
+}
+
+.pr-frame-card {
+  position: relative;
+  width: 100%;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  transition: border-color var(--transition-fast);
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
 }
 
-.timeline-box:hover {
-  border-color: var(--border-hover);
+/* Viewfinder Corner Crop Markers */
+.crop-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--accent-primary);
+  pointer-events: none;
+  z-index: 5;
+}
+.crop-corner.tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.crop-corner.tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+.crop-corner.bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+.crop-corner.br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+/* Circular Animated LinkedIn Connect Button */
+.linkedin-circle-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(5, 7, 13, 0.92);
+  border: 1.5px solid var(--accent-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
 }
 
-.timeline-tag {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 700;
+.circle-btn-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px dashed var(--accent-primary);
+  animation: circle-spin 20s linear infinite;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes circle-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.circle-btn-icon {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 800;
   color: var(--accent-primary);
+  line-height: 1;
 }
 
-.timeline-role {
+.circle-btn-text {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.08em;
+}
+
+.linkedin-circle-btn:hover {
+  transform: scale(1.06);
+  background: var(--accent-primary);
+}
+
+.linkedin-circle-btn:hover .circle-btn-icon,
+.linkedin-circle-btn:hover .circle-btn-text {
+  color: #05070D;
+}
+
+.pr-slideshow-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.8;
+  min-height: 420px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-top: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.pr-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1;
+  filter: grayscale(100%);
+  transform: scale(1.03);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.pr-slide picture,
+.pr-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+
+.pr-slide.is-active {
+  opacity: 1;
+  z-index: 3;
+  filter: grayscale(0%);
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.pr-slide.is-prev {
+  opacity: 0.9;
+  z-index: 2;
+  filter: grayscale(100%) contrast(1.1);
+  transform: scale(1);
+}
+
+.pr-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5, 7, 13, 0.75) 0%, rgba(5, 7, 13, 0.1) 45%, transparent 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.pr-slide-dots {
+  position: absolute;
+  bottom: 0.85rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  z-index: 5;
+}
+
+.pr-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.pr-dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.pr-dot.is-active {
+  background: var(--accent-primary);
+  width: 22px;
+}
+
+.pr-frame-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding-top: 0.85rem;
+}
+
+.pr-meta-name {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.25;
 }
 
-.timeline-place {
-  font-size: 0.82rem;
+.pr-meta-sub {
+  font-size: 0.78rem;
   color: var(--text-muted);
-}
-
-.timeline-desc {
-  font-size: 0.86rem;
-  color: var(--text-secondary);
-  line-height: 1.55;
-  margin-top: 0.25rem;
 }
 
 /* ---------------- Technical Skills Section ---------------- */
@@ -1503,12 +1773,16 @@ a {
     max-width: 440px;
   }
 
+  .pr-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
   .project-acc-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
 
-  .timeline-compact-grid,
   .skills-compact-grid,
   .contact-channels {
     grid-template-columns: 1fr;
@@ -1577,5 +1851,16 @@ a {
 
   .project-acc-content {
     padding: 1.15rem;
+  }
+
+  .pr-panel-card {
+    padding: 1.25rem;
+  }
+
+  .linkedin-circle-btn {
+    width: 64px;
+    height: 64px;
+    top: 1rem;
+    right: 1rem;
   }
 }

@@ -591,4 +591,65 @@ Full-Stack Engineering & Shipping (2025–2026)
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ---------------- 10. PR Visual Slideshow ---------------- */
+  var prSlides = document.querySelectorAll(".pr-slide");
+  var prDots = document.querySelectorAll(".pr-dot");
+  var prTimer = null;
+  var currentPrIndex = 0;
+
+  function showPrSlide(nextIdx) {
+    if (!prSlides || prSlides.length === 0) return;
+    var total = prSlides.length;
+    var prevIdx = currentPrIndex;
+    currentPrIndex = (nextIdx + total) % total;
+
+    prSlides.forEach(function (slide, idx) {
+      slide.classList.remove("is-active");
+      slide.classList.remove("is-prev");
+      if (idx === currentPrIndex) {
+        slide.classList.add("is-active");
+      } else if (idx === prevIdx) {
+        slide.classList.add("is-prev");
+      }
+    });
+
+    prDots.forEach(function (dot, idx) {
+      if (idx === currentPrIndex) {
+        dot.classList.add("is-active");
+      } else {
+        dot.classList.remove("is-active");
+      }
+    });
+  }
+
+  function startPrTimer() {
+    if (!prSlides || prSlides.length <= 1) return;
+    if (prTimer) clearInterval(prTimer);
+    prTimer = setInterval(function () {
+      showPrSlide(currentPrIndex + 1);
+    }, 4000);
+  }
+
+  prDots.forEach(function (dot) {
+    dot.addEventListener("click", function () {
+      var idx = parseInt(dot.getAttribute("data-slide"), 10);
+      if (!isNaN(idx)) {
+        showPrSlide(idx);
+        startPrTimer();
+      }
+    });
+  });
+
+  var prWrap = document.getElementById("prSlideshow");
+  if (prWrap) {
+    prWrap.addEventListener("mouseenter", function () {
+      if (prTimer) clearInterval(prTimer);
+    });
+    prWrap.addEventListener("mouseleave", function () {
+      startPrTimer();
+    });
+  }
+
+  startPrTimer();
 })();
