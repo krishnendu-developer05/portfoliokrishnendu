@@ -640,50 +640,49 @@
               </p>
             </div>
 
-            <!-- PR Roles & Milestones Card -->
-            <div class="pr-panel-card">
+            <!-- PR Roles & Impact (AnimatedList Component Spec) -->
+            <div class="pr-panel-card animated-list-card" id="prRolesCard">
               <div class="pr-panel-kicker">ROLES &amp; IMPACT</div>
 
-              <div class="pr-roles-list">
+              <div class="animated-list theme-dark" data-animation="pop" id="prAnimatedList">
                 
-                <!-- Role 01 -->
-                <div class="pr-role-item">
-                  <div class="pr-role-num">01</div>
-                  <div class="pr-role-details">
-                    <div class="pr-role-org">IEI Students' Chapter of CSE — Academy of Technology</div>
-                    <div class="pr-role-badge">PR CO-LEAD &middot; PR ASSOCIATE</div>
-                    <p class="pr-role-desc">
-                      Leading public relations and collegiate outreach campaigns. Spearheaded departmental technical event coordination, student registration drives, and faculty-student communications.
-                    </p>
+                <!-- Item 01 -->
+                <div class="animated-list-item" data-index="0" tabindex="0" role="button" aria-label="IEI Students' Chapter of CSE — Academy of Technology">
+                  <div class="animated-list-row">
+                    <div class="animated-list-title">IEI Students' Chapter of CSE &mdash; AOT</div>
+                    <span class="animated-list-meta">PR Co-Lead</span>
                   </div>
+                  <div class="animated-list-desc">Collegiate outreach, departmental event coordination &amp; registration drives</div>
                 </div>
 
-                <!-- Role 02 -->
-                <div class="pr-role-item">
-                  <div class="pr-role-num">02</div>
-                  <div class="pr-role-details">
-                    <div class="pr-role-org">C0DE — Developers Community</div>
-                    <div class="pr-role-badge">PR AND OUTREACH</div>
-                    <p class="pr-role-desc">
-                      Driving developer community outreach, cross-campus engineering networking, hackathon promotional strategies, and external sponsor relationship management.
-                    </p>
+                <!-- Item 02 -->
+                <div class="animated-list-item" data-index="1" tabindex="0" role="button" aria-label="C0DE — Developers Community">
+                  <div class="animated-list-row">
+                    <div class="animated-list-title">C0DE &mdash; Developers Community</div>
+                    <span class="animated-list-meta">Outreach</span>
                   </div>
+                  <div class="animated-list-desc">Developer relations, cross-campus engineering networking &amp; sponsor diplomacy</div>
                 </div>
 
-                <!-- Role 03 -->
-                <div class="pr-role-item">
-                  <div class="pr-role-num">03</div>
-                  <div class="pr-role-details">
-                    <div class="pr-role-org">Algorand Blockchain Club | AOT</div>
-                    <div class="pr-role-badge">CORE MEMBER &amp; MANAGEMENT TEAM</div>
-                    <p class="pr-role-desc">
-                      Coordinating technical blockchain workshops, developer sessions, and collegiate community engagement initiatives across the university.
-                    </p>
+                <!-- Item 03 -->
+                <div class="animated-list-item" data-index="2" tabindex="0" role="button" aria-label="Algorand Blockchain Club | AOT">
+                  <div class="animated-list-row">
+                    <div class="animated-list-title">Algorand Blockchain Club | AOT</div>
+                    <span class="animated-list-meta">Core</span>
                   </div>
+                  <div class="animated-list-desc">Web3 workshops, student developer sessions &amp; community management</div>
+                </div>
+
+                <!-- Item 04 -->
+                <div class="animated-list-item" data-index="3" tabindex="0" role="button" aria-label="Collegiate Public Relations &amp; Campaigns">
+                  <div class="animated-list-row">
+                    <div class="animated-list-title">Collegiate PR &amp; Media Drives</div>
+                    <span class="animated-list-meta">Active</span>
+                  </div>
+                  <div class="animated-list-desc">Departmental campaigns, promotional outreach &amp; team alignment</div>
                 </div>
 
               </div>
-
             </div>
 
           </div>
@@ -760,49 +759,74 @@
           <h2 class="section-title">Verified Engineering <span class="italic-serif text-emerald">Stack</span>.</h2>
         </div>
 
-        <div class="skills-compact-grid">
-          <div class="skill-group-box">
-            <h3 class="skill-group-title">Programming Languages</h3>
-            <div class="skill-pills">
-              <span class="skill-pill">C</span>
-              <span class="skill-pill">C++ (C++20)</span>
-              <span class="skill-pill">JavaScript (ES6+)</span>
-              <span class="skill-pill">TypeScript</span>
-              <span class="skill-pill">Python</span>
+        <!-- Verified Engineering Stack (BounceCards Interactive Deck) -->
+        <div class="bounce-cards-wrap" id="bounceCardsDeck" aria-label="Interactive Engineering Stack Cards">
+          <div class="bounce-cards-stage">
+            
+            <!-- Card 01: Programming Languages -->
+            <div class="bounce-card" data-card-index="0" tabindex="0" role="region" aria-label="Programming Languages">
+              <div class="bounce-card-inner">
+                <div class="bounce-card-kicker">01 // LANGUAGES</div>
+                <h3 class="bounce-card-title">Programming Languages</h3>
+                <div class="bounce-card-pills">
+                  <span class="skill-pill">C</span>
+                  <span class="skill-pill">C++ (C++20)</span>
+                  <span class="skill-pill">JavaScript</span>
+                  <span class="skill-pill">TypeScript</span>
+                  <span class="skill-pill">Python</span>
+                </div>
+              </div>
             </div>
+
+            <!-- Card 02: Frontend Engineering -->
+            <div class="bounce-card" data-card-index="1" tabindex="0" role="region" aria-label="Frontend Engineering">
+              <div class="bounce-card-inner">
+                <div class="bounce-card-kicker">02 // FRONTEND</div>
+                <h3 class="bounce-card-title">Frontend Engineering</h3>
+                <div class="bounce-card-pills">
+                  <span class="skill-pill">React.js</span>
+                  <span class="skill-pill">Next.js (App Router)</span>
+                  <span class="skill-pill">HTML5</span>
+                  <span class="skill-pill">CSS3 &amp; Flex/Grid</span>
+                  <span class="skill-pill">Leaflet.js</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 03: Backend & Databases -->
+            <div class="bounce-card" data-card-index="2" tabindex="0" role="region" aria-label="Backend and Databases">
+              <div class="bounce-card-inner">
+                <div class="bounce-card-kicker">03 // BACKEND &amp; DB</div>
+                <h3 class="bounce-card-title">Backend &amp; Databases</h3>
+                <div class="bounce-card-pills">
+                  <span class="skill-pill">Node.js</span>
+                  <span class="skill-pill">Express.js</span>
+                  <span class="skill-pill">REST APIs</span>
+                  <span class="skill-pill">PostgreSQL</span>
+                  <span class="skill-pill">MongoDB</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 04: AI & Developer Tools -->
+            <div class="bounce-card" data-card-index="3" tabindex="0" role="region" aria-label="AI and Developer Tools">
+              <div class="bounce-card-inner">
+                <div class="bounce-card-kicker">04 // AI &amp; TOOLING</div>
+                <h3 class="bounce-card-title">AI &amp; Developer Tools</h3>
+                <div class="bounce-card-pills">
+                  <span class="skill-pill">Agentic Workflows</span>
+                  <span class="skill-pill">Prompt Engineering</span>
+                  <span class="skill-pill">Git &amp; GitHub</span>
+                  <span class="skill-pill">Docker</span>
+                  <span class="skill-pill">Vercel &amp; Render</span>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <div class="skill-group-box">
-            <h3 class="skill-group-title">Frontend Engineering</h3>
-            <div class="skill-pills">
-              <span class="skill-pill">React.js</span>
-              <span class="skill-pill">Next.js (App Router)</span>
-              <span class="skill-pill">Semantic HTML5</span>
-              <span class="skill-pill">CSS3 &amp; Flex/Grid</span>
-              <span class="skill-pill">Leaflet.js</span>
-            </div>
-          </div>
-
-          <div class="skill-group-box">
-            <h3 class="skill-group-title">Backend &amp; Databases</h3>
-            <div class="skill-pills">
-              <span class="skill-pill">Node.js</span>
-              <span class="skill-pill">Express.js</span>
-              <span class="skill-pill">REST APIs</span>
-              <span class="skill-pill">PostgreSQL</span>
-              <span class="skill-pill">MongoDB</span>
-            </div>
-          </div>
-
-          <div class="skill-group-box">
-            <h3 class="skill-group-title">AI &amp; Developer Tools</h3>
-            <div class="skill-pills">
-              <span class="skill-pill">Agentic Workflows</span>
-              <span class="skill-pill">Spec-Driven Prompting</span>
-              <span class="skill-pill">Git &amp; GitHub</span>
-              <span class="skill-pill">Docker</span>
-              <span class="skill-pill">Vercel &amp; Render</span>
-            </div>
+          <div class="bounce-cards-hint">
+            <span class="bounce-hint-text">Hover or tap cards to spread &amp; inspect</span>
           </div>
         </div>
 

@@ -606,6 +606,178 @@ Full-Stack Engineering & Shipping (2025–2026)
 
   initSpecularButtons();
 
+  /* ---------------- BounceCards Interactive Engine (React Bits Spec) ---------------- */
+  function initBounceCards() {
+    var stage = document.querySelector(".bounce-cards-stage");
+    if (!stage) return;
+
+    var cards = Array.from(stage.querySelectorAll(".bounce-card"));
+    var numCards = cards.length;
+    if (!numCards) return;
+
+    var ROTATION = 10;
+    var SPREAD = 85;
+    var PUSH_DISTANCE = 160;
+    var HOVER_SCALE = 1.06;
+    var ANIMATION_DELAY = 0.5;
+    var ANIMATION_STAGGER = 0.06;
+
+    var isMobile = window.innerWidth <= 640;
+    var spread = isMobile ? 42 : SPREAD;
+    var pushDist = isMobile ? 65 : PUSH_DISTANCE;
+    var rot = isMobile ? 7 : ROTATION;
+
+    window.addEventListener("resize", function () {
+      isMobile = window.innerWidth <= 640;
+      spread = isMobile ? 42 : SPREAD;
+      pushDist = isMobile ? 65 : PUSH_DISTANCE;
+      rot = isMobile ? 7 : ROTATION;
+      resetCards();
+    });
+
+    var center = (numCards - 1) / 2;
+
+    function getBaseTransform(i) {
+      var norm = i - center;
+      var tx = norm * spread;
+      var r = (norm / (center || 1)) * rot;
+      return { tx: tx, r: r, zIndex: i + 1 };
+    }
+
+    function applyCardTransform(card, tx, ty, r, scale, zIndex) {
+      card.style.transform = "translate(" + tx.toFixed(1) + "px, " + ty.toFixed(1) + "px) rotate(" + r.toFixed(1) + "deg) scale(" + scale + ")";
+      card.style.zIndex = zIndex.toString();
+    }
+
+    function resetCards() {
+      cards.forEach(function (card, i) {
+        card.classList.remove("is-active");
+        var base = getBaseTransform(i);
+        applyCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
+      });
+    }
+
+    function hoverCard(hoveredIndex) {
+      cards.forEach(function (card, i) {
+        var base = getBaseTransform(i);
+        if (i === hoveredIndex) {
+          card.classList.add("is-active");
+          applyCardTransform(card, base.tx * 0.35, -14, 0, HOVER_SCALE, 50);
+        } else if (i < hoveredIndex) {
+          card.classList.remove("is-active");
+          var push = pushDist * (1 - (hoveredIndex - i - 1) * 0.18);
+          applyCardTransform(card, base.tx - push, 0, base.r - 2.5, 0.95, base.zIndex);
+        } else {
+          card.classList.remove("is-active");
+          var push = pushDist * (1 - (i - hoveredIndex - 1) * 0.18);
+          applyCardTransform(card, base.tx + push, 0, base.r + 2.5, 0.95, base.zIndex);
+        }
+      });
+    }
+
+    cards.forEach(function (card, idx) {
+      card.addEventListener("mouseenter", function () {
+        hoverCard(idx);
+      });
+
+      card.addEventListener("focus", function () {
+        hoverCard(idx);
+      });
+
+      card.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (card.classList.contains("is-active")) {
+          resetCards();
+        } else {
+          hoverCard(idx);
+        }
+      });
+    });
+
+    stage.addEventListener("mouseleave", function () {
+      resetCards();
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!stage.contains(e.target)) {
+        resetCards();
+      }
+    });
+
+    // Mount / Scroll-in entrance animation
+    var hasAnimated = false;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !hasAnimated) {
+          hasAnimated = true;
+          cards.forEach(function (card, i) {
+            var base = getBaseTransform(i);
+            card.style.opacity = "0";
+            card.style.transform = "translate(" + base.tx.toFixed(1) + "px, 50px) rotate(" + (base.r * 1.4).toFixed(1) + "deg) scale(0.2)";
+            
+            setTimeout(function () {
+              card.style.opacity = "1";
+              applyCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
+            }, (ANIMATION_DELAY * 1000) + (i * ANIMATION_STAGGER * 1000));
+          });
+        }
+      });
+    }, { threshold: 0.12 });
+
+    observer.observe(stage);
+  }
+
+  initBounceCards();
+
+  /* ---------------- AnimatedList Component (React Bits Spec) ---------------- */
+  function initAnimatedList() {
+    var list = document.getElementById("prAnimatedList");
+    if (!list) return;
+
+    var items = Array.from(list.querySelectorAll(".animated-list-item"));
+    if (!items.length) return;
+
+    items.forEach(function (item, index) {
+      item.addEventListener("click", function () {
+        items.forEach(function (other) {
+          other.classList.remove("is-selected");
+        });
+        item.classList.add("is-selected");
+        var title = item.querySelector(".animated-list-title") ? item.querySelector(".animated-list-title").textContent.trim() : "";
+        var meta = item.querySelector(".animated-list-meta") ? item.querySelector(".animated-list-meta").textContent.trim() : "";
+        console.log("AnimatedList onItemSelect:", { index: index, title: title, meta: meta });
+      });
+
+      item.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+
+    var hasAnimated = false;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !hasAnimated) {
+          hasAnimated = true;
+          items.forEach(function (item, i) {
+            item.style.opacity = "0";
+            item.style.transform = "scale(0.82) translateY(18px)";
+            setTimeout(function () {
+              item.style.opacity = "1";
+              item.style.transform = "scale(1) translateY(0)";
+            }, 100 + (i * 80));
+          });
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(list);
+  }
+
+  initAnimatedList();
+
   /* ---------------- 7. Copy to Clipboard & Toast Notice ---------------- */
   var toastNotice = document.getElementById("toastNotice");
   var toastTimer = null;
