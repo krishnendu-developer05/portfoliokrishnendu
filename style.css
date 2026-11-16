@@ -2482,13 +2482,99 @@ a {
     display: none !important;
   }
 
+  /* Compact Animated PR Journey on Mobile (Only Designations + Smooth Pulse Animation) */
+  .pr-cards-col .pr-panel-card:first-child {
+    display: none !important;
+  }
+
+  .pr-cards-col {
+    gap: 0.75rem !important;
+  }
+
   .pr-panel-card {
-    padding: 1.25rem;
+    padding: 0.85rem 1rem !important;
+  }
+
+  .pr-panel-kicker {
+    font-size: 0.64rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .pr-roles-list {
+    gap: 0.55rem !important;
+  }
+
+  .pr-role-item {
+    padding: 0.65rem 0.85rem !important;
+    gap: 0.65rem !important;
+    border-radius: var(--radius-sm);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .pr-role-item:active {
+    transform: scale(0.99);
+  }
+
+  .pr-role-num {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .pr-role-org {
+    font-size: 0.84rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .pr-role-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    font-size: 0.66rem !important;
+    font-weight: 600 !important;
+    color: var(--accent-primary) !important;
+    background: rgba(0, 255, 136, 0.08) !important;
+    border: 1px solid rgba(0, 255, 136, 0.35) !important;
+    padding: 0.2rem 0.55rem !important;
+    border-radius: 9999px !important;
+    width: fit-content !important;
+    margin-top: 0.2rem !important;
+    animation: roleBadgePulse 3s ease-in-out infinite;
+  }
+
+  .pr-role-badge::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary);
+  }
+
+  .pr-role-desc {
+    display: none !important;
+  }
+
+  .pr-frame-card {
+    min-height: 350px !important;
+    height: 380px !important;
   }
 
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem 1.25rem;
+  }
+}
+
+@keyframes roleBadgePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(0, 255, 136, 0);
+    border-color: rgba(0, 255, 136, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.35);
+    border-color: rgba(0, 255, 136, 0.75);
   }
 }
 
@@ -2615,50 +2701,30 @@ a {
 
   /* Compact PR Experience Card */
   .pr-cards-col {
-    gap: 0.85rem;
-  }
-
-  .pr-panel-card {
-    padding: 1rem;
-    gap: 0.5rem;
-  }
-
-  .pr-panel-title {
-    font-size: 1.15rem;
-  }
-
-  .pr-panel-text {
-    font-size: 0.82rem;
-    line-height: 1.45;
-  }
-
-  .pr-role-item {
-    padding: 0.75rem 0.85rem;
     gap: 0.65rem;
   }
 
-  .pr-role-num {
-    width: 26px;
-    height: 26px;
-    font-size: 0.72rem;
+  .pr-panel-card {
+    padding: 0.75rem 0.85rem !important;
+  }
+
+  .pr-role-item {
+    padding: 0.55rem 0.75rem !important;
+    gap: 0.55rem !important;
   }
 
   .pr-role-org {
-    font-size: 0.86rem;
+    font-size: 0.8rem !important;
   }
 
   .pr-role-badge {
-    font-size: 0.68rem;
-  }
-
-  .pr-role-desc {
-    font-size: 0.76rem;
-    line-height: 1.4;
+    font-size: 0.62rem !important;
+    padding: 0.15rem 0.5rem !important;
   }
 
   .pr-frame-card {
-    min-height: 400px;
-    height: 420px;
+    min-height: 320px !important;
+    height: 340px !important;
   }
 
   .pr-slide-dots {
