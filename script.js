@@ -615,13 +615,15 @@ Full-Stack Engineering & Shipping (2025–2026)
     var numCards = cards.length;
     if (!numCards) return;
 
+    var dots = Array.from(document.querySelectorAll(".bounce-dot"));
+
     var ROTATION = 10;
     var SPREAD = 85;
     var PUSH_DISTANCE = 160;
     var HOVER_SCALE = 1.06;
     var ANIMATION_DELAY = 0.25;
     var ANIMATION_STAGGER = 0.04;
-    var CYCLE_INTERVAL_MS = 1600;
+    var CYCLE_INTERVAL_MS = 2200;
 
     var isMobile = window.innerWidth <= 768 || ("ontouchstart" in window);
     var center = (numCards - 1) / 2;
@@ -634,7 +636,7 @@ Full-Stack Engineering & Shipping (2025–2026)
 
     var hintEl = document.getElementById("bounceCardsHint");
     if (hintEl && isMobile) {
-      hintEl.textContent = "Auto-cycling cards \u00B7 Swipe or tap to inspect";
+      hintEl.textContent = "Swipe or tap cards to inspect";
     }
 
     /* --- Desktop Logic (Exact Original Formula, 0 Changes for Desktop) --- */
@@ -680,36 +682,47 @@ Full-Stack Engineering & Shipping (2025–2026)
       });
     }
 
-    /* --- Mobile Logic (Smooth 3D Centered Deck Showcase) --- */
+    /* --- Mobile Logic (Clean 18px Gaps, Full Card Legibility, Zero Text Cutoff) --- */
     function hoverCardMobile(activeIdx) {
       currentCycleIndex = activeIdx;
+
+      if (dots.length) {
+        dots.forEach(function (dot, dIdx) {
+          if (dIdx === activeIdx) {
+            dot.classList.add("is-active");
+          } else {
+            dot.classList.remove("is-active");
+          }
+        });
+      }
+
       cards.forEach(function (card, i) {
-        if (i === activeIdx) {
+        var diff = i - activeIdx;
+        if (diff === 0) {
           card.classList.add("is-active");
           card.style.opacity = "1";
-          // Front and center: fully elevated in Z-space so nothing can cover it
-          card.style.transform = "translate3d(0px, -18px, 60px) rotate(0deg) scale(1.05)";
-          card.style.zIndex = "100";
-        } else if (i < activeIdx) {
+          card.style.transform = "translate3d(0px, 0px, 0px) scale(1)";
+          card.style.zIndex = "10";
+          card.style.pointerEvents = "auto";
+        } else if (diff === 1 || (activeIdx === numCards - 1 && i === 0)) {
           card.classList.remove("is-active");
-          var dist = activeIdx - i;
-          var tx = -55 - (dist - 1) * 18;
-          var rot = -5 - (dist - 1) * 2.5;
-          var scale = Math.max(0.78, 0.88 - (dist - 1) * 0.05);
-          var opacity = Math.max(0.35, 0.62 - (dist - 1) * 0.12);
-          card.style.opacity = opacity.toFixed(2);
-          card.style.transform = "translate3d(" + tx.toFixed(1) + "px, 0px, " + (20 - dist * 5) + "px) rotate(" + rot.toFixed(1) + "deg) scale(" + scale.toFixed(2) + ")";
-          card.style.zIndex = (10 - dist).toString();
+          card.style.opacity = "0.45";
+          card.style.transform = "translate3d(calc(100% + 18px), 0px, 0px) scale(0.92)";
+          card.style.zIndex = "5";
+          card.style.pointerEvents = "auto";
+        } else if (diff === -1 || (activeIdx === 0 && i === numCards - 1)) {
+          card.classList.remove("is-active");
+          card.style.opacity = "0.45";
+          card.style.transform = "translate3d(calc(-100% - 18px), 0px, 0px) scale(0.92)";
+          card.style.zIndex = "5";
+          card.style.pointerEvents = "auto";
         } else {
           card.classList.remove("is-active");
-          var dist = i - activeIdx;
-          var tx = 55 + (dist - 1) * 18;
-          var rot = 5 + (dist - 1) * 2.5;
-          var scale = Math.max(0.78, 0.88 - (dist - 1) * 0.05);
-          var opacity = Math.max(0.35, 0.62 - (dist - 1) * 0.12);
-          card.style.opacity = opacity.toFixed(2);
-          card.style.transform = "translate3d(" + tx.toFixed(1) + "px, 0px, " + (20 - dist * 5) + "px) rotate(" + rot.toFixed(1) + "deg) scale(" + scale.toFixed(2) + ")";
-          card.style.zIndex = (10 - dist).toString();
+          card.style.opacity = "0";
+          var dir = diff > 0 ? "1" : "-1";
+          card.style.transform = "translate3d(calc(" + (dir * 200) + "% + 40px), 0px, 0px) scale(0.85)";
+          card.style.zIndex = "1";
+          card.style.pointerEvents = "none";
         }
       });
     }
@@ -754,14 +767,14 @@ Full-Stack Engineering & Shipping (2025–2026)
       if (resumeTimer) clearTimeout(resumeTimer);
       resumeTimer = setTimeout(function () {
         isInteracting = false;
-      }, delayMs || 5000);
+      }, delayMs || 4000);
     }
 
     /* --- Resize Handling --- */
     window.addEventListener("resize", function () {
       isMobile = window.innerWidth <= 768 || ("ontouchstart" in window);
       if (hintEl) {
-        hintEl.textContent = isMobile ? "Auto-cycling cards \u00B7 Swipe or tap to inspect" : "Hover or tap cards to spread & inspect";
+        hintEl.textContent = isMobile ? "Swipe or tap cards to inspect" : "Hover or tap cards to spread & inspect";
       }
       resetCards();
       if (isMobile && isDeckVisible) {
@@ -787,10 +800,20 @@ Full-Stack Engineering & Shipping (2025–2026)
         e.stopPropagation();
         hoverCard(idx);
         if (isMobile) {
-          pauseAndResumeAutoCycle(3500);
+          pauseAndResumeAutoCycle(4000);
         }
       });
     });
+
+    if (dots.length) {
+      dots.forEach(function (dot, dIdx) {
+        dot.addEventListener("click", function (e) {
+          e.stopPropagation();
+          hoverCardMobile(dIdx);
+          pauseAndResumeAutoCycle(4000);
+        });
+      });
+    }
 
     stage.addEventListener("mouseleave", function () {
       if (!isMobile) {
@@ -812,7 +835,7 @@ Full-Stack Engineering & Shipping (2025–2026)
       if (!isMobile || !e.changedTouches || !e.changedTouches[0]) return;
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
-      pauseAndResumeAutoCycle(3500);
+      pauseAndResumeAutoCycle(4000);
     }, { passive: true });
 
     stage.addEventListener("touchend", function (e) {
@@ -826,7 +849,7 @@ Full-Stack Engineering & Shipping (2025–2026)
           currentCycleIndex = (currentCycleIndex - 1 + numCards) % numCards;
         }
         hoverCardMobile(currentCycleIndex);
-        pauseAndResumeAutoCycle(3500);
+        pauseAndResumeAutoCycle(4000);
       }
     }, { passive: true });
 
@@ -841,7 +864,7 @@ Full-Stack Engineering & Shipping (2025–2026)
             cards.forEach(function (card, i) {
               card.style.opacity = "0";
               if (isMobile) {
-                card.style.transform = "translate3d(0px, 45px, 0px) scale(0.4)";
+                card.style.transform = "translate3d(0px, 35px, 0px) scale(0.9)";
               } else {
                 var base = getDesktopBaseTransform(i);
                 card.style.transform = "translate(" + base.tx.toFixed(1) + "px, 50px) rotate(" + (base.r * 1.4).toFixed(1) + "deg) scale(0.2)";
