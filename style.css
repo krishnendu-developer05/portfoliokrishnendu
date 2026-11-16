@@ -224,23 +224,105 @@ a {
   box-shadow: 0 0 8px var(--accent-primary);
 }
 
-.nav-links {
+/* ---------------- GooeyNav Component (React-Bits Specification) ---------------- */
+.gooey-nav-wrap {
   display: flex;
   align-items: center;
-  gap: 1.35rem;
+  justify-content: center;
+  position: relative;
 }
 
-.nav-links a {
-  font-size: 0.85rem;
+.gooey-nav-frame {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 9999px;
+  background: rgba(13, 17, 23, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: visible;
+}
+
+.gooey-nav__filter-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  filter: url(#gooey-nav-filter);
+  z-index: 1;
+  overflow: visible;
+}
+
+.gooey-nav__pill {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  border-radius: 9999px;
+  background: var(--accent-primary);
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.45);
+  transform-origin: center center;
+  will-change: transform, width, left;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.gooey-nav__pill.is-ready {
+  opacity: 1;
+}
+
+.gooey-nav__particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.gooey-nav__particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.gooey-nav__items {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.gooey-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.42rem 1.05rem;
+  border-radius: 9999px;
+  font-size: 0.84rem;
   font-weight: 500;
   color: var(--text-secondary);
-  transition: color var(--transition-fast);
-  padding: 0.25rem 0;
+  text-decoration: none;
+  transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1), transform 160ms ease;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--accent-primary);
+.gooey-nav__link:hover {
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.gooey-nav__link.active {
+  color: #06080d !important;
+  font-weight: 600;
 }
 
 .nav-actions {

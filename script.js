@@ -633,7 +633,7 @@ Full-Stack Engineering & Shipping (2025–2026)
 
   /* ---------------- 9. Nav Scroll Spy ---------------- */
   var sections = document.querySelectorAll("section[id]");
-  var navLinks = document.querySelectorAll(".nav-links a");
+  var navLinks = document.querySelectorAll(".nav-links a, .gooey-nav__link");
 
   function onScroll() {
     var scrollPos = window.scrollY || window.pageYOffset;
@@ -653,6 +653,10 @@ Full-Stack Engineering & Shipping (2025–2026)
         link.classList.add("active");
       }
     });
+
+    if (window.gooeyNavInstance && currentSection) {
+      window.gooeyNavInstance.syncWithSection(currentSection);
+    }
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -1182,5 +1186,228 @@ Full-Stack Engineering & Shipping (2025–2026)
         avatarWrap.style.setProperty("--parallax-y", "0px");
       }
     });
+  })();
+
+  /* ---------------- 14. GooeyNav Component (React-Bits / ApexUI Specification) ---------------- */
+  (function initGooeyNavComponent() {
+    var frameEl = document.getElementById("gooeyNavFrame");
+    var pillEl = document.getElementById("gooeyNavPill");
+    var particlesContainer = document.getElementById("gooeyNavParticles");
+    var linkEls = document.querySelectorAll(".gooey-nav__link");
+    if (!frameEl || !pillEl || linkEls.length === 0) return;
+
+    var config = {
+      items: [
+        { label: "Home", href: "#top" },
+        { label: "Projects", href: "#projects" },
+        { label: "PR & Journey", href: "#pr" },
+        { label: "Skills", href: "#skills" },
+        { label: "Contact", href: "#contact" }
+      ],
+      initialActiveIndex: 0,
+      theme: "dark",
+      size: "md",
+      frame: true,
+      particleCount: 15,
+      spread: 56,
+      animationTime: 600,
+      timeVariance: 300,
+      gooeyness: 0.5,
+      wobble: 0.5,
+      hoverEffect: true,
+      onChange: function (index, item) {
+        if (typeof console !== "undefined" && console.log) {
+          console.log(index, item ? item.label : "");
+        }
+      }
+    };
+
+    var currentIndex = config.initialActiveIndex;
+
+    function getLinkCoords(link) {
+      var frameRect = frameEl.getBoundingClientRect();
+      var linkRect = link.getBoundingClientRect();
+      return {
+        left: linkRect.left - frameRect.left,
+        top: linkRect.top - frameRect.top,
+        width: linkRect.width,
+        height: linkRect.height
+      };
+    }
+
+    function positionPillInstant(index) {
+      var target = linkEls[index];
+      if (!target) return;
+      var coords = getLinkCoords(target);
+      pillEl.style.transition = "none";
+      pillEl.style.transform = "none";
+      pillEl.style.left = coords.left + "px";
+      pillEl.style.top = coords.top + "px";
+      pillEl.style.width = coords.width + "px";
+      pillEl.style.height = coords.height + "px";
+      pillEl.classList.add("is-ready");
+
+      linkEls.forEach(function (el, i) {
+        if (i === index) {
+          el.classList.add("active");
+        } else {
+          el.classList.remove("active");
+        }
+      });
+    }
+
+    function spawnParticles(fromCoords, toCoords) {
+      if (!particlesContainer) return;
+      var count = config.particleCount;
+      var spread = config.spread;
+      var duration = config.animationTime;
+      var variance = config.timeVariance;
+
+      var startX = fromCoords.left + fromCoords.width / 2;
+      var startY = fromCoords.top + fromCoords.height / 2;
+      var endX = toCoords.left + toCoords.width / 2;
+      var endY = toCoords.top + toCoords.height / 2;
+      var dx = endX - startX;
+      var dy = endY - startY;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist === 0) return;
+
+      var perpX = -dy / dist;
+      var perpY = dx / dist;
+
+      for (var i = 0; i < count; i++) {
+        var particle = document.createElement("div");
+        particle.className = "gooey-nav__particle";
+        var size = 6 + Math.random() * 8;
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+
+        particlesContainer.appendChild(particle);
+
+        var pDuration = duration + (Math.random() - 0.5) * variance;
+        var pDelay = Math.random() * (variance * 0.35);
+        var pSpread = (Math.random() - 0.5) * spread;
+        var midX = startX + dx * (0.35 + Math.random() * 0.3) + perpX * pSpread;
+        var midY = startY + dy * (0.35 + Math.random() * 0.3) + perpY * pSpread;
+
+        if (typeof particle.animate === "function") {
+          var anim = particle.animate([
+            {
+              transform: "translate3d(" + (startX - size / 2) + "px, " + (startY - size / 2) + "px, 0) scale(1)",
+              opacity: 1
+            },
+            {
+              transform: "translate3d(" + (midX - size / 2) + "px, " + (midY - size / 2) + "px, 0) scale(" + (1.1 + Math.random() * 0.35) + ")",
+              opacity: 1,
+              offset: 0.45
+            },
+            {
+              transform: "translate3d(" + (endX - size / 2) + "px, " + (endY - size / 2) + "px, 0) scale(0.25)",
+              opacity: 0.3,
+              offset: 0.92
+            },
+            {
+              transform: "translate3d(" + (endX - size / 2) + "px, " + (endY - size / 2) + "px, 0) scale(0)",
+              opacity: 0,
+              offset: 1
+            }
+          ], {
+            duration: Math.max(300, pDuration),
+            delay: pDelay,
+            easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+            fill: "forwards"
+          });
+
+          anim.onfinish = (function (p) {
+            return function () {
+              if (p.parentNode) p.parentNode.removeChild(p);
+            };
+          })(particle);
+        } else {
+          setTimeout((function (p) {
+            return function () {
+              if (p.parentNode) p.parentNode.removeChild(p);
+            };
+          })(particle), pDuration + pDelay);
+        }
+      }
+    }
+
+    function setActive(newIndex, burstParticles) {
+      if (newIndex < 0 || newIndex >= linkEls.length) return;
+      if (newIndex === currentIndex && pillEl.classList.contains("is-ready")) return;
+
+      var fromLink = linkEls[currentIndex];
+      var toLink = linkEls[newIndex];
+      var fromCoords = getLinkCoords(fromLink);
+      var toCoords = getLinkCoords(toLink);
+      currentIndex = newIndex;
+
+      linkEls.forEach(function (el, idx) {
+        if (idx === newIndex) {
+          el.classList.add("active");
+        } else {
+          el.classList.remove("active");
+        }
+      });
+
+      if (burstParticles !== false) {
+        spawnParticles(fromCoords, toCoords);
+      }
+
+      var dx = toCoords.left - fromCoords.left;
+      var stretchX = 1 + Math.min(Math.abs(dx) / 360, 0.3) * config.wobble;
+      var squashY = 1 - Math.min(Math.abs(dx) / 720, 0.16) * config.wobble;
+
+      pillEl.style.transition = "left " + config.animationTime + "ms cubic-bezier(0.34, 1.56, 0.64, 1), width " + config.animationTime + "ms cubic-bezier(0.34, 1.56, 0.64, 1), transform " + (config.animationTime * 0.5) + "ms ease-out";
+      pillEl.style.transform = "scale(" + stretchX + ", " + squashY + ")";
+      pillEl.style.left = toCoords.left + "px";
+      pillEl.style.width = toCoords.width + "px";
+      pillEl.style.top = toCoords.top + "px";
+      pillEl.style.height = toCoords.height + "px";
+
+      setTimeout(function () {
+        pillEl.style.transition = "transform " + (config.animationTime * 0.5) + "ms cubic-bezier(0.34, 1.56, 0.64, 1)";
+        pillEl.style.transform = "scale(1, 1)";
+      }, config.animationTime * 0.45);
+
+      if (typeof config.onChange === "function") {
+        config.onChange(newIndex, config.items[newIndex]);
+      }
+    }
+
+    setTimeout(function () {
+      positionPillInstant(config.initialActiveIndex);
+    }, 60);
+
+    var resizeTimer = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        positionPillInstant(currentIndex);
+      }, 100);
+    });
+
+    linkEls.forEach(function (link, idx) {
+      link.addEventListener("click", function () {
+        setActive(idx, true);
+      });
+    });
+
+    window.gooeyNavInstance = {
+      setActive: setActive,
+      syncWithSection: function (sectionId) {
+        var foundIdx = -1;
+        linkEls.forEach(function (link, idx) {
+          var href = link.getAttribute("href");
+          if (href === "#" + sectionId || (sectionId === "top" && href === "#top")) {
+            foundIdx = idx;
+          }
+        });
+        if (foundIdx !== -1 && foundIdx !== currentIndex) {
+          setActive(foundIdx, true);
+        }
+      }
+    };
   })();
 })();

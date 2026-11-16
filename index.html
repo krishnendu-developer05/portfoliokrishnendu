@@ -87,6 +87,17 @@
 
   <a class="skip-link" href="#main">Skip to main content</a>
 
+  <!-- Hidden SVG Filter for GooeyNav Liquid Metaball Effect -->
+  <svg class="gooey-nav-svg-defs" aria-hidden="true" style="position: absolute; width: 0; height: 0; pointer-events: none; overflow: hidden;">
+    <defs>
+      <filter id="gooey-nav-filter" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+        <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -8" result="goo" />
+        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+      </filter>
+    </defs>
+  </svg>
+
   <!-- ============ STICKY NAVIGATION TOPBAR ============ -->
   <header class="topbar">
     <div class="topbar-inner">
@@ -95,13 +106,24 @@
         <span>Krishnendu Roy</span>
       </a>
 
-      <!-- Desktop Links -->
-      <nav class="nav-links" aria-label="Primary Navigation">
-        <a href="#top" class="active">Home</a>
-        <a href="#projects">Projects</a>
-        <a href="#pr">PR &amp; Journey</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
+      <!-- Desktop Links: GooeyNav (React Bits Component System) -->
+      <nav class="gooey-nav-wrap nav-links" aria-label="Primary Navigation" id="gooeyNav">
+        <div class="gooey-nav-frame" id="gooeyNavFrame">
+          <!-- Gooey SVG filter layer for liquid metaball and droplet bursts -->
+          <div class="gooey-nav__filter-layer" aria-hidden="true">
+            <div class="gooey-nav__pill" id="gooeyNavPill"></div>
+            <div class="gooey-nav__particles" id="gooeyNavParticles"></div>
+          </div>
+          <!-- Clean text navigation links -->
+          <div class="gooey-nav__items" id="gooeyNavItems">
+            <a href="#top" class="gooey-nav__link active" data-index="0">Home</a>
+            <a href="#projects" class="gooey-nav__link" data-index="1">Projects</a>
+            <a href="#pr" class="gooey-nav__link" data-index="2">PR &amp; Journey</a>
+            <a href="#skills" class="gooey-nav__link" data-index="3">Skills</a>
+            <a href="#contact" class="gooey-nav__link" data-index="4">Contact</a>
+            <a href="#id-card" class="gooey-nav__link" data-index="5" id="idCardNavLink">ID Card</a>
+          </div>
+        </div>
       </nav>
 
       <!-- CTA & Mobile Toggle -->
