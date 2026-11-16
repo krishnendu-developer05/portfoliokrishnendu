@@ -624,10 +624,6 @@ Full-Stack Engineering & Shipping (2025–2026)
     var CYCLE_INTERVAL_MS = 2800;
 
     var isMobile = window.innerWidth <= 768 || ("ontouchstart" in window);
-    var spread = isMobile ? 42 : SPREAD;
-    var pushDist = isMobile ? 65 : PUSH_DISTANCE;
-    var rot = isMobile ? 7 : ROTATION;
-
     var center = (numCards - 1) / 2;
 
     var autoCycleTimer = null;
@@ -638,61 +634,111 @@ Full-Stack Engineering & Shipping (2025–2026)
 
     var hintEl = document.getElementById("bounceCardsHint");
     if (hintEl && isMobile) {
-      hintEl.textContent = "Auto-cycling cards \u00B7 Tap any card to inspect";
+      hintEl.textContent = "Auto-cycling cards \u00B7 Swipe or tap to inspect";
     }
 
-    function getBaseTransform(i) {
+    /* --- Desktop Logic (Exact Original Formula, 0 Changes for Desktop) --- */
+    function getDesktopBaseTransform(i) {
       var norm = i - center;
-      var tx = norm * spread;
-      var r = (norm / (center || 1)) * rot;
+      var tx = norm * SPREAD;
+      var r = (norm / (center || 1)) * ROTATION;
       return { tx: tx, r: r, zIndex: i + 1 };
     }
 
-    function applyCardTransform(card, tx, ty, r, scale, zIndex) {
+    function applyDesktopCardTransform(card, tx, ty, r, scale, zIndex) {
       card.style.transform = "translate(" + tx.toFixed(1) + "px, " + ty.toFixed(1) + "px) rotate(" + r.toFixed(1) + "deg) scale(" + scale + ")";
       card.style.zIndex = zIndex.toString();
     }
 
-    function resetCards() {
+    function resetDesktopCards() {
       cards.forEach(function (card, i) {
         card.classList.remove("is-active");
         card.style.opacity = "1";
-        var base = getBaseTransform(i);
-        applyCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
+        var base = getDesktopBaseTransform(i);
+        applyDesktopCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
       });
     }
 
-    function hoverCard(hoveredIndex) {
-      currentCycleIndex = hoveredIndex;
+    function hoverCardDesktop(hoveredIndex) {
       cards.forEach(function (card, i) {
-        var base = getBaseTransform(i);
+        var base = getDesktopBaseTransform(i);
         if (i === hoveredIndex) {
           card.classList.add("is-active");
           card.style.opacity = "1";
-          applyCardTransform(card, base.tx * (isMobile ? 0.15 : 0.35), isMobile ? -20 : -14, 0, HOVER_SCALE, 50);
+          applyDesktopCardTransform(card, base.tx * 0.35, -14, 0, HOVER_SCALE, 50);
         } else if (i < hoveredIndex) {
           card.classList.remove("is-active");
-          card.style.opacity = isMobile ? "0.72" : "0.92";
-          var push = pushDist * (1 - (hoveredIndex - i - 1) * 0.18);
-          applyCardTransform(card, base.tx - push, 0, base.r - 2.5, 0.95, base.zIndex);
+          card.style.opacity = "1";
+          var push = PUSH_DISTANCE * (1 - (hoveredIndex - i - 1) * 0.18);
+          applyDesktopCardTransform(card, base.tx - push, 0, base.r - 2.5, 0.95, base.zIndex);
         } else {
           card.classList.remove("is-active");
-          card.style.opacity = isMobile ? "0.72" : "0.92";
-          var push = pushDist * (1 - (i - hoveredIndex - 1) * 0.18);
-          applyCardTransform(card, base.tx + push, 0, base.r + 2.5, 0.95, base.zIndex);
+          card.style.opacity = "1";
+          var push = PUSH_DISTANCE * (1 - (i - hoveredIndex - 1) * 0.18);
+          applyDesktopCardTransform(card, base.tx + push, 0, base.r + 2.5, 0.95, base.zIndex);
         }
       });
     }
 
+    /* --- Mobile Logic (Smooth 3D Centered Deck Showcase) --- */
+    function hoverCardMobile(activeIdx) {
+      currentCycleIndex = activeIdx;
+      cards.forEach(function (card, i) {
+        if (i === activeIdx) {
+          card.classList.add("is-active");
+          card.style.opacity = "1";
+          // Front and center: fully elevated in Z-space so nothing can cover it
+          card.style.transform = "translate3d(0px, -18px, 60px) rotate(0deg) scale(1.05)";
+          card.style.zIndex = "100";
+        } else if (i < activeIdx) {
+          card.classList.remove("is-active");
+          var dist = activeIdx - i;
+          var tx = -55 - (dist - 1) * 18;
+          var rot = -5 - (dist - 1) * 2.5;
+          var scale = Math.max(0.78, 0.88 - (dist - 1) * 0.05);
+          var opacity = Math.max(0.35, 0.62 - (dist - 1) * 0.12);
+          card.style.opacity = opacity.toFixed(2);
+          card.style.transform = "translate3d(" + tx.toFixed(1) + "px, 0px, " + (20 - dist * 5) + "px) rotate(" + rot.toFixed(1) + "deg) scale(" + scale.toFixed(2) + ")";
+          card.style.zIndex = (10 - dist).toString();
+        } else {
+          card.classList.remove("is-active");
+          var dist = i - activeIdx;
+          var tx = 55 + (dist - 1) * 18;
+          var rot = 5 + (dist - 1) * 2.5;
+          var scale = Math.max(0.78, 0.88 - (dist - 1) * 0.05);
+          var opacity = Math.max(0.35, 0.62 - (dist - 1) * 0.12);
+          card.style.opacity = opacity.toFixed(2);
+          card.style.transform = "translate3d(" + tx.toFixed(1) + "px, 0px, " + (20 - dist * 5) + "px) rotate(" + rot.toFixed(1) + "deg) scale(" + scale.toFixed(2) + ")";
+          card.style.zIndex = (10 - dist).toString();
+        }
+      });
+    }
+
+    function hoverCard(index) {
+      if (isMobile) {
+        hoverCardMobile(index);
+      } else {
+        hoverCardDesktop(index);
+      }
+    }
+
+    function resetCards() {
+      if (isMobile) {
+        hoverCardMobile(currentCycleIndex);
+      } else {
+        resetDesktopCards();
+      }
+    }
+
+    /* --- Auto-Cycle Engine (Mobile Only) --- */
     function startAutoCycle() {
       stopAutoCycle();
-      if (!isDeckVisible) return;
-      if (!isMobile) return;
+      if (!isDeckVisible || !isMobile) return;
 
       autoCycleTimer = setInterval(function () {
         if (isInteracting) return;
         currentCycleIndex = (currentCycleIndex + 1) % numCards;
-        hoverCard(currentCycleIndex);
+        hoverCardMobile(currentCycleIndex);
       }, CYCLE_INTERVAL_MS);
     }
 
@@ -711,13 +757,11 @@ Full-Stack Engineering & Shipping (2025–2026)
       }, delayMs || 5000);
     }
 
+    /* --- Resize Handling --- */
     window.addEventListener("resize", function () {
       isMobile = window.innerWidth <= 768 || ("ontouchstart" in window);
-      spread = isMobile ? 42 : SPREAD;
-      pushDist = isMobile ? 65 : PUSH_DISTANCE;
-      rot = isMobile ? 7 : ROTATION;
       if (hintEl) {
-        hintEl.textContent = isMobile ? "Auto-cycling cards \u00B7 Tap any card to inspect" : "Hover or tap cards to spread & inspect";
+        hintEl.textContent = isMobile ? "Auto-cycling cards \u00B7 Swipe or tap to inspect" : "Hover or tap cards to spread & inspect";
       }
       resetCards();
       if (isMobile && isDeckVisible) {
@@ -727,10 +771,11 @@ Full-Stack Engineering & Shipping (2025–2026)
       }
     });
 
+    /* --- Event Listeners --- */
     cards.forEach(function (card, idx) {
       card.addEventListener("mouseenter", function () {
         if (!isMobile) {
-          hoverCard(idx);
+          hoverCardDesktop(idx);
         }
       });
 
@@ -745,25 +790,47 @@ Full-Stack Engineering & Shipping (2025–2026)
           pauseAndResumeAutoCycle(6000);
         }
       });
-
-      card.addEventListener("touchstart", function () {
-        pauseAndResumeAutoCycle(6000);
-      }, { passive: true });
     });
 
     stage.addEventListener("mouseleave", function () {
       if (!isMobile) {
-        resetCards();
+        resetDesktopCards();
       }
     });
 
     document.addEventListener("click", function (e) {
       if (!stage.contains(e.target) && !isMobile) {
-        resetCards();
+        resetDesktopCards();
       }
     });
 
-    // Mount / Scroll-in entrance animation
+    /* --- Touch Gestures on Mobile (Swipe Left / Right + Tap) --- */
+    var touchStartX = 0;
+    var touchStartY = 0;
+
+    stage.addEventListener("touchstart", function (e) {
+      if (!isMobile || !e.changedTouches || !e.changedTouches[0]) return;
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+      pauseAndResumeAutoCycle(6000);
+    }, { passive: true });
+
+    stage.addEventListener("touchend", function (e) {
+      if (!isMobile || !e.changedTouches || !e.changedTouches[0]) return;
+      var diffX = e.changedTouches[0].screenX - touchStartX;
+      var diffY = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) {
+          currentCycleIndex = (currentCycleIndex + 1) % numCards;
+        } else {
+          currentCycleIndex = (currentCycleIndex - 1 + numCards) % numCards;
+        }
+        hoverCardMobile(currentCycleIndex);
+        pauseAndResumeAutoCycle(6000);
+      }
+    }, { passive: true });
+
+    /* --- Mount / Scroll-in Entrance Animation --- */
     var hasAnimated = false;
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -772,21 +839,26 @@ Full-Stack Engineering & Shipping (2025–2026)
           if (!hasAnimated) {
             hasAnimated = true;
             cards.forEach(function (card, i) {
-              var base = getBaseTransform(i);
               card.style.opacity = "0";
-              card.style.transform = "translate(" + base.tx.toFixed(1) + "px, 50px) rotate(" + (base.r * 1.4).toFixed(1) + "deg) scale(0.2)";
-              
+              if (isMobile) {
+                card.style.transform = "translate3d(0px, 45px, 0px) scale(0.4)";
+              } else {
+                var base = getDesktopBaseTransform(i);
+                card.style.transform = "translate(" + base.tx.toFixed(1) + "px, 50px) rotate(" + (base.r * 1.4).toFixed(1) + "deg) scale(0.2)";
+              }
+
               setTimeout(function () {
                 card.style.opacity = "1";
-                applyCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
-
-                if (i === numCards - 1) {
-                  setTimeout(function () {
-                    if (isMobile) {
-                      hoverCard(0);
+                if (isMobile) {
+                  hoverCardMobile(0);
+                  if (i === numCards - 1) {
+                    setTimeout(function () {
                       startAutoCycle();
-                    }
-                  }, 500);
+                    }, 500);
+                  }
+                } else {
+                  var base = getDesktopBaseTransform(i);
+                  applyDesktopCardTransform(card, base.tx, 0, base.r, 1, base.zIndex);
                 }
               }, (ANIMATION_DELAY * 1000) + (i * ANIMATION_STAGGER * 1000));
             });
