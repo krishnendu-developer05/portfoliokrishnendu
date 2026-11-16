@@ -1,0 +1,29 @@
+# Krishnendu Roy — Portfolio (Signal in the Noise)
+
+> Full-stack web developer and Computer Science & Engineering student at Academy of Technology, exploring agentic AI and spec-driven development.
+
+## Who
+Krishnendu Roy — second-year B.Tech CSE student, Academy of Technology. Front-end developer who grew into full-stack web development; currently learning agentic AI and spec-driven development. Also experienced in public relations, event coordination, and management (supporting qualities).
+
+## Technical direction
+- Frontend: HTML, CSS, JavaScript
+- Full-stack: TypeScript, React, Next.js, Node.js, PostgreSQL
+- Learning: agentic AI, spec-driven AI development
+- Tools: Git/GitHub, Vercel, Leaflet.js, OpenStreetMap
+
+## Projects
+- **RapidCare** (LIVE, features in progress): emergency ambulance booking and real-time patient tracking platform — OTP dispatch, GPS tracking via Leaflet.js/OpenStreetMap, hospital bed directory, patient/driver/hospital portals, analytics, insurance interface. Live: https://rapidcare-4gzf.onrender.com/choose_User/ · UI revamp (under work): https://rapidcare-sih-n-2b76.vercel.app/ · Code: https://github.com/krishnendu-developer05/RAPIDCARE_SIH
+- **MuleShield** (PROTOTYPE, synthetic data): hackathon prototype for detecting suspicious money transfers via graph-based transaction analysis. No real bank integration; some documented technologies describe intended architecture. Live: https://muleshield-sooty.vercel.app · Code: https://github.com/krishnendu-developer05/MULESHILD
+- **PujaGhar / শুভক্ষণ** (LIVE): platform for Bengali puja and festival management — verified purohit booking, puja scheduling, ritual samagri marketplace (Pujar Haat), Geeta Paath. Live: https://pujopurohit.vercel.app
+- Other builds: stockriskagent (TypeScript), BuildWithAI (Next.js/React, https://buildwithai-seven-sage.vercel.app), kolkata-travel-website, sos-webdev, pok-pok-website. Profile: https://github.com/krishnendu-developer05
+
+## Pages
+- [Home](https://krishnendu-developer05.github.io/portfoliokrishnendu/)
+- [About](about.md) · [Projects](projects.md) · [Now](now.md) · [Experience](experience.md)
+
+## Contact
+- GitHub: https://github.com/krishnendu-developer05
+- LinkedIn: https://www.linkedin.com/in/krishnendu-roy-975970386
+- Email: krishnenduroy423@gmail.com
+- Instagram (inactive): https://www.instagram.com/krishnendu_alive
+- X (inactive): https://x.com/Krishnendu41968

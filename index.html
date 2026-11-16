@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Krishnendu Roy — Signal in the Noise</title>
+  <meta name="description" content="Krishnendu Roy is a full-stack web developer and Computer Science student at Academy of Technology, exploring agentic AI, spec-driven development, and human-centred products." />
+  <link rel="canonical" href="https://krishnendu-developer05.github.io/portfoliokrishnendu/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Krishnendu Roy — Signal in the Noise" />
+  <meta property="og:description" content="In a world full of noise, I build my own signal. Full-stack developer exploring agentic AI and spec-driven development." />
+  <meta property="og:url" content="https://krishnendu-developer05.github.io/portfoliokrishnendu/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#08090B" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308090B'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23F1F0EC'/%3E%3C/svg%3E" />
+
+  <!-- Fonts: self-hosted equivalent strategy via Google Fonts with swap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "name": "Krishnendu Roy",
+        "url": "https://krishnendu-developer05.github.io/portfoliokrishnendu/",
+        "affiliation": { "@type": "CollegeOrUniversity", "name": "Academy of Technology" },
+        "jobTitle": "Full-stack Web Developer",
+        "description": "Full-stack web developer and Computer Science student exploring agentic AI and spec-driven development.",
+        "knowsAbout": ["Frontend Development", "Full-stack Development", "Agentic AI", "Spec-driven Development", "Human-centred Technology"],
+        "sameAs": [
+          "https://github.com/krishnendu-developer05",
+          "https://www.linkedin.com/in/krishnendu-roy-975970386",
+          "https://www.instagram.com/krishnendu_alive",
+          "https://x.com/Krishnendu41968"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "name": "Krishnendu Roy — Signal in the Noise",
+        "url": "https://krishnendu-developer05.github.io/portfoliokrishnendu/"
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Loader: JS activates it; if JS fails, it never appears and content is fully present -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <p class="loader-line" data-line="acquiring signal…"></p>
+      <p class="loader-line" data-line="tuning out the noise…"></p>
+      <p class="loader-line" data-line="signal found"></p>
+      <div class="loader-bar"><span></span></div>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <a class="nav-name" href="#signal">Krishnendu Roy</a>
+    <nav class="nav-links" aria-label="Chapters">
+      <a href="#origin"><span>CH 01</span> Origin</a>
+      <a href="#mind"><span>CH 02</span> Mind</a>
+      <a href="#build"><span>CH 03</span> Build</a>
+      <a href="#process"><span>CH 04</span> Process</a>
+      <a href="#human"><span>CH 05</span> Human</a>
+      <a href="#next"><span>CH 06</span> Next</a>
+    </nav>
+    <a class="nav-contact" href="#next">Connect</a>
+    <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  </header>
+
+  <!-- Chapter rail (desktop orientation device) -->
+  <nav class="chapter-rail" aria-label="Chapter progress">
+    <a href="#signal" data-ch="00" aria-label="Chapter 00 — The Signal">00</a>
+    <a href="#origin" data-ch="01" aria-label="Chapter 01 — The Origin">01</a>
+    <a href="#mind" data-ch="02" aria-label="Chapter 02 — The Mind">02</a>
+    <a href="#build" data-ch="03" aria-label="Chapter 03 — The Build">03</a>
+    <a href="#process" data-ch="04" aria-label="Chapter 04 — The Process">04</a>
+    <a href="#human" data-ch="05" aria-label="Chapter 05 — The Human Side">05</a>
+    <a href="#next" data-ch="06" aria-label="Chapter 06 — What Comes Next">06</a>
+  </nav>
+
+  <main id="main">
+
+    <!-- ============ CH 00 — THE SIGNAL ============ -->
+    <section class="chapter chapter--signal" id="signal" aria-label="Chapter 00 — The Signal">
+      <canvas class="signal-canvas" id="signalCanvas" aria-hidden="true"></canvas>
+      <div class="signal-inner">
+        <p class="mono-label reveal" data-reveal>CH 00 — THE SIGNAL</p>
+        <h1 class="hero-line" id="heroLine">
+          <span class="hl">In a world full of noise,</span>
+          <span class="hl">I build my own</span>
+          <span class="hl hl--signal">signal.</span>
+        </h1>
+        <p class="signal-sub reveal" data-reveal>
+          I'm <strong>Krishnendu Roy</strong> — a developer exploring the intersection of
+          technology, intelligence, and human creativity. Still becoming. Already building.
+        </p>
+        <p class="scroll-cue mono-label" aria-hidden="true">scroll to tune in <span class="cue-arrow">↓</span></p>
+      </div>
+    </section>
+
+    <!-- ============ CH 01 — THE ORIGIN ============ -->
+    <section class="chapter" id="origin" aria-label="Chapter 01 — The Origin">
+      <div class="chapter-head">
+        <p class="mono-label">CH 01</p>
+        <h2>The Origin</h2>
+      </div>
+      <div class="origin-grid">
+        <figure class="portrait reveal" data-reveal>
+          <img src="assets/portrait-kolkata.jpg" alt="Krishnendu Roy seated before the Victoria Memorial, Kolkata" width="1000" height="1500" loading="lazy" />
+          <figcaption class="mono-label">fig. 01 — Kolkata, where the story runs</figcaption>
+        </figure>
+        <div class="origin-text">
+          <p class="lead reveal" data-reveal>Curiosity first. Code second. Products always.</p>
+          <p class="reveal" data-reveal>
+            I'm a second-year <strong>Computer Science &amp; Engineering</strong> student at
+            <strong>Academy of Technology</strong>. My journey began at the front of the stack —
+            making pages look sharp and feel right — and grew backwards, until I was shipping
+            complete products end to end.
+          </p>
+          <p class="reveal" data-reveal>
+            Now the stack itself is expanding: I'm learning <strong>agentic AI</strong> and
+            <strong>spec-driven development</strong> — where a precise specification is the
+            contract between human intent and machine-built work. Everything on this site
+            started as a real problem someone actually has.
+          </p>
+          <ol class="timeline" role="list">
+            <li class="tl-item reveal" data-reveal><span class="tl-year">Now</span><span class="tl-what">Learning agentic AI &amp; spec-driven development</span></li>
+            <li class="tl-item reveal" data-reveal><span class="tl-year">2025 →</span><span class="tl-what">Full-stack web development — shipping live products</span></li>
+            <li class="tl-item reveal" data-reveal><span class="tl-year">Start</span><span class="tl-what">Front-end development — HTML, CSS, JavaScript</span></li>
+            <li class="tl-item reveal" data-reveal><span class="tl-year">2023 →</span><span class="tl-what">B.Tech, Computer Science &amp; Engineering — Academy of Technology</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CH 02 — THE MIND ============ -->
+    <section class="chapter chapter--graphite" id="mind" aria-label="Chapter 02 — The Mind">
+      <div class="chapter-head">
+        <p class="mono-label">CH 02</p>
+        <h2>The Mind</h2>
+        <p class="chapter-sub">Not a skills chart. A map of what I'm thinking about.</p>
+      </div>
+      <div class="mind-grid">
+        <div class="mind-node reveal" data-reveal>
+          <h3 class="mind-node-title">Frontend Engineering</h3>
+          <p>Where I started. Interfaces that feel considered: typography, rhythm, motion that means something.</p>
+        </div>
+        <div class="mind-node reveal" data-reveal>
+          <h3 class="mind-node-title">Full-stack Development</h3>
+          <p>React, Next.js, Node, PostgreSQL — complete products, from schema to screen, deployed and alive.</p>
+        </div>
+        <div class="mind-node mind-node--active reveal" data-reveal>
+          <h3 class="mind-node-title">Agentic AI</h3>
+          <p>My current learning edge: building with AI agents that plan, use tools, and ship — not just autocomplete.</p>
+        </div>
+        <div class="mind-node mind-node--active reveal" data-reveal>
+          <h3 class="mind-node-title">Spec-driven Development</h3>
+          <p>Writing the specification before the code — so intent survives implementation, human or machine.</p>
+        </div>
+        <div class="mind-node reveal" data-reveal>
+          <h3 class="mind-node-title">Architecture &amp; Problem-solving</h3>
+          <p>Understanding the problem before designing the system. The shape of the solution follows the shape of the problem.</p>
+        </div>
+        <div class="mind-node reveal" data-reveal>
+          <h3 class="mind-node-title">Human-centred Technology</h3>
+          <p>Technology that serves people — rural accessibility, cultural contexts, real emergencies. Products with a reason to exist.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CH 03 — THE BUILD ============ -->
+    <section class="chapter" id="build" aria-label="Chapter 03 — The Build">
+      <div class="chapter-head">
+        <p class="mono-label">CH 03</p>
+        <h2>The Build</h2>
+        <p class="chapter-sub">Case studies, not cards. Status labels are contractual.</p>
+      </div>
+
+      <!-- PROJECT 01 — RAPIDCARE -->
+      <article class="case case--rapidcare reveal" data-reveal>
+        <div class="case-meta">
+          <p class="mono-label case-num">PROJECT 01</p>
+          <div class="case-tags">
+            <span class="tag tag--live">LIVE</span>
+            <span class="tag tag--progress">IN PROGRESS</span>
+          </div>
+        </div>
+        <div class="case-grid">
+          <div class="case-body">
+            <h3>RapidCare</h3>
+            <p class="case-tagline mono-label">"In an emergency, every second counts."</p>
+            <p class="case-problem"><strong>Problem:</strong> emergency dispatch is slow and fragmented — patients, drivers, and hospitals don't share one picture of the moment.</p>
+            <p><strong>My role:</strong> built the platform end to end — booking, tracking, directories, portals, dashboards.</p>
+            <h4 class="mono-label">Shipped</h4>
+            <ul class="feature-list">
+              <li>Ambulance booking — OTP verification, automated driver assignment</li>
+              <li>Live GPS tracking &amp; ETA — Leaflet.js + OpenStreetMap</li>
+              <li>Hospital directory — live bed availability (Available / Busy / Limited)</li>
+              <li>Patient dashboard · Driver portal · Hospital registration</li>
+              <li>Analytics dashboard &amp; insurance claim interface</li>
+            </ul>
+            <h4 class="mono-label">In progress</h4>
+            <ul class="feature-list feature-list--progress">
+              <li>WebSocket live chat — patient ↔ driver during transit</li>
+              <li>Gemini-powered AI triage — symptom-based severity assessment</li>
+            </ul>
+            <h4 class="mono-label">Planned</h4>
+            <ul class="feature-list feature-list--planned">
+              <li>Multi-language UI for rural accessibility · IoT vitals monitoring · predictive demand analytics</li>
+            </ul>
+            <div class="case-links">
+              <a href="https://rapidcare-4gzf.onrender.com/choose_User/" target="_blank" rel="noopener">Functional app ↗</a>
+              <a href="https://rapidcare-sih-n-2b76.vercel.app/" target="_blank" rel="noopener">UI revamp (under work) ↗</a>
+              <a href="https://github.com/krishnendu-developer05/RAPIDCARE_SIH" target="_blank" rel="noopener">Code ↗</a>
+            </div>
+          </div>
+          <div class="case-media case-media--dispatch" aria-hidden="true">
+            <svg viewBox="0 0 400 300" preserveAspectRatio="none">
+              <path d="M0,60 L80,60 L80,140 L180,140 L180,80 L280,80 L280,200 L400,200" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="7 5"/>
+              <path d="M0,250 L110,250 L110,170 L220,170 L220,230 L330,230 L330,110 L400,110" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+              <circle cx="180" cy="140" r="7" fill="currentColor"/>
+              <circle cx="280" cy="200" r="7" fill="currentColor"/>
+              <circle cx="180" cy="140" r="16" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5" class="pulse-ring"/>
+            </svg>
+            <p class="media-caption mono-label">fig. 02 — dispatch &amp; tracking concept · live app at links above</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 02 — MULESHIELD -->
+      <article class="case case--muleshield reveal" data-reveal>
+        <div class="case-meta">
+          <p class="mono-label case-num">PROJECT 02</p>
+          <div class="case-tags">
+            <span class="tag tag--proto">PROTOTYPE</span>
+            <span class="tag tag--note">SYNTHETIC DATA</span>
+          </div>
+        </div>
+        <div class="case-grid case-grid--flip">
+          <div class="case-body">
+            <h3>MuleShield</h3>
+            <p class="case-tagline mono-label">follow the money. find the mule.</p>
+            <p class="case-problem"><strong>Problem:</strong> mule accounts hide suspicious money transfers inside ordinary-looking transaction graphs.</p>
+            <p><strong>My role:</strong> founder / project lead — product concept, risk logic design, and interface. Implementation is AI-assisted, disclosed openly.</p>
+            <h4 class="mono-label">Prototype scope</h4>
+            <ul class="feature-list">
+              <li>Graph-based analysis of account relationships &amp; transaction patterns</li>
+              <li>Risk indicators and an investigator-oriented interface</li>
+              <li>Risk-gated payment workflow — as a product concept</li>
+            </ul>
+            <p class="case-disclosure mono-label">Honesty note — hackathon prototype. The live demo uses illustrative data; no real bank or government integration, no real money flow. Documented backend / ML / graph technologies describe the intended architecture, not a completed stack.</p>
+            <div class="case-links">
+              <a href="https://muleshield-sooty.vercel.app" target="_blank" rel="noopener">Live prototype ↗</a>
+              <a href="https://github.com/krishnendu-developer05/MULESHILD" target="_blank" rel="noopener">Code ↗</a>
+            </div>
+          </div>
+          <div class="case-media case-media--graph" aria-hidden="true">
+            <svg viewBox="0 0 400 300">
+              <g stroke="currentColor" stroke-width="1.2" opacity="0.6">
+                <line x1="70" y1="80" x2="180" y2="140"/><line x1="180" y1="140" x2="300" y2="90"/>
+                <line x1="180" y1="140" x2="250" y2="220"/><line x1="70" y1="80" x2="130" y2="230"/>
+                <line x1="130" y1="230" x2="250" y2="220"/><line x1="300" y1="90" x2="360" y2="180"/>
+                <line x1="250" y1="220" x2="360" y2="180"/><line x1="180" y1="140" x2="130" y2="230"/>
+              </g>
+              <g fill="currentColor">
+                <circle cx="70" cy="80" r="6"/><circle cx="300" cy="90" r="6"/>
+                <circle cx="130" cy="230" r="6"/><circle cx="360" cy="180" r="6"/>
+                <circle cx="180" cy="140" r="9" class="pulse-dot"/>
+                <circle cx="250" cy="220" r="9" class="pulse-dot"/>
+              </g>
+            </svg>
+            <p class="media-caption mono-label">fig. 03 — transaction graph; flagged nodes mark anomalous flow</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 03 — PUJA GHAR -->
+      <article class="case case--pujaghar reveal" data-reveal>
+        <div class="case-meta">
+          <p class="mono-label case-num">PROJECT 03</p>
+          <div class="case-tags">
+            <span class="tag tag--live">LIVE</span>
+          </div>
+        </div>
+        <div class="case-grid">
+          <div class="case-body">
+            <h3>PujaGhar <span class="bn">শুভক্ষণ</span></h3>
+            <p class="case-tagline mono-label">authentic rituals, organised.</p>
+            <p class="case-problem"><strong>Problem:</strong> organising pujas, booking verified purohits, and sourcing ritual supplies is fragmented across word-of-mouth and scattered shops.</p>
+            <p><strong>My role:</strong> designed and built the platform — a culturally rooted product for Bengali festival and ritual management.</p>
+            <h4 class="mono-label">Shipped</h4>
+            <ul class="feature-list">
+              <li>Verified Bengali purohit booking — pujas, hom &amp; yagya</li>
+              <li>Pujas &amp; events scheduling</li>
+              <li>Pujar Haat — ritual samagri marketplace</li>
+              <li>Geeta Paath — daily shloka, chapters, themes, bookmarks</li>
+            </ul>
+            <p class="case-disclosure mono-label">Note — the live deployment presents under the PujaGhar (পূজাঘর) brand with the শুভক্ষণ display identity.</p>
+            <div class="case-links">
+              <a href="https://pujopurohit.vercel.app" target="_blank" rel="noopener">Live ↗</a>
+            </div>
+          </div>
+          <div class="case-media case-media--diya" aria-hidden="true">
+            <div class="diya-glyph" lang="bn">শুভক্ষণ</div>
+            <p class="media-caption mono-label">fig. 04 — the live display identity, as deployed</p>
+          </div>
+        </div>
+      </article>
+
+      <div class="more-builds reveal" data-reveal>
+        <p class="mono-label">MORE BUILDS</p>
+        <ul role="list">
+          <li><a href="https://github.com/krishnendu-developer05/stockriskagent" target="_blank" rel="noopener">stockriskagent</a> — TypeScript</li>
+          <li><a href="https://buildwithai-seven-sage.vercel.app" target="_blank" rel="noopener">BuildWithAI</a> — Next.js · React</li>
+          <li><a href="https://github.com/krishnendu-developer05/kolkata-travel-website" target="_blank" rel="noopener">kolkata-travel-website</a></li>
+          <li><a href="https://github.com/krishnendu-developer05/sos-webdev-12" target="_blank" rel="noopener">sos-webdev</a></li>
+          <li><a href="https://github.com/krishnendu-developer05/pok-pok-website" target="_blank" rel="noopener">pok-pok-website</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ CH 04 — THE PROCESS ============ -->
+    <section class="chapter chapter--graphite" id="process" aria-label="Chapter 04 — The Process">
+      <div class="chapter-head">
+        <p class="mono-label">CH 04</p>
+        <h2>The Process</h2>
+        <p class="chapter-sub">Spec before code. Always.</p>
+      </div>
+      <div class="process-grid">
+        <div class="spec-artefact reveal" data-reveal role="img" aria-label="A specification document with requirement lines progressing from draft to verified">
+          <div class="spec-bar mono-label"><span>spec.md</span><span>draft → verified</span></div>
+          <ol class="spec-lines">
+            <li data-state="done"><span class="spec-glyph">✓</span> understand the problem — who hurts, how much</li>
+            <li data-state="done"><span class="spec-glyph">✓</span> define requirements — the contract, written down</li>
+            <li data-state="done"><span class="spec-glyph">✓</span> product spec — scope, edge cases, non-goals</li>
+            <li data-state="done"><span class="spec-glyph">✓</span> architecture &amp; data model — before the first commit</li>
+            <li data-state="done"><span class="spec-glyph">✓</span> component system — designed, then built</li>
+            <li data-state="doing"><span class="spec-glyph">◐</span> AI-assisted implementation — research, build, debug</li>
+            <li data-state="doing"><span class="spec-glyph">◐</span> human verification — I check everything it claims</li>
+            <li data-state="next"><span class="spec-glyph">○</span> iterate → working product → version two</li>
+          </ol>
+        </div>
+        <div class="process-text reveal" data-reveal>
+          <p class="lead">AI is a tool in my process — not the process.</p>
+          <p>
+            I work spec-first: the problem, the requirements, the architecture, the data model —
+            written and thought through before implementation begins. AI tools accelerate
+            research, implementation, and debugging inside that spec.
+          </p>
+          <p>
+            What stays human: problem framing, product decisions, verification, and learning.
+            The machine drafts; I am responsible for what ships. This portfolio itself was
+            built under the same discipline.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CH 05 — THE HUMAN SIDE ============ -->
+    <section class="chapter chapter--light" id="human" aria-label="Chapter 05 — The Human Side">
+      <div class="chapter-head">
+        <p class="mono-label">CH 05</p>
+        <h2>The Human Side</h2>
+        <p class="chapter-sub">Technology is built by people.</p>
+      </div>
+      <div class="human-grid">
+        <div class="human-text">
+          <p class="lead reveal" data-reveal>Code isn't my only skill set.</p>
+          <p class="reveal" data-reveal>
+            Alongside development, I've carried <strong>public relations and management
+            responsibilities</strong> — public relations, event coordination, communication,
+            and teamwork. That experience keeps my projects grounded in what people actually
+            need, and it's why RapidCare thinks about drivers and hospital staff, not just
+            patients and code.
+          </p>
+          <p class="reveal" data-reveal>
+            Supporting qualities — deliberately compact here. The details live on LinkedIn:
+          </p>
+          <a class="btn btn--orange reveal" data-reveal href="https://www.linkedin.com/in/krishnendu-roy-975970386" target="_blank" rel="noopener">View my LinkedIn ↗</a>
+        </div>
+        <figure class="portrait portrait--secondary reveal" data-reveal>
+          <img src="assets/portrait-hills.jpg" alt="Krishnendu Roy outdoors in the hills, wearing a sweatshirt" width="1000" height="1500" loading="lazy" />
+          <figcaption class="mono-label">fig. 05 — the person, not the profile</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ CH 06 — WHAT COMES NEXT ============ -->
+    <section class="chapter chapter--next" id="next" aria-label="Chapter 06 — What Comes Next">
+      <div class="chapter-head">
+        <p class="mono-label">CH 06</p>
+        <h2>What Comes Next</h2>
+        <p class="chapter-sub">Still becoming.</p>
+      </div>
+      <div class="next-body">
+        <p class="next-lede reveal" data-reveal>
+          Learning in the open: agentic AI, spec-driven development,
+          and products that respect the people who use them.
+          The stack will keep changing. The discipline won't.
+        </p>
+        <h2 class="closing-line reveal" data-reveal>The signal is<br /><span class="closing-accent">still transmitting.</span></h2>
+        <div class="contact-grid reveal" data-reveal>
+          <a class="contact-card" href="https://github.com/krishnendu-developer05" target="_blank" rel="noopener">
+            <span class="cl-platform mono-label">GitHub</span><span class="cl-handle">@krishnendu-developer05</span>
+          </a>
+          <a class="contact-card" href="https://www.linkedin.com/in/krishnendu-roy-975970386" target="_blank" rel="noopener">
+            <span class="cl-platform mono-label">LinkedIn</span><span class="cl-handle">Krishnendu Roy</span>
+          </a>
+          <a class="contact-card" href="mailto:krishnenduroy423@gmail.com">
+            <span class="cl-platform mono-label">Email</span><span class="cl-handle">krishnenduroy423@gmail.com</span>
+          </a>
+          <a class="contact-card" href="https://www.instagram.com/krishnendu_alive" target="_blank" rel="noopener">
+            <span class="cl-platform mono-label">Instagram</span><span class="cl-handle">@krishnendu_alive</span>
+          </a>
+          <a class="contact-card" href="https://x.com/Krishnendu41968" target="_blank" rel="noopener">
+            <span class="cl-platform mono-label">X / Twitter</span><span class="cl-handle">@Krishnendu41968</span>
+          </a>
+        </div>
+        <p class="next-invite reveal" data-reveal>
+          Building something? Learning the same things? <strong>The invitation is open — connect on any channel above.</strong>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <span>© 2026 Krishnendu Roy · Academy of Technology</span>
+    <span class="footer-hint mono-label">press <kbd>/</kbd> for the signal terminal</span>
+    <a href="#signal" class="mono-label">⌃ top</a>
+  </footer>
+
+  <!-- Signal terminal (supplementary navigation, ToyFight-inspired pattern) -->
+  <div class="terminal" id="terminal" role="dialog" aria-modal="true" aria-label="Signal terminal" hidden>
+    <div class="terminal-box">
+      <p class="terminal-title mono-label">SIGNAL TERMINAL — type a command · ESC to close</p>
+      <input class="terminal-input" id="terminalInput" type="text" autocomplete="off" spellcheck="false"
+             placeholder="try: origin · mind · build · process · human · next · negative · signal" aria-label="Terminal command" />
+      <p class="terminal-out mono-label" id="terminalOut" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <!-- Motion: CDN-loaded; the site is fully usable without them -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
