@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Crawler policy: open by design. Essential content exists as prerendered HTML text.
-Sitemap: https://krishnendu-developer05.github.io/portfoliokrishnendu/sitemap.xml
+Sitemap: https://krishnenduroy.in/sitemap.xml

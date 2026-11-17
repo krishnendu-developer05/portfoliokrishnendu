@@ -22,7 +22,8 @@ Krishnendu Roy — second-year B.Tech CSE student, Academy of Technology. Starte
 - **sos-webdev-12** & **pok-pok-website**: Experimental UI utilities.
 
 ## Contact
+- Website: https://krishnenduroy.in/
 - GitHub: https://github.com/krishnendu-developer05
 - LinkedIn: https://www.linkedin.com/in/krishnendu-roy-975970386
-- Email: krishnenduroy423@gmail.com
+- Email: krishnenduroy607@gmail.com
 - X: https://x.com/Krishnendu41968

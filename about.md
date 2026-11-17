@@ -8,6 +8,7 @@ He is currently learning **agentic AI** and **spec-driven development**: writing
 
 He also has experience in public relations, event coordination, and management; these are supporting qualities that keep his products grounded in real human needs.
 
+- Website: https://krishnenduroy.in/
 - GitHub: https://github.com/krishnendu-developer05
 - LinkedIn: https://www.linkedin.com/in/krishnendu-roy-975970386
-- Email: krishnenduroy423@gmail.com
+- Email: krishnenduroy607@gmail.com

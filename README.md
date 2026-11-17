@@ -2,7 +2,7 @@
 
 Personal engineering portfolio of **Krishnendu Roy** — Full-Stack Engineer and B.Tech CSE student (2025–2029) at **Academy of Technology**, Kolkata. Specializing in responsive web architecture, agentic AI systems, and spec-driven engineering.
 
-**Live Deployment:** [https://krishnendu-developer05.github.io/portfoliokrishnendu/](https://krishnendu-developer05.github.io/portfoliokrishnendu/)
+**Live Deployment:** [https://krishnenduroy.in/](https://krishnenduroy.in/)
 
 ---
 
@@ -34,7 +34,7 @@ Personal engineering portfolio of **Krishnendu Roy** — Full-Stack Engineer and
 
 ## Contact & Profiles
 
-- **Website:** [krishnendu-developer05.github.io/portfoliokrishnendu](https://krishnendu-developer05.github.io/portfoliokrishnendu/)
+- **Website:** [krishnenduroy.in](https://krishnenduroy.in/)
 - **GitHub:** [@krishnendu-developer05](https://github.com/krishnendu-developer05)
 - **LinkedIn:** [linkedin.com/in/krishnendu-roy-975970386](https://www.linkedin.com/in/krishnendu-roy-975970386)
 - **Email:** [krishnenduroy607@gmail.com](mailto:krishnenduroy607@gmail.com)
