@@ -63,11 +63,22 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
 /* Perfect Anchor Scroll Offset with Sticky Header */
 section[id] {
   scroll-margin-top: 5rem;
+}
+
+/* Modern CSS Containment & Rendering Optimization for 60/120fps Fluid Scrolling */
+.projects,
+.pr-journey,
+.skills,
+.contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
 }
 
 body {
@@ -3097,6 +3108,16 @@ a {
   .profile-card {
     padding: 1rem;
     max-width: 100%;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(8, 13, 26, 0.95) !important;
+  }
+
+  /* Mobile Smoothness & GPU Offloading (Disables costly multi-pass blur on scroll) */
+  .topbar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(5, 7, 13, 0.96) !important;
   }
 
   .hero-carousel {

@@ -555,14 +555,13 @@ Full-Stack Engineering & Shipping (2025–2026)
     formFeedback.className = "form-feedback " + (type === "success" ? "is-success" : type === "info" ? "is-info" : "is-error");
   }
 
-  /* ---------------- SpecularButton Interactive Engine (React Bits / Chungus UI) ---------------- */
+  /* ---------------- SpecularButton Interactive Engine ---------------- */
   function initSpecularButtons() {
     var buttons = document.querySelectorAll(".specular-button");
     if (!buttons.length) return;
 
-    var PROXIMITY = 250;
+    var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     var IDLE_INTENSITY = 0.35;
-    var MAX_INTENSITY = 1.0;
 
     buttons.forEach(function (btn) {
       btn.style.setProperty("--specular-intensity", IDLE_INTENSITY.toString());
@@ -571,41 +570,30 @@ Full-Stack Engineering & Shipping (2025–2026)
       btn.style.setProperty("--mouse-y", "50%");
       btn.style.setProperty("--mouse-x-pct", "50%");
       btn.style.setProperty("--mouse-y-pct", "50%");
-    });
 
-    window.addEventListener("pointermove", function (e) {
-      buttons.forEach(function (btn) {
-        var rect = btn.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) return;
-
-        var cx = rect.left + rect.width / 2;
-        var cy = rect.top + rect.height / 2;
-        var dx = e.clientX - cx;
-        var dy = e.clientY - cy;
-        var dist = Math.hypot(dx, dy);
-
-        if (dist < PROXIMITY) {
-          var t = 1 - (dist / PROXIMITY);
-          var curve = Math.sin((t * Math.PI) / 2);
-          var intensity = IDLE_INTENSITY + (MAX_INTENSITY - IDLE_INTENSITY) * curve;
-          var angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+      // Only listen on hover directly on the button on desktop (never attach global pointermove reflow loops)
+      if (!isTouch) {
+        btn.addEventListener("mousemove", function (e) {
+          var rect = btn.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
 
           var localX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
           var localY = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
           var pctX = ((localX / rect.width) * 100).toFixed(1) + "%";
           var pctY = ((localY / rect.height) * 100).toFixed(1) + "%";
 
-          btn.style.setProperty("--specular-intensity", intensity.toFixed(3));
-          btn.style.setProperty("--specular-angle", angle.toFixed(1) + "deg");
+          btn.style.setProperty("--specular-intensity", "1.0");
           btn.style.setProperty("--mouse-x", localX.toFixed(1) + "px");
           btn.style.setProperty("--mouse-y", localY.toFixed(1) + "px");
           btn.style.setProperty("--mouse-x-pct", pctX);
           btn.style.setProperty("--mouse-y-pct", pctY);
-        } else {
+        }, { passive: true });
+
+        btn.addEventListener("mouseleave", function () {
           btn.style.setProperty("--specular-intensity", IDLE_INTENSITY.toString());
-        }
-      });
-    }, { passive: true });
+        }, { passive: true });
+      }
+    });
   }
 
   initSpecularButtons();
@@ -1231,6 +1219,9 @@ Full-Stack Engineering & Shipping (2025–2026)
   (function initSpecularButtons() {
     var buttons = document.querySelectorAll(".specular-button");
     if (!buttons || buttons.length === 0) return;
+
+    var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return; // Skip WebGL canvas shader loops on touch devices to ensure 100% lag-free scrolling
 
     var PAD = 24;
     var TAU = Math.PI * 2;
