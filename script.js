@@ -1510,20 +1510,14 @@ Full-Stack Engineering & Shipping (2025–2026)
     });
   })();
 
-  /* ---------------- 13. ProfileCard 3D Tilt, Holo & Glare Engine ---------------- */
-  (function initProfileCard() {
+  /* ---------------- 13. ProfileCard 3D Depth Carousel & Reactive Parallax Engine ---------------- */
+  (function initProfileCardAndDepthCarousel() {
     var cardWrap = document.getElementById("heroProfileCardWrap");
     var card = document.getElementById("heroProfileCard");
-    if (!cardWrap || !card) return;
-
-    // enableMobileTilt=false: Keep card stable on touch devices
-    var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouch) return;
-
-    var tiltStrength = 12; // tiltStrength=12
-    var parallaxMax = 8;   // parallax=8
-    var avatarWrap = card.querySelector(".profile-card__avatar-wrap");
-    var contactBtn = card.querySelector(".profile-card__contact-btn");
+    var carousel = document.getElementById("profileDepthCarousel");
+    var stage = document.getElementById("depthCarouselStage");
+    var dotsContainer = document.getElementById("depthCarouselDots");
+    var contactBtn = card ? card.querySelector(".profile-card__contact-btn") : null;
 
     if (contactBtn) {
       contactBtn.addEventListener("click", function (e) {
@@ -1535,54 +1529,277 @@ Full-Stack Engineering & Shipping (2025–2026)
       });
     }
 
-    cardWrap.addEventListener("mousemove", function (e) {
-      card.classList.remove("is-settling");
-      var rect = card.getBoundingClientRect();
-      var x = e.clientX - rect.left;
-      var y = e.clientY - rect.top;
-      var centerX = rect.width / 2;
-      var centerY = rect.height / 2;
+    if (!carousel || !stage) return;
 
-      var normX = (x - centerX) / centerX;
-      var normY = (y - centerY) / centerY;
+    var cards = Array.from(stage.querySelectorAll(".depth-carousel__card"));
+    var dots = dotsContainer ? Array.from(dotsContainer.querySelectorAll(".depth-carousel__dot")) : [];
+    var totalCards = cards.length;
+    if (totalCards === 0) return;
 
-      var rotateY = (normX * tiltStrength).toFixed(2);
-      var rotateX = (-normY * tiltStrength).toFixed(2);
+    var currentIndex = 0;
+    var autoplayTimer = null;
+    var autoplayIntervalMs = 3200;
+    var isPaused = false;
+    var visibleCards = 4;
 
-      var glareX = ((x / rect.width) * 100).toFixed(1) + "%";
-      var glareY = ((y / rect.height) * 100).toFixed(1) + "%";
+    function getMetrics() {
+      var isSmall = window.innerWidth <= 640;
+      return {
+        depth: isSmall ? 85 : 175,
+        spread: isSmall ? 22 : 46,
+        tilt: isSmall ? 11 : 18,
+        falloff: isSmall ? 0.18 : 0.22,
+        blur: isSmall ? 3 : 5
+      };
+    }
 
-      var holoX = ((1 - x / rect.width) * 100).toFixed(1) + "%";
-      var holoY = ((1 - y / rect.height) * 100).toFixed(1) + "%";
+    function updateCarousel() {
+      var metrics = getMetrics();
 
-      card.style.setProperty("--rotate-x", rotateX + "deg");
-      card.style.setProperty("--rotate-y", rotateY + "deg");
-      card.style.setProperty("--glare-x", glareX);
-      card.style.setProperty("--glare-y", glareY);
-      card.style.setProperty("--holo-x", holoX);
-      card.style.setProperty("--holo-y", holoY);
+      cards.forEach(function (c, idx) {
+        var offset = (idx - currentIndex + totalCards) % totalCards;
 
-      if (avatarWrap) {
-        var pX = (normX * parallaxMax).toFixed(2);
-        var pY = (normY * parallaxMax).toFixed(2);
-        avatarWrap.style.setProperty("--parallax-x", pX + "px");
-        avatarWrap.style.setProperty("--parallax-y", pY + "px");
+        if (offset === 0) {
+          // Front active card
+          c.style.transform = "translate3d(0, 0, 0) rotateY(0deg) scale(1)";
+          c.style.opacity = "1";
+          c.style.filter = "blur(0px)";
+          c.style.zIndex = "10";
+          c.style.pointerEvents = "auto";
+          c.setAttribute("aria-hidden", "false");
+        } else if (offset < visibleCards) {
+          // Receding in 3D depth along the rail
+          var x = offset * metrics.spread;
+          var z = -offset * metrics.depth;
+          var rotY = -offset * metrics.tilt;
+          var scale = (1 - offset * 0.045).toFixed(3);
+          var opacity = Math.max(0.08, 1 - offset * metrics.falloff).toFixed(2);
+          var blur = (offset * metrics.blur).toFixed(1);
+          var zIndex = 10 - offset;
+
+          c.style.transform = "translate3d(" + x + "px, 0, " + z + "px) rotateY(" + rotY + "deg) scale(" + scale + ")";
+          c.style.opacity = opacity;
+          c.style.filter = "blur(" + blur + "px)";
+          c.style.zIndex = zIndex;
+          c.style.pointerEvents = "auto";
+          c.setAttribute("aria-hidden", "true");
+        } else {
+          // Beyond visible cards: tucked behind stack
+          var farX = (visibleCards * metrics.spread);
+          var farZ = (-visibleCards * metrics.depth);
+          var farRotY = (-visibleCards * metrics.tilt);
+          c.style.transform = "translate3d(" + farX + "px, 0, " + farZ + "px) rotateY(" + farRotY + "deg) scale(0.82)";
+          c.style.opacity = "0";
+          c.style.filter = "blur(" + (visibleCards * metrics.blur) + "px)";
+          c.style.zIndex = "1";
+          c.style.pointerEvents = "none";
+          c.setAttribute("aria-hidden", "true");
+        }
+      });
+
+      // Update indicator dots
+      dots.forEach(function (d, i) {
+        if (i === currentIndex) {
+          d.classList.add("is-active");
+          d.setAttribute("aria-current", "true");
+        } else {
+          d.classList.remove("is-active");
+          d.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % totalCards;
+      updateCarousel();
+    }
+
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+      updateCarousel();
+    }
+
+    function goToCard(idx) {
+      if (idx === currentIndex) return;
+      currentIndex = idx;
+      updateCarousel();
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayTimer = setInterval(function () {
+        if (!isPaused && document.visibilityState === "visible") {
+          nextCard();
+        }
+      }, autoplayIntervalMs);
+    }
+
+    function stopAutoplay() {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
       }
+    }
+
+    // Dot click triggers
+    dots.forEach(function (dot, i) {
+      dot.addEventListener("click", function (e) {
+        e.stopPropagation();
+        goToCard(i);
+        isPaused = true;
+        setTimeout(function () { isPaused = false; }, 4000);
+      });
     });
 
-    cardWrap.addEventListener("mouseleave", function () {
-      card.classList.add("is-settling");
-      card.style.setProperty("--rotate-x", "0deg");
-      card.style.setProperty("--rotate-y", "0deg");
-      card.style.setProperty("--glare-x", "50%");
-      card.style.setProperty("--glare-y", "50%");
-      card.style.setProperty("--holo-x", "50%");
-      card.style.setProperty("--holo-y", "50%");
-      if (avatarWrap) {
-        avatarWrap.style.setProperty("--parallax-x", "0px");
-        avatarWrap.style.setProperty("--parallax-y", "0px");
-      }
+    // Clicking a receding card in the stack brings it forward
+    cards.forEach(function (cardEl, idx) {
+      cardEl.addEventListener("click", function () {
+        if (idx !== currentIndex) {
+          goToCard(idx);
+          isPaused = true;
+          setTimeout(function () { isPaused = false; }, 4000);
+        }
+      });
     });
+
+    // Pause on hover
+    carousel.addEventListener("mouseenter", function () {
+      isPaused = true;
+    });
+    carousel.addEventListener("mouseleave", function () {
+      isPaused = false;
+    });
+
+    // Touch Swipe Gesture for phones
+    var touchStartX = 0;
+    var touchStartY = 0;
+    var touchStartTime = 0;
+
+    stage.addEventListener("touchstart", function (e) {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchStartTime = Date.now();
+        isPaused = true;
+      }
+    }, { passive: true });
+
+    stage.addEventListener("touchend", function (e) {
+      if (e.changedTouches.length === 1) {
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        var dy = e.changedTouches[0].clientY - touchStartY;
+        var dt = Date.now() - touchStartTime;
+
+        if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) && dt < 600) {
+          if (dx < 0) {
+            nextCard();
+          } else {
+            prevCard();
+          }
+        }
+        setTimeout(function () { isPaused = false; }, 3500);
+      }
+    }, { passive: true });
+
+    // Window resize handler: update carousel geometry dynamically
+    var resizeDebounce = null;
+    window.addEventListener("resize", function () {
+      if (resizeDebounce) clearTimeout(resizeDebounce);
+      resizeDebounce = setTimeout(function () {
+        updateCarousel();
+      }, 100);
+    }, { passive: true });
+
+    // Initial render and autoplay start
+    updateCarousel();
+    startAutoplay();
+
+    /* --- Scroll & Gyro Holographic Parallax (Active on Phones & Desktop) --- */
+    if (card && cardWrap) {
+      var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      var tiltStrength = 12;
+      var ticking = false;
+
+      function onScrollParallax() {
+        if (!card) return;
+        var rect = card.getBoundingClientRect();
+        var vh = window.innerHeight;
+
+        // Only calculate when card is near or in viewport
+        if (rect.bottom >= -50 && rect.top <= vh + 50) {
+          var centerY = rect.top + rect.height / 2;
+          var normY = (centerY - vh / 2) / (vh / 2);
+          normY = Math.max(-1, Math.min(1, normY));
+
+          var rotX = (-normY * (isTouch ? 8 : 4)).toFixed(2);
+          var rotY = (normY * (isTouch ? -6 : -3)).toFixed(2);
+          var floatY = (-normY * (isTouch ? 14 : 8)).toFixed(2);
+          var holoY = ((0.5 - normY * 0.4) * 100).toFixed(1) + "%";
+          var glareY = ((0.5 + normY * 0.4) * 100).toFixed(1) + "%";
+          var carouselParallax = (normY * 10).toFixed(1) + "px";
+
+          card.style.setProperty("--rotate-x", rotX + "deg");
+          card.style.setProperty("--rotate-y", rotY + "deg");
+          card.style.setProperty("--float-y", floatY + "px");
+          card.style.setProperty("--holo-y", holoY);
+          card.style.setProperty("--glare-y", glareY);
+          if (stage) {
+            stage.style.setProperty("--carousel-parallax-y", carouselParallax);
+          }
+        }
+        ticking = false;
+      }
+
+      window.addEventListener("scroll", function () {
+        if (!ticking) {
+          requestAnimationFrame(onScrollParallax);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Run on initial load
+      onScrollParallax();
+
+      // Desktop interactive mousemove tilt
+      if (!isTouch) {
+        cardWrap.addEventListener("mousemove", function (e) {
+          card.classList.remove("is-settling");
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          var centerX = rect.width / 2;
+          var centerY = rect.height / 2;
+
+          var normX = (x - centerX) / centerX;
+          var normY = (y - centerY) / centerY;
+
+          var rotateY = (normX * tiltStrength).toFixed(2);
+          var rotateX = (-normY * tiltStrength).toFixed(2);
+
+          var glareX = ((x / rect.width) * 100).toFixed(1) + "%";
+          var glareY = ((y / rect.height) * 100).toFixed(1) + "%";
+          var holoX = ((1 - x / rect.width) * 100).toFixed(1) + "%";
+          var holoY = ((1 - y / rect.height) * 100).toFixed(1) + "%";
+
+          card.style.setProperty("--rotate-x", rotateX + "deg");
+          card.style.setProperty("--rotate-y", rotateY + "deg");
+          card.style.setProperty("--glare-x", glareX);
+          card.style.setProperty("--glare-y", glareY);
+          card.style.setProperty("--holo-x", holoX);
+          card.style.setProperty("--holo-y", holoY);
+        });
+
+        cardWrap.addEventListener("mouseleave", function () {
+          card.classList.add("is-settling");
+          card.style.setProperty("--rotate-x", "0deg");
+          card.style.setProperty("--rotate-y", "0deg");
+          card.style.setProperty("--glare-x", "50%");
+          card.style.setProperty("--glare-y", "50%");
+          card.style.setProperty("--holo-x", "50%");
+          card.style.setProperty("--holo-y", "50%");
+        });
+      }
+    }
   })();
 
   /* ---------------- 14. GooeyNav Component (React-Bits / ApexUI Specification) ---------------- */
