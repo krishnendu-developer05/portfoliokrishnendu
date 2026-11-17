@@ -505,16 +505,25 @@ Full-Stack Engineering & Shipping (2025–2026)
       }
       showFeedback("Sending message...", "info");
 
-      // Live async dispatch via Web3Forms (<400ms sub-second response)
+      // Live async dispatch via Web3Forms (Optimized JSON payload + Reply-To headers)
       try {
-        var formData = new FormData(contactForm);
-        formData.set("access_key", accessKey);
-        formData.set("subject", "[Portfolio Contact] " + subjectVal);
-        formData.set("from_name", "Krishnendu Roy Portfolio");
+        var payload = {
+          access_key: accessKey,
+          name: nameVal,
+          email: emailVal,
+          replyto: emailVal,
+          from_name: nameVal + " via Portfolio",
+          subject: "[Portfolio Inquiry] " + subjectVal,
+          message: messageVal
+        };
 
         var response = await fetch(endpoint, {
           method: "POST",
-          body: formData
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(payload)
         });
 
         var result = await response.json().catch(function () { return {}; });
