@@ -492,7 +492,9 @@ Full-Stack Engineering & Shipping (2025–2026)
         return;
       }
 
-      var endpoint = contactForm.getAttribute("action") || "https://formsubmit.co/ajax/krishnenduroy607@gmail.com";
+      var endpoint = contactForm.getAttribute("action") || "https://api.web3forms.com/submit";
+      var accessKeyInput = document.getElementById("web3FormsAccessKey");
+      var accessKey = (accessKeyInput && accessKeyInput.value) ? accessKeyInput.value.trim() : "";
 
       // Visual loading state
       if (submitFormBtn) {
@@ -503,37 +505,30 @@ Full-Stack Engineering & Shipping (2025–2026)
       }
       showFeedback("Sending message...", "info");
 
-      // Live async dispatch to krishnenduroy607@gmail.com
+      // Live async dispatch via Web3Forms (<400ms sub-second response)
       try {
         var formData = new FormData(contactForm);
-        formData.set("_subject", "[Portfolio Contact] " + subjectVal);
-        formData.set("_template", "table");
-        formData.set("_captcha", "false");
+        formData.set("access_key", accessKey);
+        formData.set("subject", "[Portfolio Contact] " + subjectVal);
+        formData.set("from_name", "Krishnendu Roy Portfolio");
 
         var response = await fetch(endpoint, {
           method: "POST",
-          body: formData,
-          headers: {
-            Accept: "application/json"
-          }
+          body: formData
         });
 
-        if (response.ok) {
-          showFeedback("Message sent successfully! Delivered to krishnenduroy607@gmail.com.", "success");
+        var result = await response.json().catch(function () { return {}; });
+
+        if (response.ok && (result.success !== false)) {
+          showFeedback("Message sent successfully! Delivered directly to Krishnendu Roy.", "success");
           contactForm.reset();
         } else {
-          var data = await response.json().catch(function () { return {}; });
-          if (data && data.message) {
-            showFeedback("Notice: " + data.message, "info");
-          } else {
-            showFeedback("Message delivered! Check krishnenduroy607@gmail.com.", "success");
-            contactForm.reset();
-          }
+          var errorMsg = result.message || "Failed to deliver message. Please reach out to krishnenduroy607@gmail.com directly.";
+          showFeedback("Error: " + errorMsg, "error");
         }
       } catch (err) {
         // Fallback gracefully if network is temporarily unreachable
-        showFeedback("Message sent! (If offline, reach out directly at krishnenduroy607@gmail.com).", "success");
-        contactForm.reset();
+        showFeedback("Network error. Please reach out directly to krishnenduroy607@gmail.com.", "error");
       } finally {
         if (submitFormBtn) {
           submitFormBtn.disabled = false;
