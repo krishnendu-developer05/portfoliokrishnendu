@@ -723,58 +723,6 @@ a {
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7),
     0 0 0 1px rgba(255, 255, 255, 0.05);
-  transform-style: preserve-3d;
-  transform: translateY(var(--float-y, 0px)) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateZ(0);
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
-  will-change: transform;
-}
-
-.profile-card.is-settling {
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* Holographic Foil Layer (holo=0.8) */
-.profile-card__holo {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(135deg,
-      rgba(255, 0, 128, 0.2) 0%,
-      rgba(0, 217, 139, 0.28) 25%,
-      rgba(0, 180, 255, 0.25) 50%,
-      rgba(255, 215, 0, 0.22) 75%,
-      rgba(255, 0, 128, 0.2) 100%);
-  background-size: 250% 250%;
-  background-position: var(--holo-x) var(--holo-y);
-  opacity: 0;
-  mix-blend-mode: color-dodge;
-  pointer-events: none;
-  z-index: 3;
-  transition: opacity 0.35s ease;
-}
-
-.profile-card-wrap:hover .profile-card__holo {
-  opacity: 0.8;
-}
-
-/* Specular Glare Reflection Layer (glare=0.5) */
-.profile-card__glare {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle 280px at var(--glare-x) var(--glare-y),
-      rgba(255, 255, 255, 0.5) 0%,
-      rgba(255, 255, 255, 0.12) 35%,
-      transparent 70%);
-  opacity: 0;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  z-index: 4;
-  transition: opacity 0.3s ease;
-}
-
-.profile-card-wrap:hover .profile-card__glare {
-  opacity: 0.5;
 }
 
 /* Card Header */
@@ -795,143 +743,80 @@ a {
   letter-spacing: 0.02em;
 }
 
-/* ============ 3D DEPTH PERSPECTIVE CAROUSEL (Zero-Lag Optimized) ============ */
-.depth-carousel {
-  --dc-depth: 160px;
-  --dc-spread: 44px;
-  --dc-tilt: 16deg;
-  --dc-perspective: 1200px;
-  --dc-falloff: 0.22;
-
+/* ============ MINIMAL AUTOMATIC IMAGE CAROUSEL ============ */
+.hero-carousel {
   position: relative;
   z-index: 2;
   width: 100%;
   aspect-ratio: 4 / 4.8;
   max-height: 380px;
+  background: #080D1A;
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #060912;
-  perspective: var(--dc-perspective);
-  transform-style: preserve-3d;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  overflow: hidden;
   margin: 0.15rem 0;
-  user-select: none;
-  -webkit-user-select: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
 }
 
 @media (max-width: 640px) {
-  .depth-carousel {
-    --dc-depth: 85px;
-    --dc-spread: 22px;
-    --dc-tilt: 12deg;
-    --dc-perspective: 900px;
-    --dc-falloff: 0.18;
+  .hero-carousel {
+    aspect-ratio: 4 / 4.8;
     max-height: 320px;
+    margin: 0.25rem 0;
   }
 }
 
-.depth-carousel__stage {
+.hero-carousel__track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-carousel__slide {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
-  cursor: grab;
-  touch-action: pan-y;
-  transform: translateY(var(--carousel-parallax-y, 0px));
-  transition: transform 0.2s ease-out;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease-in-out;
+  will-change: opacity;
 }
 
-.depth-carousel__stage:active {
-  cursor: grabbing;
+/* Base active state */
+.hero-carousel__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
 }
 
-.depth-carousel__card {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: #080D1A;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65),
-              0 0 0 1px rgba(255, 255, 255, 0.05);
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+/* Incoming slide fades in smoothly above outgoing slide (prevents any black frame) */
+.hero-carousel__slide.is-incoming {
+  opacity: 1;
+  visibility: visible;
+  z-index: 3;
 }
 
-.depth-carousel__card picture {
-  display: block;
-  width: 100%;
-  height: 100%;
+/* Outgoing slide remains fully visible underneath until incoming transition finishes */
+.hero-carousel__slide.is-outgoing {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
 }
 
-.depth-carousel__img {
+.hero-carousel__slide picture,
+.hero-carousel__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 10%; /* Head and face always clearly visible */
+  object-position: center 10%; /* Head, face, and body always perfectly positioned */
   display: block;
-  pointer-events: none;
 }
 
-.depth-carousel__gradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 7, 13, 0.0) 0%,
-    rgba(5, 7, 13, 0.08) 50%,
-    rgba(5, 7, 13, 0.65) 100%
-  );
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-.depth-carousel__nav {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.5rem 0.75rem;
-  pointer-events: auto;
-}
-
-.depth-carousel__dots {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: rgba(6, 9, 18, 0.9);
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.depth-carousel__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.28);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s ease;
-}
-
-.depth-carousel__dot.is-active {
-  width: 18px;
-  border-radius: 4px;
-  background: var(--accent-primary);
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel__slide {
+    transition: none !important;
+  }
 }
 
 /* Card Footer (Clean User Info + Contact CTA, NO shipped/live stats) */
@@ -3131,7 +3016,7 @@ a {
     max-width: 100%;
   }
 
-  .depth-carousel {
+  .hero-carousel {
     aspect-ratio: 4 / 4.8;
     max-height: 320px;
     margin-top: 0.25rem;

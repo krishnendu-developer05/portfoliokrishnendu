@@ -47,7 +47,7 @@
     rel="stylesheet" />
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=18" />
+  <link rel="stylesheet" href="style.css?v=20" />
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -301,67 +301,45 @@
                   <span class="profile-card__handle">@krishnendu-developer05</span>
                 </div>
 
-                <!-- 3D Depth Perspective Carousel (Images from C:\mine) -->
-                <div class="depth-carousel" id="profileDepthCarousel" role="region"
-                  aria-label="Krishnendu Roy Interactive Depth Carousel">
-                  <div class="depth-carousel__stage" id="depthCarouselStage">
+                <!-- Minimal Smooth Hero Image Carousel -->
+                <div class="hero-carousel" id="heroCarousel" role="region" aria-label="Krishnendu Roy Photographs">
+                  <div class="hero-carousel__track" id="heroCarouselTrack">
 
-                    <!-- Card 0 -->
-                    <article class="depth-carousel__card" data-index="0">
+                    <div class="hero-carousel__slide is-active" data-index="0" aria-hidden="false">
                       <picture>
                         <source srcset="assets/mine-1.webp" type="image/webp" />
-                        <img src="assets/mine-1.jpg" alt="Krishnendu Roy" width="500" height="625" fetchpriority="high"
-                          class="depth-carousel__img" />
+                        <img src="assets/mine-1.jpg" alt="Krishnendu Roy" width="500" height="625" fetchpriority="high" class="hero-carousel__img" />
                       </picture>
-                    </article>
+                    </div>
 
-                    <!-- Card 1 -->
-                    <article class="depth-carousel__card" data-index="1">
+                    <div class="hero-carousel__slide" data-index="1" aria-hidden="true">
                       <picture>
                         <source srcset="assets/mine-2.webp" type="image/webp" />
-                        <img src="assets/mine-2.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy"
-                          class="depth-carousel__img" />
+                        <img src="assets/mine-2.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy" class="hero-carousel__img" />
                       </picture>
-                    </article>
+                    </div>
 
-                    <!-- Card 2 -->
-                    <article class="depth-carousel__card" data-index="2">
+                    <div class="hero-carousel__slide" data-index="2" aria-hidden="true">
                       <picture>
                         <source srcset="assets/mine-3.webp" type="image/webp" />
-                        <img src="assets/mine-3.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy"
-                          class="depth-carousel__img" />
+                        <img src="assets/mine-3.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy" class="hero-carousel__img" />
                       </picture>
-                    </article>
+                    </div>
 
-                    <!-- Card 3 -->
-                    <article class="depth-carousel__card" data-index="3">
+                    <div class="hero-carousel__slide" data-index="3" aria-hidden="true">
                       <picture>
                         <source srcset="assets/mine-4.webp" type="image/webp" />
-                        <img src="assets/mine-4.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy"
-                          class="depth-carousel__img" />
+                        <img src="assets/mine-4.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy" class="hero-carousel__img" />
                       </picture>
-                    </article>
+                    </div>
 
-                    <!-- Card 4 -->
-                    <article class="depth-carousel__card" data-index="4">
+                    <div class="hero-carousel__slide" data-index="4" aria-hidden="true">
                       <picture>
                         <source srcset="assets/mine-5.webp" type="image/webp" />
-                        <img src="assets/mine-5.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy"
-                          class="depth-carousel__img" />
+                        <img src="assets/mine-5.jpg" alt="Krishnendu Roy" width="500" height="625" loading="lazy" class="hero-carousel__img" />
                       </picture>
-                    </article>
-
-                  </div>
-
-                  <!-- Pagination Dots -->
-                  <div class="depth-carousel__nav" aria-label="Carousel navigation">
-                    <div class="depth-carousel__dots" id="depthCarouselDots">
-                      <button class="depth-carousel__dot is-active" data-index="0" aria-label="Slide 1"></button>
-                      <button class="depth-carousel__dot" data-index="1" aria-label="Slide 2"></button>
-                      <button class="depth-carousel__dot" data-index="2" aria-label="Slide 3"></button>
-                      <button class="depth-carousel__dot" data-index="3" aria-label="Slide 4"></button>
-                      <button class="depth-carousel__dot" data-index="4" aria-label="Slide 5"></button>
                     </div>
+
                   </div>
                 </div>
 
@@ -1287,7 +1265,7 @@
   </div>
 
   <!-- Interactive JavaScript Engine -->
-  <script src="script.js?v=18" defer></script>
+  <script src="script.js?v=20" defer></script>
 </body>
 
 </html>
