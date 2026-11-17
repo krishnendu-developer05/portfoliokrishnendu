@@ -1037,35 +1037,109 @@ Full-Stack Engineering & Shipping (2025–2026)
     }
   });
 
-  /* ---------------- 9. Nav Scroll Spy ---------------- */
-  var sections = document.querySelectorAll("section[id]");
-  var navLinks = document.querySelectorAll(".nav-links a, .gooey-nav__link");
+  /* ---------------- 9. High-Performance Smooth Scroll Engine & Progress Bar ---------------- */
+  (function initScrollExperience() {
+    var progressBar = document.getElementById("scrollProgressLine");
+    var backToTopBtn = document.getElementById("backToTopBtn");
+    var topbar = document.querySelector(".topbar");
+    var sections = Array.from(document.querySelectorAll("section[id]"));
+    var navLinks = Array.from(document.querySelectorAll(".nav-links a, .gooey-nav__link"));
 
-  function onScroll() {
-    var scrollPos = window.scrollY || window.pageYOffset;
-    var currentSection = "";
-
-    sections.forEach(function (section) {
-      var top = section.offsetTop - 120;
-      var height = section.offsetHeight;
-      if (scrollPos >= top && scrollPos < top + height) {
-        currentSection = section.getAttribute("id");
-      }
-    });
-
-    navLinks.forEach(function (link) {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === "#" + currentSection) {
-        link.classList.add("active");
-      }
-    });
-
-    if (window.gooeyNavInstance && currentSection) {
-      window.gooeyNavInstance.syncWithSection(currentSection);
+    // Cache section bounding metrics to eliminate synchronous layout reflows during scrolling
+    var sectionMetrics = [];
+    function measureSections() {
+      var scrollY = window.scrollY || window.pageYOffset;
+      sectionMetrics = sections.map(function (sec) {
+        var rect = sec.getBoundingClientRect();
+        var top = rect.top + scrollY;
+        return {
+          id: sec.getAttribute("id"),
+          top: top - 140,
+          bottom: top + sec.offsetHeight - 140
+        };
+      });
     }
-  }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
+    // Measure after DOM content and image sizes settle
+    measureSections();
+    window.addEventListener("resize", measureSections, { passive: true });
+    window.addEventListener("load", measureSections, { passive: true });
+
+    // Back to top click handler
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    }
+
+    var ticking = false;
+    function updateScrollState() {
+      var scrollY = window.scrollY || window.pageYOffset;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      // 1. Silky Smooth Progress Line (scaleX GPU-composited, 0% CPU overhead)
+      if (progressBar && docHeight > 0) {
+        var progress = Math.min(1, Math.max(0, scrollY / docHeight));
+        progressBar.style.transform = "scaleX(" + progress + ")";
+      }
+
+      // 2. Floating Back to Top Button visibility
+      if (backToTopBtn) {
+        if (scrollY > 400) {
+          backToTopBtn.classList.add("is-visible");
+        } else {
+          backToTopBtn.classList.remove("is-visible");
+        }
+      }
+
+      // 3. Topbar elevation glassmorphism
+      if (topbar) {
+        if (scrollY > 20) {
+          topbar.classList.add("is-scrolled");
+        } else {
+          topbar.classList.remove("is-scrolled");
+        }
+      }
+
+      // 4. Reflow-free section spy with cached bounds
+      var currentSection = "";
+      for (var i = 0; i < sectionMetrics.length; i++) {
+        if (scrollY >= sectionMetrics[i].top && scrollY < sectionMetrics[i].bottom) {
+          currentSection = sectionMetrics[i].id;
+          break;
+        }
+      }
+
+      if (currentSection) {
+        navLinks.forEach(function (link) {
+          if (link.getAttribute("href") === "#" + currentSection) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+
+        if (window.gooeyNavInstance) {
+          window.gooeyNavInstance.syncWithSection(currentSection);
+        }
+      }
+
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", function () {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollState);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    updateScrollState();
+  })();
 
   /* ---------------- 10. PR Visual Slideshow (Automatic Seamless Animation) ---------------- */
   var prSlides = document.querySelectorAll(".pr-slide");

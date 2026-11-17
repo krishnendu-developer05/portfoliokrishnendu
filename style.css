@@ -65,6 +65,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Perfect Anchor Scroll Offset with Sticky Header */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
 body {
   min-height: 100vh;
   background-color: var(--bg-primary);
@@ -192,10 +197,33 @@ a {
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(5, 7, 13, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(5, 7, 13, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.topbar.is-scrolled {
+  background: rgba(5, 7, 13, 0.96);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+}
+
+/* Glowing Scroll Progress Line on Topbar */
+.scroll-progress-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, #00F5A0 50%, #00D2FF 100%);
+  transform-origin: left center;
+  transform: scaleX(0);
+  pointer-events: none;
+  z-index: 1002;
+  box-shadow: 0 0 10px rgba(0, 217, 139, 0.5);
+  transition: transform 0.05s linear;
 }
 
 .topbar-inner {
@@ -2506,13 +2534,68 @@ a {
   display: block;
 }
 
+/* ---------------- Floating Back to Top Button ---------------- */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 990;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: rgba(8, 13, 26, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.92);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover {
+  background: rgba(12, 20, 38, 0.95);
+  border-color: rgba(0, 217, 139, 0.45);
+  color: var(--accent-primary);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 16px rgba(0, 217, 139, 0.25);
+  transform: translateY(-2px);
+}
+
+.back-to-top:active {
+  transform: translateY(0) scale(0.95);
+}
+
+@media (max-width: 640px) {
+  .back-to-top {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
 /* ---------------- Subtle Scroll Reveal Animations ---------------- */
 .scroll-reveal {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .scroll-reveal.is-revealed {
