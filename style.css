@@ -795,28 +795,13 @@ a {
   letter-spacing: 0.02em;
 }
 
-.profile-card__tag {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--accent-primary);
-  background: rgba(0, 217, 139, 0.06);
-  border: 1px solid rgba(0, 217, 139, 0.22);
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-pill);
-  letter-spacing: 0.02em;
-}
-
-/* ============ 3D DEPTH PERSPECTIVE CAROUSEL ============ */
+/* ============ 3D DEPTH PERSPECTIVE CAROUSEL (Zero-Lag Optimized) ============ */
 .depth-carousel {
-  --dc-depth: 180px;
-  --dc-spread: 48px;
-  --dc-tilt: 18deg;
+  --dc-depth: 160px;
+  --dc-spread: 44px;
+  --dc-tilt: 16deg;
   --dc-perspective: 1200px;
   --dc-falloff: 0.22;
-  --dc-blur: 5px;
 
   position: relative;
   z-index: 2;
@@ -824,7 +809,7 @@ a {
   aspect-ratio: 4 / 4.8;
   max-height: 380px;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   background: #060912;
   perspective: var(--dc-perspective);
   transform-style: preserve-3d;
@@ -844,7 +829,6 @@ a {
     --dc-tilt: 12deg;
     --dc-perspective: 900px;
     --dc-falloff: 0.18;
-    --dc-blur: 3px;
     max-height: 320px;
   }
 }
@@ -875,13 +859,12 @@ a {
   overflow: hidden;
   background: #080D1A;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7),
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65),
               0 0 0 1px rgba(255, 255, 255, 0.05);
   transform-style: preserve-3d;
-  will-change: transform, opacity, filter;
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -896,7 +879,7 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 12%; /* Keeps head, face, eyes and upper torso always visible */
+  object-position: center 10%; /* Head and face always clearly visible */
   display: block;
   pointer-events: none;
 }
@@ -907,32 +890,11 @@ a {
   background: linear-gradient(
     180deg,
     rgba(5, 7, 13, 0.0) 0%,
-    rgba(5, 7, 13, 0.12) 45%,
-    rgba(5, 7, 13, 0.8) 100%
+    rgba(5, 7, 13, 0.08) 50%,
+    rgba(5, 7, 13, 0.65) 100%
   );
   pointer-events: none;
   border-radius: inherit;
-}
-
-.depth-carousel__badge {
-  position: absolute;
-  bottom: 0.85rem;
-  left: 0.85rem;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: #FFFFFF;
-  background: rgba(10, 16, 32, 0.82);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  padding: 0.22rem 0.55rem;
-  border-radius: var(--radius-pill);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  z-index: 3;
-  pointer-events: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .depth-carousel__nav {
@@ -949,9 +911,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: rgba(6, 9, 18, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(6, 9, 18, 0.9);
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(255, 255, 255, 0.1);

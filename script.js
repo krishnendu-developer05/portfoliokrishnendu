@@ -1545,11 +1545,10 @@ Full-Stack Engineering & Shipping (2025–2026)
     function getMetrics() {
       var isSmall = window.innerWidth <= 640;
       return {
-        depth: isSmall ? 85 : 175,
-        spread: isSmall ? 22 : 46,
-        tilt: isSmall ? 11 : 18,
-        falloff: isSmall ? 0.18 : 0.22,
-        blur: isSmall ? 3 : 5
+        depth: isSmall ? 85 : 160,
+        spread: isSmall ? 22 : 44,
+        tilt: isSmall ? 11 : 16,
+        falloff: isSmall ? 0.18 : 0.22
       };
     }
 
@@ -1563,7 +1562,6 @@ Full-Stack Engineering & Shipping (2025–2026)
           // Front active card
           c.style.transform = "translate3d(0, 0, 0) rotateY(0deg) scale(1)";
           c.style.opacity = "1";
-          c.style.filter = "blur(0px)";
           c.style.zIndex = "10";
           c.style.pointerEvents = "auto";
           c.setAttribute("aria-hidden", "false");
@@ -1573,13 +1571,11 @@ Full-Stack Engineering & Shipping (2025–2026)
           var z = -offset * metrics.depth;
           var rotY = -offset * metrics.tilt;
           var scale = (1 - offset * 0.045).toFixed(3);
-          var opacity = Math.max(0.08, 1 - offset * metrics.falloff).toFixed(2);
-          var blur = (offset * metrics.blur).toFixed(1);
+          var opacity = Math.max(0.1, 1 - offset * metrics.falloff).toFixed(2);
           var zIndex = 10 - offset;
 
           c.style.transform = "translate3d(" + x + "px, 0, " + z + "px) rotateY(" + rotY + "deg) scale(" + scale + ")";
           c.style.opacity = opacity;
-          c.style.filter = "blur(" + blur + "px)";
           c.style.zIndex = zIndex;
           c.style.pointerEvents = "auto";
           c.setAttribute("aria-hidden", "true");
@@ -1590,7 +1586,6 @@ Full-Stack Engineering & Shipping (2025–2026)
           var farRotY = (-visibleCards * metrics.tilt);
           c.style.transform = "translate3d(" + farX + "px, 0, " + farZ + "px) rotateY(" + farRotY + "deg) scale(0.82)";
           c.style.opacity = "0";
-          c.style.filter = "blur(" + (visibleCards * metrics.blur) + "px)";
           c.style.zIndex = "1";
           c.style.pointerEvents = "none";
           c.setAttribute("aria-hidden", "true");
